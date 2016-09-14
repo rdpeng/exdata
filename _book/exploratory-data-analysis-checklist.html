@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Exploratory Data Analysis with R</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data.">
+  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Exploratory Data Analysis with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/rdpeng/exdata/" />
+  <meta property="og:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+  <meta property="og:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="github-repo" content="rdpeng/exdata" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Exploratory Data Analysis with R" />
+  
+  <meta name="twitter:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="twitter:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+
+<meta name="author" content="Roger D. Peng">
+
+<meta name="date" content="2016-09-14">
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="managing-data-frames-with-the-dplyr-package.html">
+<link rel="next" href="principles-of-analytic-graphics.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Exploratory Data Analysis with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#stay-in-touch"><i class="fa fa-check"></i>Stay in Touch!</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>2</b> Getting Started with R</a><ul>
+<li class="chapter" data-level="2.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-started-with-the-r-interface"><i class="fa fa-check"></i><b>2.2</b> Getting started with the R interface</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html"><i class="fa fa-check"></i><b>3</b> Managing Data Frames with the <code>dplyr</code> package</a><ul>
+<li class="chapter" data-level="3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#data-frames"><i class="fa fa-check"></i><b>3.1</b> Data Frames</a></li>
+<li class="chapter" data-level="3.2" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#the-dplyr-package"><i class="fa fa-check"></i><b>3.2</b> The <code>dplyr</code> Package</a></li>
+<li class="chapter" data-level="3.3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#dplyr-grammar"><i class="fa fa-check"></i><b>3.3</b> <code>dplyr</code> Grammar</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#common-dplyr-function-properties"><i class="fa fa-check"></i><b>3.3.1</b> Common <code>dplyr</code> Function Properties</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#installing-the-dplyr-package"><i class="fa fa-check"></i><b>3.4</b> Installing the <code>dplyr</code> package</a></li>
+<li class="chapter" data-level="3.5" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>3.5</b> <code>select()</code></a></li>
+<li class="chapter" data-level="3.6" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>3.6</b> <code>filter()</code></a></li>
+<li class="chapter" data-level="3.7" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#arrange"><i class="fa fa-check"></i><b>3.7</b> <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.8" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#rename"><i class="fa fa-check"></i><b>3.8</b> <code>rename()</code></a></li>
+<li class="chapter" data-level="3.9" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>3.9</b> <code>mutate()</code></a></li>
+<li class="chapter" data-level="3.10" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#group_by"><i class="fa fa-check"></i><b>3.10</b> <code>group_by()</code></a></li>
+<li class="chapter" data-level="3.11" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#section"><i class="fa fa-check"></i><b>3.11</b> <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="3.12" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#summary"><i class="fa fa-check"></i><b>3.12</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis Checklist</a><ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#formulate-your-question"><i class="fa fa-check"></i><b>4.1</b> Formulate your question</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#read-in-your-data"><i class="fa fa-check"></i><b>4.2</b> Read in your data</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-the-packaging"><i class="fa fa-check"></i><b>4.3</b> Check the packaging</a></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#run-str"><i class="fa fa-check"></i><b>4.4</b> Run <code>str()</code></a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#look-at-the-top-and-the-bottom-of-your-data"><i class="fa fa-check"></i><b>4.5</b> Look at the top and the bottom of your data</a></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-your-ns"><i class="fa fa-check"></i><b>4.6</b> Check your “n”s</a></li>
+<li class="chapter" data-level="4.7" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#validate-with-at-least-one-external-data-source"><i class="fa fa-check"></i><b>4.7</b> Validate with at least one external data source</a></li>
+<li class="chapter" data-level="4.8" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#try-the-easy-solution-first"><i class="fa fa-check"></i><b>4.8</b> Try the easy solution first</a></li>
+<li class="chapter" data-level="4.9" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#challenge-your-solution"><i class="fa fa-check"></i><b>4.9</b> Challenge your solution</a></li>
+<li class="chapter" data-level="4.10" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#follow-up-questions"><i class="fa fa-check"></i><b>4.10</b> Follow up questions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html"><i class="fa fa-check"></i><b>5</b> Principles of Analytic Graphics</a><ul>
+<li class="chapter" data-level="5.1" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-comparisons"><i class="fa fa-check"></i><b>5.1</b> Show comparisons</a></li>
+<li class="chapter" data-level="5.2" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-causality-mechanism-explanation-systematic-structure"><i class="fa fa-check"></i><b>5.2</b> Show causality, mechanism, explanation, systematic structure</a></li>
+<li class="chapter" data-level="5.3" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-multivariate-data"><i class="fa fa-check"></i><b>5.3</b> Show multivariate data</a></li>
+<li class="chapter" data-level="5.4" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#integrate-evidence"><i class="fa fa-check"></i><b>5.4</b> Integrate evidence</a></li>
+<li class="chapter" data-level="5.5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#describe-and-document-the-evidence"><i class="fa fa-check"></i><b>5.5</b> Describe and document the evidence</a></li>
+<li class="chapter" data-level="5.6" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#content-content-content"><i class="fa fa-check"></i><b>5.6</b> Content, Content, Content</a></li>
+<li class="chapter" data-level="5.7" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html"><i class="fa fa-check"></i><b>6</b> Exploratory Graphs</a><ul>
+<li class="chapter" data-level="6.1" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#characteristics-of-exploratory-graphs"><i class="fa fa-check"></i><b>6.1</b> Characteristics of exploratory graphs</a></li>
+<li class="chapter" data-level="6.2" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#air-pollution-in-the-united-states"><i class="fa fa-check"></i><b>6.2</b> Air Pollution in the United States</a></li>
+<li class="chapter" data-level="6.3" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#getting-the-data"><i class="fa fa-check"></i><b>6.3</b> Getting the Data</a></li>
+<li class="chapter" data-level="6.4" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-one-dimension"><i class="fa fa-check"></i><b>6.4</b> Simple Summaries: One Dimension</a></li>
+<li class="chapter" data-level="6.5" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#five-number-summary"><i class="fa fa-check"></i><b>6.5</b> Five Number Summary</a></li>
+<li class="chapter" data-level="6.6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#boxplot"><i class="fa fa-check"></i><b>6.6</b> Boxplot</a></li>
+<li class="chapter" data-level="6.7" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#histogram"><i class="fa fa-check"></i><b>6.7</b> Histogram</a></li>
+<li class="chapter" data-level="6.8" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#overlaying-features"><i class="fa fa-check"></i><b>6.8</b> Overlaying Features</a></li>
+<li class="chapter" data-level="6.9" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#barplot"><i class="fa fa-check"></i><b>6.9</b> Barplot</a></li>
+<li class="chapter" data-level="6.10" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-two-dimensions-and-beyond"><i class="fa fa-check"></i><b>6.10</b> Simple Summaries: Two Dimensions and Beyond</a></li>
+<li class="chapter" data-level="6.11" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-boxplots"><i class="fa fa-check"></i><b>6.11</b> Multiple Boxplots</a></li>
+<li class="chapter" data-level="6.12" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-histograms"><i class="fa fa-check"></i><b>6.12</b> Multiple Histograms</a></li>
+<li class="chapter" data-level="6.13" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplots"><i class="fa fa-check"></i><b>6.13</b> Scatterplots</a></li>
+<li class="chapter" data-level="6.14" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplot---using-color"><i class="fa fa-check"></i><b>6.14</b> Scatterplot - Using Color</a></li>
+<li class="chapter" data-level="6.15" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-scatterplots"><i class="fa fa-check"></i><b>6.15</b> Multiple Scatterplots</a></li>
+<li class="chapter" data-level="6.16" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#summary-1"><i class="fa fa-check"></i><b>6.16</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="plotting-systems.html"><a href="plotting-systems.html"><i class="fa fa-check"></i><b>7</b> Plotting Systems</a><ul>
+<li class="chapter" data-level="7.1" data-path="plotting-systems.html"><a href="plotting-systems.html#the-base-plotting-system"><i class="fa fa-check"></i><b>7.1</b> The Base Plotting System</a></li>
+<li class="chapter" data-level="7.2" data-path="plotting-systems.html"><a href="plotting-systems.html#the-lattice-system"><i class="fa fa-check"></i><b>7.2</b> The Lattice System</a></li>
+<li class="chapter" data-level="7.3" data-path="plotting-systems.html"><a href="plotting-systems.html#the-ggplot2-system"><i class="fa fa-check"></i><b>7.3</b> The ggplot2 System</a></li>
+<li class="chapter" data-level="7.4" data-path="plotting-systems.html"><a href="plotting-systems.html#references-1"><i class="fa fa-check"></i><b>7.4</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="graphics-devices.html"><a href="graphics-devices.html"><i class="fa fa-check"></i><b>8</b> Graphics Devices</a><ul>
+<li class="chapter" data-level="8.1" data-path="graphics-devices.html"><a href="graphics-devices.html#the-process-of-making-a-plot"><i class="fa fa-check"></i><b>8.1</b> The Process of Making a Plot</a></li>
+<li class="chapter" data-level="8.2" data-path="graphics-devices.html"><a href="graphics-devices.html#how-does-a-plot-get-created"><i class="fa fa-check"></i><b>8.2</b> How Does a Plot Get Created?</a></li>
+<li class="chapter" data-level="8.3" data-path="graphics-devices.html"><a href="graphics-devices.html#graphics-file-devices"><i class="fa fa-check"></i><b>8.3</b> Graphics File Devices</a></li>
+<li class="chapter" data-level="8.4" data-path="graphics-devices.html"><a href="graphics-devices.html#multiple-open-graphics-devices"><i class="fa fa-check"></i><b>8.4</b> Multiple Open Graphics Devices</a></li>
+<li class="chapter" data-level="8.5" data-path="graphics-devices.html"><a href="graphics-devices.html#copying-plots"><i class="fa fa-check"></i><b>8.5</b> Copying Plots</a></li>
+<li class="chapter" data-level="8.6" data-path="graphics-devices.html"><a href="graphics-devices.html#summary-2"><i class="fa fa-check"></i><b>8.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html"><i class="fa fa-check"></i><b>9</b> The Base Plotting System</a><ul>
+<li class="chapter" data-level="9.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-graphics"><i class="fa fa-check"></i><b>9.1</b> Base Graphics</a></li>
+<li class="chapter" data-level="9.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#simple-base-graphics"><i class="fa fa-check"></i><b>9.2</b> Simple Base Graphics</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#histogram-1"><i class="fa fa-check"></i><b>9.2.1</b> Histogram</a></li>
+<li class="chapter" data-level="9.2.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#boxplot-1"><i class="fa fa-check"></i><b>9.2.2</b> Boxplot</a></li>
+<li class="chapter" data-level="9.2.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#scatterplot"><i class="fa fa-check"></i><b>9.2.3</b> Scatterplot</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#some-important-base-graphics-parameters"><i class="fa fa-check"></i><b>9.3</b> Some Important Base Graphics Parameters</a></li>
+<li class="chapter" data-level="9.4" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plotting-functions"><i class="fa fa-check"></i><b>9.4</b> Base Plotting Functions</a></li>
+<li class="chapter" data-level="9.5" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plot-with-regression-line"><i class="fa fa-check"></i><b>9.5</b> Base Plot with Regression Line</a></li>
+<li class="chapter" data-level="9.6" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#multiple-base-plots"><i class="fa fa-check"></i><b>9.6</b> Multiple Base Plots</a></li>
+<li class="chapter" data-level="9.7" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#summary-3"><i class="fa fa-check"></i><b>9.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html"><i class="fa fa-check"></i><b>10</b> Plotting and Color in R</a><ul>
+<li class="chapter" data-level="10.1" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colors-1-2-and-3"><i class="fa fa-check"></i><b>10.1</b> Colors 1, 2, and 3</a></li>
+<li class="chapter" data-level="10.2" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#connecting-colors-with-data"><i class="fa fa-check"></i><b>10.2</b> Connecting colors with data</a></li>
+<li class="chapter" data-level="10.3" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#color-utilities-in-r"><i class="fa fa-check"></i><b>10.3</b> Color Utilities in R</a></li>
+<li class="chapter" data-level="10.4" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramp"><i class="fa fa-check"></i><b>10.4</b> <code>colorRamp()</code></a></li>
+<li class="chapter" data-level="10.5" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramppalette"><i class="fa fa-check"></i><b>10.5</b> <code>colorRampPalette()</code></a></li>
+<li class="chapter" data-level="10.6" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#rcolorbrewer-package"><i class="fa fa-check"></i><b>10.6</b> RColorBrewer Package</a></li>
+<li class="chapter" data-level="10.7" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#using-the-rcolorbrewer-palettes"><i class="fa fa-check"></i><b>10.7</b> Using the RColorBrewer palettes</a></li>
+<li class="chapter" data-level="10.8" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#the-smoothscatter-function"><i class="fa fa-check"></i><b>10.8</b> The <code>smoothScatter()</code> function</a></li>
+<li class="chapter" data-level="10.9" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#adding-transparency"><i class="fa fa-check"></i><b>10.9</b> Adding transparency</a></li>
+<li class="chapter" data-level="10.10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#summary-4"><i class="fa fa-check"></i><b>10.10</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html"><i class="fa fa-check"></i><b>11</b> Hierarchical Clustering</a><ul>
+<li class="chapter" data-level="11.1" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#hierarchical-clustering-1"><i class="fa fa-check"></i><b>11.1</b> Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.2" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#how-do-we-define-close"><i class="fa fa-check"></i><b>11.2</b> How do we define close?</a></li>
+<li class="chapter" data-level="11.3" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-euclidean-distance"><i class="fa fa-check"></i><b>11.3</b> Example: Euclidean distance</a></li>
+<li class="chapter" data-level="11.4" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-manhattan-distance"><i class="fa fa-check"></i><b>11.4</b> Example: Manhattan distance</a></li>
+<li class="chapter" data-level="11.5" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-hierarchical-clustering"><i class="fa fa-check"></i><b>11.5</b> Example: Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.6" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#prettier-dendrograms"><i class="fa fa-check"></i><b>11.6</b> Prettier dendrograms</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-complete"><i class="fa fa-check"></i><b>11.7</b> Merging points: Complete</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-average"><i class="fa fa-check"></i><b>11.8</b> Merging points: Average</a></li>
+<li class="chapter" data-level="11.9" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#using-the-heatmap-function"><i class="fa fa-check"></i><b>11.9</b> Using the <code>heatmap()</code> function</a></li>
+<li class="chapter" data-level="11.10" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#notes-and-further-resources"><i class="fa fa-check"></i><b>11.10</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="k-means-clustering.html"><a href="k-means-clustering.html"><i class="fa fa-check"></i><b>12</b> K-Means Clustering</a><ul>
+<li class="chapter" data-level="12.1" data-path="k-means-clustering.html"><a href="k-means-clustering.html#illustrating-the-k-means-algorithm"><i class="fa fa-check"></i><b>12.1</b> Illustrating the K-means algorithm</a></li>
+<li class="chapter" data-level="12.2" data-path="k-means-clustering.html"><a href="k-means-clustering.html#stopping-the-algorithm"><i class="fa fa-check"></i><b>12.2</b> Stopping the algorithm</a></li>
+<li class="chapter" data-level="12.3" data-path="k-means-clustering.html"><a href="k-means-clustering.html#using-the-kmeans-function"><i class="fa fa-check"></i><b>12.3</b> Using the <code>kmeans()</code> function</a></li>
+<li class="chapter" data-level="12.4" data-path="k-means-clustering.html"><a href="k-means-clustering.html#building-heatmaps-from-k-means-solutions"><i class="fa fa-check"></i><b>12.4</b> Building heatmaps from K-means solutions</a></li>
+<li class="chapter" data-level="12.5" data-path="k-means-clustering.html"><a href="k-means-clustering.html#notes-and-further-resources-1"><i class="fa fa-check"></i><b>12.5</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="dimension-reduction.html"><a href="dimension-reduction.html"><i class="fa fa-check"></i><b>13</b> Dimension Reduction</a><ul>
+<li class="chapter" data-level="13.1" data-path="dimension-reduction.html"><a href="dimension-reduction.html#matrix-data"><i class="fa fa-check"></i><b>13.1</b> Matrix data</a></li>
+<li class="chapter" data-level="13.2" data-path="dimension-reduction.html"><a href="dimension-reduction.html#patterns-in-rows-and-columns"><i class="fa fa-check"></i><b>13.2</b> Patterns in rows and columns</a></li>
+<li class="chapter" data-level="13.3" data-path="dimension-reduction.html"><a href="dimension-reduction.html#related-problem"><i class="fa fa-check"></i><b>13.3</b> Related problem</a></li>
+<li class="chapter" data-level="13.4" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-and-pca"><i class="fa fa-check"></i><b>13.4</b> SVD and PCA</a></li>
+<li class="chapter" data-level="13.5" data-path="dimension-reduction.html"><a href="dimension-reduction.html#unpacking-the-svd-u-and-v"><i class="fa fa-check"></i><b>13.5</b> Unpacking the SVD: <em>u</em> and <em>v</em></a></li>
+<li class="chapter" data-level="13.6" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-for-data-compression"><i class="fa fa-check"></i><b>13.6</b> SVD for data compression</a></li>
+<li class="chapter" data-level="13.7" data-path="dimension-reduction.html"><a href="dimension-reduction.html#components-of-the-svd---variance-explained"><i class="fa fa-check"></i><b>13.7</b> Components of the SVD - Variance explained</a></li>
+<li class="chapter" data-level="13.8" data-path="dimension-reduction.html"><a href="dimension-reduction.html#relationship-to-principal-components"><i class="fa fa-check"></i><b>13.8</b> Relationship to principal components</a></li>
+<li class="chapter" data-level="13.9" data-path="dimension-reduction.html"><a href="dimension-reduction.html#what-if-we-add-a-second-pattern"><i class="fa fa-check"></i><b>13.9</b> What if we add a second pattern?</a></li>
+<li class="chapter" data-level="13.10" data-path="dimension-reduction.html"><a href="dimension-reduction.html#dealing-with-missing-values"><i class="fa fa-check"></i><b>13.10</b> Dealing with missing values</a></li>
+<li class="chapter" data-level="13.11" data-path="dimension-reduction.html"><a href="dimension-reduction.html#example-face-data"><i class="fa fa-check"></i><b>13.11</b> Example: Face data</a></li>
+<li class="chapter" data-level="13.12" data-path="dimension-reduction.html"><a href="dimension-reduction.html#notes-and-further-resources-2"><i class="fa fa-check"></i><b>13.12</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html"><i class="fa fa-check"></i><b>14</b> The ggplot2 Plotting System: Part 1</a><ul>
+<li class="chapter" data-level="14.1" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#the-basics-qplot"><i class="fa fa-check"></i><b>14.1</b> The Basics: <code>qplot()</code></a></li>
+<li class="chapter" data-level="14.2" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#before-you-start-label-your-data"><i class="fa fa-check"></i><b>14.2</b> Before You Start: Label Your Data</a></li>
+<li class="chapter" data-level="14.3" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#ggplot2-hello-world"><i class="fa fa-check"></i><b>14.3</b> ggplot2 “Hello, world!”</a></li>
+<li class="chapter" data-level="14.4" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#modifying-aesthetics"><i class="fa fa-check"></i><b>14.4</b> Modifying aesthetics</a></li>
+<li class="chapter" data-level="14.5" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#adding-a-geom"><i class="fa fa-check"></i><b>14.5</b> Adding a geom</a></li>
+<li class="chapter" data-level="14.6" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#histograms"><i class="fa fa-check"></i><b>14.6</b> Histograms</a></li>
+<li class="chapter" data-level="14.7" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#facets"><i class="fa fa-check"></i><b>14.7</b> Facets</a></li>
+<li class="chapter" data-level="14.8" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#case-study-maacs-cohort"><i class="fa fa-check"></i><b>14.8</b> Case Study: MAACS Cohort</a></li>
+<li class="chapter" data-level="14.9" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#summary-of-qplot"><i class="fa fa-check"></i><b>14.9</b> Summary of qplot()</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html"><i class="fa fa-check"></i><b>15</b> The ggplot2 Plotting System: Part 2</a><ul>
+<li class="chapter" data-level="15.1" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#basic-components-of-a-ggplot2-plot"><i class="fa fa-check"></i><b>15.1</b> Basic Components of a ggplot2 Plot</a></li>
+<li class="chapter" data-level="15.2" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#example-bmi-pm2.5-asthma"><i class="fa fa-check"></i><b>15.2</b> Example: BMI, PM2.5, Asthma</a></li>
+<li class="chapter" data-level="15.3" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#building-up-in-layers"><i class="fa fa-check"></i><b>15.3</b> Building Up in Layers</a></li>
+<li class="chapter" data-level="15.4" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#first-plot-with-point-layer"><i class="fa fa-check"></i><b>15.4</b> First Plot with Point Layer</a></li>
+<li class="chapter" data-level="15.5" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-smooth"><i class="fa fa-check"></i><b>15.5</b> Adding More Layers: Smooth</a></li>
+<li class="chapter" data-level="15.6" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-facets"><i class="fa fa-check"></i><b>15.6</b> Adding More Layers: Facets</a></li>
+<li class="chapter" data-level="15.7" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-geom-properties"><i class="fa fa-check"></i><b>15.7</b> Modifying Geom Properties</a></li>
+<li class="chapter" data-level="15.8" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-labels"><i class="fa fa-check"></i><b>15.8</b> Modifying Labels</a></li>
+<li class="chapter" data-level="15.9" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#customizing-the-smooth"><i class="fa fa-check"></i><b>15.9</b> Customizing the Smooth</a></li>
+<li class="chapter" data-level="15.10" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#changing-the-theme"><i class="fa fa-check"></i><b>15.10</b> Changing the Theme</a></li>
+<li class="chapter" data-level="15.11" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#more-complex-example"><i class="fa fa-check"></i><b>15.11</b> More Complex Example</a></li>
+<li class="chapter" data-level="15.12" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#a-quick-aside-about-axis-limits"><i class="fa fa-check"></i><b>15.12</b> A Quick Aside about Axis Limits</a></li>
+<li class="chapter" data-level="15.13" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#resources"><i class="fa fa-check"></i><b>15.13</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><i class="fa fa-check"></i><b>16</b> Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S.</a><ul>
+<li class="chapter" data-level="16.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#synopsis"><i class="fa fa-check"></i><b>16.1</b> Synopsis</a></li>
+<li class="chapter" data-level="16.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#loading-and-processing-the-raw-data"><i class="fa fa-check"></i><b>16.2</b> Loading and Processing the Raw Data</a><ul>
+<li class="chapter" data-level="16.2.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-1999-data"><i class="fa fa-check"></i><b>16.2.1</b> Reading in the 1999 data</a></li>
+<li class="chapter" data-level="16.2.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-2012-data"><i class="fa fa-check"></i><b>16.2.2</b> Reading in the 2012 data</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#results"><i class="fa fa-check"></i><b>16.3</b> Results</a><ul>
+<li class="chapter" data-level="16.3.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#entire-u.s.-analysis"><i class="fa fa-check"></i><b>16.3.1</b> Entire U.S. analysis</a></li>
+<li class="chapter" data-level="16.3.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-pm-levels-at-an-individual-monitor"><i class="fa fa-check"></i><b>16.3.2</b> Changes in PM levels at an individual monitor</a></li>
+<li class="chapter" data-level="16.3.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-state-wide-pm-levels"><i class="fa fa-check"></i><b>16.3.3</b> Changes in state-wide PM levels</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i><b>17</b> About the Author</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Exploratory Data Analysis with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="exploratory-data-analysis-checklist" class="section level1">
+<h1><span class="header-section-number">4</span> Exploratory Data Analysis Checklist</h1>
+<p>In this chapter we will run through an informal “checklist” of things to do when embarking on an exploratory data analysis. As a running example I will use a dataset on hourly ozone levels in the United States for the year 2014. The elements of the checklist are</p>
+<ol style="list-style-type: decimal">
+<li><p>Formulate your question</p></li>
+<li><p>Read in your data</p></li>
+<li><p>Check the packaging</p></li>
+<li><p>Run <code>str()</code></p></li>
+<li><p>Look at the top and the bottom of your data</p></li>
+<li><p>Check your “n”s</p></li>
+<li><p>Validate with at least one external data source</p></li>
+<li><p>Try the easy solution first</p></li>
+<li><p>Challenge your solution</p></li>
+<li><p>Follow up</p></li>
+</ol>
+<div id="formulate-your-question" class="section level2">
+<h2><span class="header-section-number">4.1</span> Formulate your question</h2>
+<p>Formulating a question can be a useful way to guide the exploratory data analysis process and to limit the exponential number of paths that can be taken with any sizeable dataset. In particular, a <em>sharp</em> question or hypothesis can serve as a dimension reduction tool that can eliminate variables that are not immediately relevant to the question.</p>
+<p>For example, in this chapter we will be looking at an air pollution dataset from the U.S. Environmental Protection Agency (EPA). A general question one could as is</p>
+<blockquote>
+<p>Are air pollution levels higher on the east coast than on the west coast?</p>
+</blockquote>
+<p>But a more specific question might be</p>
+<blockquote>
+<p>Are hourly ozone levels on average higher in New York City than they are in Los Angeles?</p>
+</blockquote>
+<p>Note that both questions may be of interest, and neither is right or wrong. But the first question requires looking at all pollutants across the entire east and west coasts, while the second question only requires looking at single pollutant in two cities.</p>
+<p>It’s usually a good idea to spend a few minutes to figure out what is the question you’re <em>really</em> interested in, and narrow it down to be as specific as possible (without becoming uninteresting).</p>
+<p>For this chapter, we will focus on the following question:</p>
+<blockquote>
+<p>Which counties in the United States have the highest levels of ambient ozone pollution?</p>
+</blockquote>
+<p>As a side note, one of the most important questions you can answer with an exploratory data analysis is “Do I have the right data to answer this question?” Often this question is difficult ot answer at first, but can become more clear as we sort through and look at the data.</p>
+</div>
+<div id="read-in-your-data" class="section level2">
+<h2><span class="header-section-number">4.2</span> Read in your data</h2>
+<p>The next task in any exploratory data analysis is to read in some data. Sometimes the data will come in a very messy format and you’ll need to do some cleaning. Other times, someone else will have cleaned up that data for you so you’ll be spared the pain of having to do the cleaning.</p>
+<p>We won’t go through the pain of cleaning up a dataset here, not because it’s not important, but rather because there’s often not much generalizable knowledge to obtain from going through it. Every dataset has its unique quirks and so for now it’s probably best to not get bogged down in the details.</p>
+<p>Here we have a relatively clean dataset from the U.S. EPA on hourly ozone measurements in the entire U.S. for the year 2014. The data are available from the EPA’s <a href="http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html">Air Quality System web page</a>. I’ve simply downloaded the zip file from the web site, unzipped the archive, and put the resulting file in a directory called “data”. If you want to run this code you’ll have to use the same directory structure.</p>
+<p>The dataset is a comma-separated value (CSV) file, where each row of the file contains one hourly measurement of ozone at some location in the country.</p>
+<p><strong>NOTE</strong>: Running the code below may take a few minutes. There are 7,147,884 rows in the CSV file. If it takes too long, you can read in a subset by specifying a value for the <code>n_max</code> argument to <code>read_csv()</code> that is greater than 0.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(readr)
+&gt;<span class="st"> </span>ozone &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/hourly_44201_2014.csv&quot;</span>, 
++<span class="st">                   </span><span class="dt">col_types =</span> <span class="st">&quot;ccccinnccccccncnncccccc&quot;</span>)</code></pre>
+<p>The <code>readr</code> package by Hadley Wickham is a nice package for reading in flat files <em>very</em> fast, or at least much faster than R’s built-in functions. It makes some tradeoffs to obtain that speed, so these functions are not always appropriate, but they serve our purposes here.</p>
+<p>The character string provided to the <code>col_types</code> argument specifies the class of each column in the dataset. Each letter represents the class of a column: “c” for character, “n” for numeric“, and”i&quot; for integer. No, I didn’t magically know the classes of each column—I just looked quickly at the file to see what the column classes were. If there are too many columns, you can not specify <code>col_types</code> and <code>read_csv()</code> will try to figure it out for you.</p>
+<p>Just as a convenience for later, we can rewrite the names of the columns to remove any spaces.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">names</span>(ozone) &lt;-<span class="st"> </span><span class="kw">make.names</span>(<span class="kw">names</span>(ozone))</code></pre>
+</div>
+<div id="check-the-packaging" class="section level2">
+<h2><span class="header-section-number">4.3</span> Check the packaging</h2>
+<p>Have you ever gotten a present <em>before</em> the time when you were allowed to open it? Sure, we all have. The problem is that the present is wrapped, but you desperately want to know what’s inside. What’s a person to do in those circumstances? Well, you can shake the box a bit, maybe knock it with your knuckle to see if it makes a hollow sound, or even weigh it to see how heavy it is. This is how you should think about your dataset before you start analyzing it for real.</p>
+<p>Assuming you don’t get any warnings or errors when reading in the dataset, you should now have an object in your workspace named <code>ozone</code>. It’s usually a good idea to poke at that object a little bit before we break open the wrapping paper.</p>
+<p>For example, you can check the number of rows and columns.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">nrow</span>(ozone)
+[<span class="dv">1</span>] <span class="dv">7147884</span>
+&gt;<span class="st"> </span><span class="kw">ncol</span>(ozone)
+[<span class="dv">1</span>] <span class="dv">23</span></code></pre>
+<p>Remember when I said there were 7,147,884 rows in the file? How does that match up with what we’ve read in? This dataset also has relatively few columns, so you might be able to check the original text file to see if the number of columns printed out (23) here matches the number of columns you see in the original file.</p>
+</div>
+<div id="run-str" class="section level2">
+<h2><span class="header-section-number">4.4</span> Run <code>str()</code></h2>
+<p>Another thing you can do is run <code>str()</code> on the dataset. This is usually a safe operation in the sense that even with a very large dataset, running <code>str()</code> shouldn’t take too long.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">str</span>(ozone)
+Classes <span class="st">&#39;tbl_df&#39;</span>, <span class="st">&#39;tbl&#39;</span> and <span class="st">&#39;data.frame&#39;</span>:<span class="st">   </span><span class="dv">7147884</span> obs. of  <span class="dv">23</span> variables:
+<span class="st"> </span><span class="er">$</span><span class="st"> </span>State.Code         :<span class="st"> </span>chr  <span class="st">&quot;01&quot;</span> <span class="st">&quot;01&quot;</span> <span class="st">&quot;01&quot;</span> <span class="st">&quot;01&quot;</span> ...
+ $<span class="st"> </span>County.Code        :<span class="st"> </span>chr  <span class="st">&quot;003&quot;</span> <span class="st">&quot;003&quot;</span> <span class="st">&quot;003&quot;</span> <span class="st">&quot;003&quot;</span> ...
+ $<span class="st"> </span>Site.Num           :<span class="st"> </span>chr  <span class="st">&quot;0010&quot;</span> <span class="st">&quot;0010&quot;</span> <span class="st">&quot;0010&quot;</span> <span class="st">&quot;0010&quot;</span> ...
+ $<span class="st"> </span>Parameter.Code     :<span class="st"> </span>chr  <span class="st">&quot;44201&quot;</span> <span class="st">&quot;44201&quot;</span> <span class="st">&quot;44201&quot;</span> <span class="st">&quot;44201&quot;</span> ...
+ $<span class="st"> </span>POC                :<span class="st"> </span>int  <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...
+ $<span class="st"> </span>Latitude           :<span class="st"> </span>num  <span class="fl">30.5</span> <span class="fl">30.5</span> <span class="fl">30.5</span> <span class="fl">30.5</span> <span class="fl">30.5</span> ...
+ $<span class="st"> </span>Longitude          :<span class="st"> </span>num  -<span class="fl">87.9</span> -<span class="fl">87.9</span> -<span class="fl">87.9</span> -<span class="fl">87.9</span> -<span class="fl">87.9</span> ...
+ $<span class="st"> </span>Datum              :<span class="st"> </span>chr  <span class="st">&quot;NAD83&quot;</span> <span class="st">&quot;NAD83&quot;</span> <span class="st">&quot;NAD83&quot;</span> <span class="st">&quot;NAD83&quot;</span> ...
+ $<span class="st"> </span>Parameter.Name     :<span class="st"> </span>chr  <span class="st">&quot;Ozone&quot;</span> <span class="st">&quot;Ozone&quot;</span> <span class="st">&quot;Ozone&quot;</span> <span class="st">&quot;Ozone&quot;</span> ...
+ $<span class="st"> </span>Date.Local         :<span class="st"> </span>chr  <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> ...
+ $<span class="st"> </span>Time.Local         :<span class="st"> </span>chr  <span class="st">&quot;01:00&quot;</span> <span class="st">&quot;02:00&quot;</span> <span class="st">&quot;03:00&quot;</span> <span class="st">&quot;04:00&quot;</span> ...
+ $<span class="st"> </span>Date.GMT           :<span class="st"> </span>chr  <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> ...
+ $<span class="st"> </span>Time.GMT           :<span class="st"> </span>chr  <span class="st">&quot;07:00&quot;</span> <span class="st">&quot;08:00&quot;</span> <span class="st">&quot;09:00&quot;</span> <span class="st">&quot;10:00&quot;</span> ...
+ $<span class="st"> </span>Sample.Measurement :<span class="st"> </span>num  <span class="fl">0.047</span> <span class="fl">0.047</span> <span class="fl">0.043</span> <span class="fl">0.038</span> <span class="fl">0.035</span> <span class="fl">0.035</span> <span class="fl">0.034</span> <span class="fl">0.037</span> <span class="fl">0.044</span> <span class="fl">0.046</span> ...
+ $<span class="st"> </span>Units.of.Measure   :<span class="st"> </span>chr  <span class="st">&quot;Parts per million&quot;</span> <span class="st">&quot;Parts per million&quot;</span> <span class="st">&quot;Parts per million&quot;</span> <span class="st">&quot;Parts per million&quot;</span> ...
+ $<span class="st"> </span>MDL                :<span class="st"> </span>num  <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> ...
+ $<span class="st"> </span>Uncertainty        :<span class="st"> </span>num  <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> ...
+ $<span class="st"> </span>Qualifier          :<span class="st"> </span>chr  <span class="st">&quot;&quot;</span> <span class="st">&quot;&quot;</span> <span class="st">&quot;&quot;</span> <span class="st">&quot;&quot;</span> ...
+ $<span class="st"> </span>Method.Type        :<span class="st"> </span>chr  <span class="st">&quot;FEM&quot;</span> <span class="st">&quot;FEM&quot;</span> <span class="st">&quot;FEM&quot;</span> <span class="st">&quot;FEM&quot;</span> ...
+ $<span class="st"> </span>Method.Name        :<span class="st"> </span>chr  <span class="st">&quot;INSTRUMENTAL - ULTRA VIOLET&quot;</span> <span class="st">&quot;INSTRUMENTAL - ULTRA VIOLET&quot;</span> <span class="st">&quot;INSTRUMENTAL - ULTRA VIOLET&quot;</span> <span class="st">&quot;INSTRUMENTAL - ULTRA VIOLET&quot;</span> ...
+ $<span class="st"> </span>State.Name         :<span class="st"> </span>chr  <span class="st">&quot;Alabama&quot;</span> <span class="st">&quot;Alabama&quot;</span> <span class="st">&quot;Alabama&quot;</span> <span class="st">&quot;Alabama&quot;</span> ...
+ $<span class="st"> </span>County.Name        :<span class="st"> </span>chr  <span class="st">&quot;Baldwin&quot;</span> <span class="st">&quot;Baldwin&quot;</span> <span class="st">&quot;Baldwin&quot;</span> <span class="st">&quot;Baldwin&quot;</span> ...
+ $<span class="st"> </span>Date.of.Last.Change:<span class="st"> </span>chr  <span class="st">&quot;2014-06-30&quot;</span> <span class="st">&quot;2014-06-30&quot;</span> <span class="st">&quot;2014-06-30&quot;</span> <span class="st">&quot;2014-06-30&quot;</span> ...</code></pre>
+<p>The output for <code>str()</code> duplicates some information that we already have, like the number of rows and columns. More importantly, you can examine the <em>classes</em> of each of the columns to make sure they are correctly specified (i.e. numbers are <code>numeric</code> and strings are <code>character</code>, etc.). Because I pre-specified all of the column classes in <code>read_csv()</code>, they all should match up with what I specified.</p>
+<p>Often, with just these simple maneuvers, you can identify potential problems with the data before plunging in head first into a complicated data analysis.</p>
+</div>
+<div id="look-at-the-top-and-the-bottom-of-your-data" class="section level2">
+<h2><span class="header-section-number">4.5</span> Look at the top and the bottom of your data</h2>
+<p>I find it useful to look at the “beginning” and “end” of a dataset right after I check the packaging. This lets me know if the data were read in properly, things are properly formatted, and that everthing is there. If your data are time series data, then make sure the dates at the beginning and end of the dataset match what you expect the beginning and ending time period to be.</p>
+<p>You can peek at the top and bottom of the data with the <code>head()</code> and <code>tail()</code> functions.</p>
+<p>Here’s the top.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">head</span>(ozone[, <span class="kw">c</span>(<span class="dv">6</span>:<span class="dv">7</span>, <span class="dv">10</span>)])
+  Latitude Longitude Date.Local
+<span class="dv">1</span>   <span class="fl">30.498</span> -<span class="fl">87.88141</span> <span class="dv">2014-03-01</span>
+<span class="dv">2</span>   <span class="fl">30.498</span> -<span class="fl">87.88141</span> <span class="dv">2014-03-01</span>
+<span class="dv">3</span>   <span class="fl">30.498</span> -<span class="fl">87.88141</span> <span class="dv">2014-03-01</span>
+<span class="dv">4</span>   <span class="fl">30.498</span> -<span class="fl">87.88141</span> <span class="dv">2014-03-01</span>
+<span class="dv">5</span>   <span class="fl">30.498</span> -<span class="fl">87.88141</span> <span class="dv">2014-03-01</span>
+<span class="dv">6</span>   <span class="fl">30.498</span> -<span class="fl">87.88141</span> <span class="dv">2014-03-01</span></code></pre>
+<p>For brevity I’ve only taken a few columns. And here’s the bottom.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">tail</span>(ozone[, <span class="kw">c</span>(<span class="dv">6</span>:<span class="dv">7</span>, <span class="dv">10</span>)])
+        Latitude Longitude Date.Local
+<span class="dv">7147879</span> <span class="fl">18.17794</span> -<span class="fl">65.91548</span> <span class="dv">2014-09-30</span>
+<span class="dv">7147880</span> <span class="fl">18.17794</span> -<span class="fl">65.91548</span> <span class="dv">2014-09-30</span>
+<span class="dv">7147881</span> <span class="fl">18.17794</span> -<span class="fl">65.91548</span> <span class="dv">2014-09-30</span>
+<span class="dv">7147882</span> <span class="fl">18.17794</span> -<span class="fl">65.91548</span> <span class="dv">2014-09-30</span>
+<span class="dv">7147883</span> <span class="fl">18.17794</span> -<span class="fl">65.91548</span> <span class="dv">2014-09-30</span>
+<span class="dv">7147884</span> <span class="fl">18.17794</span> -<span class="fl">65.91548</span> <span class="dv">2014-09-30</span></code></pre>
+<p>I find <code>tail()</code> to be particularly useful because often there will be some problem reading the end of a dataset and if you don’t check that you’d never know. Sometimes there’s weird formatting at the end or some extra comment lines that someone decided to stick at the end.</p>
+<p>Make sure to check all the columns and verify that all of the data in each column looks the way it’s supposed to look. This isn’t a foolproof approach, because we’re only looking at a few rows, but it’s a decent start.</p>
+</div>
+<div id="check-your-ns" class="section level2">
+<h2><span class="header-section-number">4.6</span> Check your “n”s</h2>
+<p>In general, counting things is usually a good way to figure out if anything is wrong or not. In the simplest case, if you’re expecting there to be 1,000 observations and it turns out there’s only 20, you know something must have gone wrong somewhere. But there are other areas that you can check depending on your application. To do this properly, you need to identify some <em>landmarks</em> that can be used to check against your data. For example, if you are collecting data on people, such as in a survey or clinical trial, then you should know how many people there are in your study. That’s something you should check in your dataset, to make sure that you have data on all the people you thought you would have data on.</p>
+<p>In this example, we will use the fact that the dataset purportedly contains <em>hourly</em> data for the <em>entire country</em>. These will be our two landmarks for comparison.</p>
+<p>Here, we have hourly ozone data that comes from monitors across the country. The monitors should be monitoring continuously during the day, so all hours should be represented. We can take a look at the <code>Time.Local</code> variable to see what time measurements are recorded as being taken.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">table</span>(ozone$Time.Local)
+
+ <span class="dv">00</span>:<span class="dv">00</span>  <span class="dv">00</span>:<span class="dv">01</span>  <span class="dv">01</span>:<span class="dv">00</span>  <span class="dv">01</span>:<span class="dv">02</span>  <span class="dv">02</span>:<span class="dv">00</span>  <span class="dv">02</span>:<span class="dv">03</span>  <span class="dv">03</span>:<span class="dv">00</span> 
+<span class="dv">288698</span>      <span class="dv">2</span> <span class="dv">290871</span>      <span class="dv">2</span> <span class="dv">283709</span>      <span class="dv">2</span> <span class="dv">282951</span> 
+ <span class="dv">03</span>:<span class="dv">04</span>  <span class="dv">04</span>:<span class="dv">00</span>  <span class="dv">04</span>:<span class="dv">05</span>  <span class="dv">05</span>:<span class="dv">00</span>  <span class="dv">05</span>:<span class="dv">06</span>  <span class="dv">06</span>:<span class="dv">00</span>  <span class="dv">06</span>:<span class="dv">07</span> 
+     <span class="dv">2</span> <span class="dv">288963</span>      <span class="dv">2</span> <span class="dv">302696</span>      <span class="dv">2</span> <span class="dv">302356</span>      <span class="dv">2</span> 
+ <span class="dv">07</span>:<span class="dv">00</span>  <span class="dv">07</span>:<span class="dv">08</span>  <span class="dv">08</span>:<span class="dv">00</span>  <span class="dv">08</span>:<span class="dv">09</span>  <span class="dv">09</span>:<span class="dv">00</span>  <span class="dv">09</span>:<span class="dv">10</span>  <span class="dv">10</span>:<span class="dv">00</span> 
+<span class="dv">300950</span>      <span class="dv">2</span> <span class="dv">298566</span>      <span class="dv">2</span> <span class="dv">297154</span>      <span class="dv">2</span> <span class="dv">297132</span> 
+ <span class="dv">10</span>:<span class="dv">11</span>  <span class="dv">11</span>:<span class="dv">00</span>  <span class="dv">11</span>:<span class="dv">12</span>  <span class="dv">12</span>:<span class="dv">00</span>  <span class="dv">12</span>:<span class="dv">13</span>  <span class="dv">13</span>:<span class="dv">00</span>  <span class="dv">13</span>:<span class="dv">14</span> 
+     <span class="dv">2</span> <span class="dv">298125</span>      <span class="dv">2</span> <span class="dv">298297</span>      <span class="dv">2</span> <span class="dv">299997</span>      <span class="dv">2</span> 
+ <span class="dv">14</span>:<span class="dv">00</span>  <span class="dv">14</span>:<span class="dv">15</span>  <span class="dv">15</span>:<span class="dv">00</span>  <span class="dv">15</span>:<span class="dv">16</span>  <span class="dv">16</span>:<span class="dv">00</span>  <span class="dv">16</span>:<span class="dv">17</span>  <span class="dv">17</span>:<span class="dv">00</span> 
+<span class="dv">301410</span>      <span class="dv">2</span> <span class="dv">302636</span>      <span class="dv">2</span> <span class="dv">303387</span>      <span class="dv">2</span> <span class="dv">303806</span> 
+ <span class="dv">17</span>:<span class="dv">18</span>  <span class="dv">18</span>:<span class="dv">00</span>  <span class="dv">18</span>:<span class="dv">19</span>  <span class="dv">19</span>:<span class="dv">00</span>  <span class="dv">19</span>:<span class="dv">20</span>  <span class="dv">20</span>:<span class="dv">00</span>  <span class="dv">20</span>:<span class="dv">21</span> 
+     <span class="dv">2</span> <span class="dv">303795</span>      <span class="dv">2</span> <span class="dv">304268</span>      <span class="dv">2</span> <span class="dv">304268</span>      <span class="dv">2</span> 
+ <span class="dv">21</span>:<span class="dv">00</span>  <span class="dv">21</span>:<span class="dv">22</span>  <span class="dv">22</span>:<span class="dv">00</span>  <span class="dv">22</span>:<span class="dv">23</span>  <span class="dv">23</span>:<span class="dv">00</span>  <span class="dv">23</span>:<span class="dv">24</span> 
+<span class="dv">303551</span>      <span class="dv">2</span> <span class="dv">295701</span>      <span class="dv">2</span> <span class="dv">294549</span>      <span class="dv">2</span> </code></pre>
+<p>One thing we notice here is that while almost all measurements in the dataset are recorded as being taken on the hour, some are taken at slightly different times. Such a small number of readings are taken at these off times that we might not want to care. But it does seem a bit odd, so it might be worth a quick check.</p>
+<p>We can take a look at which observations were measured at time “00:01”.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(dplyr)
+&gt;<span class="st"> </span><span class="kw">filter</span>(ozone, Time.Local ==<span class="st"> &quot;13:14&quot;</span>) %&gt;%<span class="st"> </span>
++<span class="st">         </span><span class="kw">select</span>(State.Name, County.Name, Date.Local, 
++<span class="st">                </span>Time.Local, Sample.Measurement)
+<span class="co"># A tibble: 2 × 5</span>
+  State.Name County.Name Date.Local Time.Local
+       &lt;chr&gt;<span class="st">       </span><span class="er">&lt;</span>chr&gt;<span class="st">      </span><span class="er">&lt;</span>chr&gt;<span class="st">      </span><span class="er">&lt;</span>chr&gt;
+<span class="dv">1</span>   New York    Franklin <span class="dv">2014-09-30</span>      <span class="dv">13</span>:<span class="dv">14</span>
+<span class="dv">2</span>   New York    Franklin <span class="dv">2014-09-30</span>      <span class="dv">13</span>:<span class="dv">14</span>
+<span class="co"># ... with 1 more variables:</span>
+<span class="co">#   Sample.Measurement &lt;dbl&gt;</span></code></pre>
+<p>We can see that it’s a monitor in Franklin County, New York and that the measurements were taken on September 30, 2014. What if we just pulled all of the measurements taken at this monitor on this date?</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">filter</span>(ozone, State.Code ==<span class="st"> &quot;36&quot;</span> 
++<span class="st">        </span><span class="er">&amp;</span><span class="st"> </span>County.Code ==<span class="st"> &quot;033&quot;</span> 
++<span class="st">        </span><span class="er">&amp;</span><span class="st"> </span>Date.Local ==<span class="st"> &quot;2014-09-30&quot;</span>) %&gt;%
++<span class="st">         </span><span class="kw">select</span>(Date.Local, Time.Local, 
++<span class="st">                </span>Sample.Measurement) %&gt;%<span class="st"> </span>
++<span class="st">         </span>as.data.frame
+   Date.Local Time.Local Sample.Measurement
+<span class="dv">1</span>  <span class="dv">2014-09-30</span>      <span class="dv">00</span>:<span class="dv">01</span>              <span class="fl">0.011</span>
+<span class="dv">2</span>  <span class="dv">2014-09-30</span>      <span class="dv">01</span>:<span class="dv">02</span>              <span class="fl">0.012</span>
+<span class="dv">3</span>  <span class="dv">2014-09-30</span>      <span class="dv">02</span>:<span class="dv">03</span>              <span class="fl">0.012</span>
+<span class="dv">4</span>  <span class="dv">2014-09-30</span>      <span class="dv">03</span>:<span class="dv">04</span>              <span class="fl">0.011</span>
+<span class="dv">5</span>  <span class="dv">2014-09-30</span>      <span class="dv">04</span>:<span class="dv">05</span>              <span class="fl">0.011</span>
+<span class="dv">6</span>  <span class="dv">2014-09-30</span>      <span class="dv">05</span>:<span class="dv">06</span>              <span class="fl">0.011</span>
+<span class="dv">7</span>  <span class="dv">2014-09-30</span>      <span class="dv">06</span>:<span class="dv">07</span>              <span class="fl">0.010</span>
+<span class="dv">8</span>  <span class="dv">2014-09-30</span>      <span class="dv">07</span>:<span class="dv">08</span>              <span class="fl">0.010</span>
+<span class="dv">9</span>  <span class="dv">2014-09-30</span>      <span class="dv">08</span>:<span class="dv">09</span>              <span class="fl">0.010</span>
+<span class="dv">10</span> <span class="dv">2014-09-30</span>      <span class="dv">09</span>:<span class="dv">10</span>              <span class="fl">0.010</span>
+<span class="dv">11</span> <span class="dv">2014-09-30</span>      <span class="dv">10</span>:<span class="dv">11</span>              <span class="fl">0.010</span>
+<span class="dv">12</span> <span class="dv">2014-09-30</span>      <span class="dv">11</span>:<span class="dv">12</span>              <span class="fl">0.012</span>
+<span class="dv">13</span> <span class="dv">2014-09-30</span>      <span class="dv">12</span>:<span class="dv">13</span>              <span class="fl">0.011</span>
+<span class="dv">14</span> <span class="dv">2014-09-30</span>      <span class="dv">13</span>:<span class="dv">14</span>              <span class="fl">0.013</span>
+<span class="dv">15</span> <span class="dv">2014-09-30</span>      <span class="dv">14</span>:<span class="dv">15</span>              <span class="fl">0.016</span>
+<span class="dv">16</span> <span class="dv">2014-09-30</span>      <span class="dv">15</span>:<span class="dv">16</span>              <span class="fl">0.017</span>
+<span class="dv">17</span> <span class="dv">2014-09-30</span>      <span class="dv">16</span>:<span class="dv">17</span>              <span class="fl">0.017</span>
+<span class="dv">18</span> <span class="dv">2014-09-30</span>      <span class="dv">17</span>:<span class="dv">18</span>              <span class="fl">0.015</span>
+<span class="dv">19</span> <span class="dv">2014-09-30</span>      <span class="dv">18</span>:<span class="dv">19</span>              <span class="fl">0.017</span>
+<span class="dv">20</span> <span class="dv">2014-09-30</span>      <span class="dv">19</span>:<span class="dv">20</span>              <span class="fl">0.014</span>
+<span class="dv">21</span> <span class="dv">2014-09-30</span>      <span class="dv">20</span>:<span class="dv">21</span>              <span class="fl">0.014</span>
+<span class="dv">22</span> <span class="dv">2014-09-30</span>      <span class="dv">21</span>:<span class="dv">22</span>              <span class="fl">0.011</span>
+<span class="dv">23</span> <span class="dv">2014-09-30</span>      <span class="dv">22</span>:<span class="dv">23</span>              <span class="fl">0.010</span>
+<span class="dv">24</span> <span class="dv">2014-09-30</span>      <span class="dv">23</span>:<span class="dv">24</span>              <span class="fl">0.010</span>
+<span class="dv">25</span> <span class="dv">2014-09-30</span>      <span class="dv">00</span>:<span class="dv">01</span>              <span class="fl">0.010</span>
+<span class="dv">26</span> <span class="dv">2014-09-30</span>      <span class="dv">01</span>:<span class="dv">02</span>              <span class="fl">0.011</span>
+<span class="dv">27</span> <span class="dv">2014-09-30</span>      <span class="dv">02</span>:<span class="dv">03</span>              <span class="fl">0.011</span>
+<span class="dv">28</span> <span class="dv">2014-09-30</span>      <span class="dv">03</span>:<span class="dv">04</span>              <span class="fl">0.010</span>
+<span class="dv">29</span> <span class="dv">2014-09-30</span>      <span class="dv">04</span>:<span class="dv">05</span>              <span class="fl">0.010</span>
+<span class="dv">30</span> <span class="dv">2014-09-30</span>      <span class="dv">05</span>:<span class="dv">06</span>              <span class="fl">0.010</span>
+<span class="dv">31</span> <span class="dv">2014-09-30</span>      <span class="dv">06</span>:<span class="dv">07</span>              <span class="fl">0.009</span>
+<span class="dv">32</span> <span class="dv">2014-09-30</span>      <span class="dv">07</span>:<span class="dv">08</span>              <span class="fl">0.008</span>
+<span class="dv">33</span> <span class="dv">2014-09-30</span>      <span class="dv">08</span>:<span class="dv">09</span>              <span class="fl">0.009</span>
+<span class="dv">34</span> <span class="dv">2014-09-30</span>      <span class="dv">09</span>:<span class="dv">10</span>              <span class="fl">0.009</span>
+<span class="dv">35</span> <span class="dv">2014-09-30</span>      <span class="dv">10</span>:<span class="dv">11</span>              <span class="fl">0.009</span>
+<span class="dv">36</span> <span class="dv">2014-09-30</span>      <span class="dv">11</span>:<span class="dv">12</span>              <span class="fl">0.011</span>
+<span class="dv">37</span> <span class="dv">2014-09-30</span>      <span class="dv">12</span>:<span class="dv">13</span>              <span class="fl">0.010</span>
+<span class="dv">38</span> <span class="dv">2014-09-30</span>      <span class="dv">13</span>:<span class="dv">14</span>              <span class="fl">0.012</span>
+<span class="dv">39</span> <span class="dv">2014-09-30</span>      <span class="dv">14</span>:<span class="dv">15</span>              <span class="fl">0.015</span>
+<span class="dv">40</span> <span class="dv">2014-09-30</span>      <span class="dv">15</span>:<span class="dv">16</span>              <span class="fl">0.016</span>
+<span class="dv">41</span> <span class="dv">2014-09-30</span>      <span class="dv">16</span>:<span class="dv">17</span>              <span class="fl">0.016</span>
+<span class="dv">42</span> <span class="dv">2014-09-30</span>      <span class="dv">17</span>:<span class="dv">18</span>              <span class="fl">0.014</span>
+<span class="dv">43</span> <span class="dv">2014-09-30</span>      <span class="dv">18</span>:<span class="dv">19</span>              <span class="fl">0.016</span>
+<span class="dv">44</span> <span class="dv">2014-09-30</span>      <span class="dv">19</span>:<span class="dv">20</span>              <span class="fl">0.013</span>
+<span class="dv">45</span> <span class="dv">2014-09-30</span>      <span class="dv">20</span>:<span class="dv">21</span>              <span class="fl">0.013</span>
+<span class="dv">46</span> <span class="dv">2014-09-30</span>      <span class="dv">21</span>:<span class="dv">22</span>              <span class="fl">0.010</span>
+<span class="dv">47</span> <span class="dv">2014-09-30</span>      <span class="dv">22</span>:<span class="dv">23</span>              <span class="fl">0.009</span>
+<span class="dv">48</span> <span class="dv">2014-09-30</span>      <span class="dv">23</span>:<span class="dv">24</span>              <span class="fl">0.009</span></code></pre>
+<p>Now we can see that this monitor just records its values at odd times, rather than on the hour. It seems, from looking at the previous output, that this is the only monitor in the country that does this, so it’s probably not something we should worry about.</p>
+<p>Since EPA monitors pollution across the country, there should be a good representation of states. Perhaps we should see exactly how many states are represented in this dataset.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">select</span>(ozone, State.Name) %&gt;%<span class="st"> </span>unique %&gt;%<span class="st"> </span>nrow
+[<span class="dv">1</span>] <span class="dv">52</span></code></pre>
+<p>So it seems the representation is a bit too good—there are 52 states in the dataset, but only 50 states in the U.S.!</p>
+<p>We can take a look at the unique elements of the <code>State.Name</code> variable to see what’s going on.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">unique</span>(ozone$State.Name)
+ [<span class="dv">1</span>] <span class="st">&quot;Alabama&quot;</span>              <span class="st">&quot;Alaska&quot;</span>              
+ [<span class="dv">3</span>] <span class="st">&quot;Arizona&quot;</span>              <span class="st">&quot;Arkansas&quot;</span>            
+ [<span class="dv">5</span>] <span class="st">&quot;California&quot;</span>           <span class="st">&quot;Colorado&quot;</span>            
+ [<span class="dv">7</span>] <span class="st">&quot;Connecticut&quot;</span>          <span class="st">&quot;Delaware&quot;</span>            
+ [<span class="dv">9</span>] <span class="st">&quot;District Of Columbia&quot;</span> <span class="st">&quot;Florida&quot;</span>             
+[<span class="dv">11</span>] <span class="st">&quot;Georgia&quot;</span>              <span class="st">&quot;Hawaii&quot;</span>              
+[<span class="dv">13</span>] <span class="st">&quot;Idaho&quot;</span>                <span class="st">&quot;Illinois&quot;</span>            
+[<span class="dv">15</span>] <span class="st">&quot;Indiana&quot;</span>              <span class="st">&quot;Iowa&quot;</span>                
+[<span class="dv">17</span>] <span class="st">&quot;Kansas&quot;</span>               <span class="st">&quot;Kentucky&quot;</span>            
+[<span class="dv">19</span>] <span class="st">&quot;Louisiana&quot;</span>            <span class="st">&quot;Maine&quot;</span>               
+[<span class="dv">21</span>] <span class="st">&quot;Maryland&quot;</span>             <span class="st">&quot;Massachusetts&quot;</span>       
+[<span class="dv">23</span>] <span class="st">&quot;Michigan&quot;</span>             <span class="st">&quot;Minnesota&quot;</span>           
+[<span class="dv">25</span>] <span class="st">&quot;Mississippi&quot;</span>          <span class="st">&quot;Missouri&quot;</span>            
+[<span class="dv">27</span>] <span class="st">&quot;Montana&quot;</span>              <span class="st">&quot;Nebraska&quot;</span>            
+[<span class="dv">29</span>] <span class="st">&quot;Nevada&quot;</span>               <span class="st">&quot;New Hampshire&quot;</span>       
+[<span class="dv">31</span>] <span class="st">&quot;New Jersey&quot;</span>           <span class="st">&quot;New Mexico&quot;</span>          
+[<span class="dv">33</span>] <span class="st">&quot;New York&quot;</span>             <span class="st">&quot;North Carolina&quot;</span>      
+[<span class="dv">35</span>] <span class="st">&quot;North Dakota&quot;</span>         <span class="st">&quot;Ohio&quot;</span>                
+[<span class="dv">37</span>] <span class="st">&quot;Oklahoma&quot;</span>             <span class="st">&quot;Oregon&quot;</span>              
+[<span class="dv">39</span>] <span class="st">&quot;Pennsylvania&quot;</span>         <span class="st">&quot;Rhode Island&quot;</span>        
+[<span class="dv">41</span>] <span class="st">&quot;South Carolina&quot;</span>       <span class="st">&quot;South Dakota&quot;</span>        
+[<span class="dv">43</span>] <span class="st">&quot;Tennessee&quot;</span>            <span class="st">&quot;Texas&quot;</span>               
+[<span class="dv">45</span>] <span class="st">&quot;Utah&quot;</span>                 <span class="st">&quot;Vermont&quot;</span>             
+[<span class="dv">47</span>] <span class="st">&quot;Virginia&quot;</span>             <span class="st">&quot;Washington&quot;</span>          
+[<span class="dv">49</span>] <span class="st">&quot;West Virginia&quot;</span>        <span class="st">&quot;Wisconsin&quot;</span>           
+[<span class="dv">51</span>] <span class="st">&quot;Wyoming&quot;</span>              <span class="st">&quot;Puerto Rico&quot;</span>         </code></pre>
+<p>Now we can see that Washington, D.C. (District of Columbia) and Puerto Rico are the “extra” states included in the dataset. Since they are clearly part of the U.S. (but not official states of the union) that all seems okay.</p>
+<p>This last bit of analysis made use of something we will discuss in the next section: external data. We knew that there are only 50 states in the U.S., so seeing 52 state names was an immediate trigger that something might be off. In this case, all was well, but validating your data with an external data source can be very useful.</p>
+</div>
+<div id="validate-with-at-least-one-external-data-source" class="section level2">
+<h2><span class="header-section-number">4.7</span> Validate with at least one external data source</h2>
+<p>Making sure your data matches something outside of the dataset is very important. It allows you to ensure that the measurements are roughly in line with what they should be and it serves as a check on what <em>other</em> things might be wrong in your dataset. External validation can often be as simple as checking your data against a single number, as we will do here.</p>
+<p>In the U.S. we have national ambient air quality standards, and for ozone, the <a href="http://www.epa.gov/ttn/naaqs/standards/ozone/s_o3_history.html">current standard</a> set in 2008 is that the “annual fourth-highest daily maximum 8-hr concentration, averaged over 3 years” should not exceed 0.075 parts per million (ppm). The exact details of how to calculate this are not important for this analysis, but roughly speaking, the 8-hour average concentration should not be too much higher than 0.075 ppm (it can be higher because of the way the standard is worded).</p>
+<p>Let’s take a look at the hourly measurements of ozone.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">summary</span>(ozone$Sample.Measurement)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+<span class="fl">0.00000</span> <span class="fl">0.02000</span> <span class="fl">0.03200</span> <span class="fl">0.03123</span> <span class="fl">0.04200</span> <span class="fl">0.34900</span> </code></pre>
+<p>From the summary we can see that the maximum hourly concentration is quite high (0.349 ppm) but that in general, the bulk of the distribution is far below 0.075.</p>
+<p>We can get a bit more detail on the distribution by looking at deciles of the data.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">quantile</span>(ozone$Sample.Measurement, <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.1</span>))
+   <span class="dv">0</span>%   10%<span class="st">   </span><span class="dv">20</span>%   30%<span class="st">   </span><span class="dv">40</span>%   50%<span class="st">   </span><span class="dv">60</span>%   70%<span class="st"> </span>
+<span class="fl">0.000</span> <span class="fl">0.010</span> <span class="fl">0.018</span> <span class="fl">0.023</span> <span class="fl">0.028</span> <span class="fl">0.032</span> <span class="fl">0.036</span> <span class="fl">0.040</span> 
+  <span class="dv">80</span>%   90%<span class="st">  </span><span class="dv">100</span>% 
+<span class="fl">0.044</span> <span class="fl">0.051</span> <span class="fl">0.349</span> </code></pre>
+<p>Knowing that the national standard for ozone is something like 0.075, we can see from the data that</p>
+<ul>
+<li><p>The data are at least of the right order of magnitude (i.e. the units are correct)</p></li>
+<li><p>The range of the distribution is roughly what we’d expect, given the regulation around ambient pollution levels</p></li>
+<li><p>Some hourly levels (less than 10%) are above 0.075 but this may be reasonable given the wording of the standard and the averaging involved.</p></li>
+</ul>
+</div>
+<div id="try-the-easy-solution-first" class="section level2">
+<h2><span class="header-section-number">4.8</span> Try the easy solution first</h2>
+<p>Recall that our original question was</p>
+<blockquote>
+<p>Which counties in the United States have the highest levels of ambient ozone pollution?</p>
+</blockquote>
+<p>What’s the simplest answer we could provide to this question? For the moment, don’t worry about whether the answer is correct, but the point is how could you provide <em>prima facie</em> evidence for your hypothesis or question. You may refute that evidence later with deeper analysis, but this is the first pass.</p>
+<p>Because we want to know which counties have the <em>highest</em> levels, it seems we need a list of counties that are ordered from highest to lowest with respect to their levels of ozone. What do we mean by “levels of ozone”? For now, let’s just blindly take the average across the entire year for each county and then rank counties according to this metric.</p>
+<p>To identify each county we will use a combination of the <code>State.Name</code> and the <code>County.Name</code> variables.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>ranking &lt;-<span class="st"> </span><span class="kw">group_by</span>(ozone, State.Name, County.Name) %&gt;%
++<span class="st">         </span><span class="kw">summarize</span>(<span class="dt">ozone =</span> <span class="kw">mean</span>(Sample.Measurement)) %&gt;%
++<span class="st">         </span>as.data.frame %&gt;%
++<span class="st">         </span><span class="kw">arrange</span>(<span class="kw">desc</span>(ozone))</code></pre>
+<p>Now we can look at the top 10 counties in this ranking.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">head</span>(ranking, <span class="dv">10</span>)
+   State.Name County.Name      ozone
+<span class="dv">1</span>  California    Mariposa <span class="fl">0.04992485</span>
+<span class="dv">2</span>  California      Nevada <span class="fl">0.04866836</span>
+<span class="dv">3</span>     Wyoming      Albany <span class="fl">0.04834274</span>
+<span class="dv">4</span>     Arizona     Yavapai <span class="fl">0.04746346</span>
+<span class="dv">5</span>     Arizona        Gila <span class="fl">0.04722276</span>
+<span class="dv">6</span>  California        Inyo <span class="fl">0.04659648</span>
+<span class="dv">7</span>        Utah    San Juan <span class="fl">0.04654895</span>
+<span class="dv">8</span>     Arizona    Coconino <span class="fl">0.04605669</span>
+<span class="dv">9</span>  California   El Dorado <span class="fl">0.04595514</span>
+<span class="dv">10</span>     Nevada  White Pine <span class="fl">0.04465562</span></code></pre>
+<p>It seems interesting that all of these counties are in the western U.S., with 4 of them in California alone.</p>
+<p>For comparison we can look at the 10 lowest counties too.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">tail</span>(ranking, <span class="dv">10</span>)
+     State.Name          County.Name       ozone
+<span class="dv">781</span>      Alaska    Matanuska Susitna <span class="fl">0.020911008</span>
+<span class="dv">782</span>  Washington              Whatcom <span class="fl">0.020114267</span>
+<span class="dv">783</span>      Hawaii             Honolulu <span class="fl">0.019813165</span>
+<span class="dv">784</span>   Tennessee                 Knox <span class="fl">0.018579452</span>
+<span class="dv">785</span>  California               Merced <span class="fl">0.017200647</span>
+<span class="dv">786</span>      Alaska Fairbanks North Star <span class="fl">0.014993138</span>
+<span class="dv">787</span>    Oklahoma                Caddo <span class="fl">0.014677374</span>
+<span class="dv">788</span> Puerto Rico               Juncos <span class="fl">0.013738328</span>
+<span class="dv">789</span> Puerto Rico              Bayamon <span class="fl">0.010693529</span>
+<span class="dv">790</span> Puerto Rico               Catano <span class="fl">0.004685369</span></code></pre>
+<p>Let’s take a look at one of the higest level counties, Mariposa County, California. First let’s see how many observations there are for this county in the dataset.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">filter</span>(ozone, State.Name ==<span class="st"> &quot;California&quot;</span> &amp;<span class="st"> </span>County.Name ==<span class="st"> &quot;Mariposa&quot;</span>) %&gt;%<span class="st"> </span>nrow
+[<span class="dv">1</span>] <span class="dv">9328</span></code></pre>
+<p>Always be checking. Does that number of observations sound right? Well, there’s 24 hours in a day and 365 days per, which gives us 8760, which is close to that number of observations. Sometimes the counties use alternate methods of measurement during the year so there may be “extra” measurements.</p>
+<p>We can take a look at how ozone varies through the year in this county by looking at monthly averages. First we’ll need to convert the date variable into a <code>Date</code> class.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>ozone &lt;-<span class="st"> </span><span class="kw">mutate</span>(ozone, <span class="dt">Date.Local =</span> <span class="kw">as.Date</span>(Date.Local))</code></pre>
+<p>Then we will split the data by month to look at the average hourly levels.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">filter</span>(ozone, State.Name ==<span class="st"> &quot;California&quot;</span> &amp;<span class="st"> </span>County.Name ==<span class="st"> &quot;Mariposa&quot;</span>) %&gt;%
++<span class="st">         </span><span class="kw">mutate</span>(<span class="dt">month =</span> <span class="kw">factor</span>(<span class="kw">months</span>(Date.Local), <span class="dt">levels =</span> month.name)) %&gt;%
++<span class="st">         </span><span class="kw">group_by</span>(month) %&gt;%
++<span class="st">         </span><span class="kw">summarize</span>(<span class="dt">ozone =</span> <span class="kw">mean</span>(Sample.Measurement))
+<span class="co"># A tibble: 10 × 2</span>
+       month      ozone
+      &lt;fctr&gt;<span class="st">      </span><span class="er">&lt;</span>dbl&gt;
+<span class="dv">1</span>    January <span class="fl">0.04081929</span>
+<span class="dv">2</span>   February <span class="fl">0.03884305</span>
+<span class="dv">3</span>      March <span class="fl">0.04548374</span>
+<span class="dv">4</span>      April <span class="fl">0.04976124</span>
+<span class="dv">5</span>        May <span class="fl">0.05047637</span>
+<span class="dv">6</span>       June <span class="fl">0.05639331</span>
+<span class="dv">7</span>       July <span class="fl">0.05224286</span>
+<span class="dv">8</span>     August <span class="fl">0.05541681</span>
+<span class="dv">9</span>  September <span class="fl">0.05117737</span>
+<span class="dv">10</span>   October <span class="fl">0.04693361</span></code></pre>
+<p>A few things stand out here. First, ozone appears to be higher in the summer months and lower in the winter months. Second, there are two months missing (November and December) from the data. It’s not immediately clear why that is, but it’s probably worth investigating a bit later on.</p>
+<p>Now let’s take a look at one of the lowest level counties, Caddo County, Oklahoma.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">filter</span>(ozone, State.Name ==<span class="st"> &quot;Oklahoma&quot;</span> &amp;<span class="st"> </span>County.Name ==<span class="st"> &quot;Caddo&quot;</span>) %&gt;%<span class="st"> </span>nrow
+[<span class="dv">1</span>] <span class="dv">5666</span></code></pre>
+<p>Here we see that there are perhaps fewer observations than we would expect for a monitor that was measuring 24 hours a day all year. We can check the data to see if anything funny is going on.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">filter</span>(ozone, State.Name ==<span class="st"> &quot;Oklahoma&quot;</span> &amp;<span class="st"> </span>County.Name ==<span class="st"> &quot;Caddo&quot;</span>) %&gt;%
++<span class="st">         </span><span class="kw">mutate</span>(<span class="dt">month =</span> <span class="kw">factor</span>(<span class="kw">months</span>(Date.Local), <span class="dt">levels =</span> month.name)) %&gt;%
++<span class="st">         </span><span class="kw">group_by</span>(month) %&gt;%
++<span class="st">         </span><span class="kw">summarize</span>(<span class="dt">ozone =</span> <span class="kw">mean</span>(Sample.Measurement))
+<span class="co"># A tibble: 9 × 2</span>
+      month       ozone
+     &lt;fctr&gt;<span class="st">       </span><span class="er">&lt;</span>dbl&gt;
+<span class="dv">1</span>   January <span class="fl">0.018732719</span>
+<span class="dv">2</span>  February <span class="fl">0.002060543</span>
+<span class="dv">3</span>     March <span class="fl">0.002000000</span>
+<span class="dv">4</span>     April <span class="fl">0.023208955</span>
+<span class="dv">5</span>       May <span class="fl">0.024182927</span>
+<span class="dv">6</span>      June <span class="fl">0.020195936</span>
+<span class="dv">7</span>      July <span class="fl">0.019112745</span>
+<span class="dv">8</span>    August <span class="fl">0.020869376</span>
+<span class="dv">9</span> September <span class="fl">0.002000000</span></code></pre>
+<p>Here we can see that the levels of ozone are much lower in this county and that also three months are missing (October, November, and December). Given the seasonal nature of ozone, it’s possible that the levels of ozone are so low in those months that it’s not even worth measuring. In fact some of the monthly averages are below the typical method detection limit of the measurement technology, meaning that those values are highly uncertain and likely not distinguishable from zero.</p>
+</div>
+<div id="challenge-your-solution" class="section level2">
+<h2><span class="header-section-number">4.9</span> Challenge your solution</h2>
+<p>The easy solution is nice because it is, well, easy, but you should never allow those results to hold the day. You should always be thinking of ways to challenge the results, especially if those results comport with your prior expectation.</p>
+<p>Now, the easy answer seemed to work okay in that it gave us a listing of counties that had the highest average levels of ozone for 2014. However, the analysis raised some issues. For example, some counties do not have measurements every month. Is this a problem? Would it affect our ranking of counties if we had those measurements?</p>
+<p>Also, how stable are the rankings from year to year? We only have one year’s worth of data for the moment, but we could perhaps get a sense of the stability of the rankings by shuffling the data around a bit to see if anything changes. We can imagine that from year to year, the ozone data are somewhat different randomly, but generally follow similar patterns across the country. So the shuffling process could approximate the data changing from one year to the next. It’s not an ideal solution, but it could give us a sense of how stable the rankings are.</p>
+<p>First we set our random number generator and resample the indices of the rows of the data frame with replacement. The statistical jargon for this approach is a bootstrap sample. We use the resampled indices to create a new dataset, <code>ozone2</code>, that shares many of the same qualities as the original but is randomly perturbed.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">10234</span>)
+&gt;<span class="st"> </span>N &lt;-<span class="st"> </span><span class="kw">nrow</span>(ozone)
+&gt;<span class="st"> </span>idx &lt;-<span class="st"> </span><span class="kw">sample</span>(N, N, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
+&gt;<span class="st"> </span>ozone2 &lt;-<span class="st"> </span>ozone[idx, ]</code></pre>
+<p>Now we can reconstruct our rankings of the counties based on this resampled data.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>ranking2 &lt;-<span class="st"> </span><span class="kw">group_by</span>(ozone2, State.Name, County.Name) %&gt;%
++<span class="st">         </span><span class="kw">summarize</span>(<span class="dt">ozone =</span> <span class="kw">mean</span>(Sample.Measurement)) %&gt;%
++<span class="st">         </span>as.data.frame %&gt;%
++<span class="st">         </span><span class="kw">arrange</span>(<span class="kw">desc</span>(ozone))</code></pre>
+<p>We can then compare the top 10 counties from our original ranking and the top 10 counties from our ranking based on the resampled data.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">head</span>(ranking, <span class="dv">10</span>),
++<span class="st">       </span><span class="kw">head</span>(ranking2, <span class="dv">10</span>))
+   State.Name County.Name      ozone State.Name
+<span class="dv">1</span>  California    Mariposa <span class="fl">0.04992485</span> California
+<span class="dv">2</span>  California      Nevada <span class="fl">0.04866836</span> California
+<span class="dv">3</span>     Wyoming      Albany <span class="fl">0.04834274</span>    Wyoming
+<span class="dv">4</span>     Arizona     Yavapai <span class="fl">0.04746346</span>    Arizona
+<span class="dv">5</span>     Arizona        Gila <span class="fl">0.04722276</span>    Arizona
+<span class="dv">6</span>  California        Inyo <span class="fl">0.04659648</span> California
+<span class="dv">7</span>        Utah    San Juan <span class="fl">0.04654895</span>       Utah
+<span class="dv">8</span>     Arizona    Coconino <span class="fl">0.04605669</span> California
+<span class="dv">9</span>  California   El Dorado <span class="fl">0.04595514</span>    Arizona
+<span class="dv">10</span>     Nevada  White Pine <span class="fl">0.04465562</span>     Nevada
+   County.Name      ozone
+<span class="dv">1</span>     Mariposa <span class="fl">0.04975053</span>
+<span class="dv">2</span>       Nevada <span class="fl">0.04875887</span>
+<span class="dv">3</span>       Albany <span class="fl">0.04818458</span>
+<span class="dv">4</span>      Yavapai <span class="fl">0.04734300</span>
+<span class="dv">5</span>         Gila <span class="fl">0.04713265</span>
+<span class="dv">6</span>         Inyo <span class="fl">0.04666913</span>
+<span class="dv">7</span>     San Juan <span class="fl">0.04658873</span>
+<span class="dv">8</span>    El Dorado <span class="fl">0.04618268</span>
+<span class="dv">9</span>     Coconino <span class="fl">0.04601939</span>
+<span class="dv">10</span>  White Pine <span class="fl">0.04469161</span></code></pre>
+<p>We can see that the rankings based on the resampled data (columns 4–6 on the right) are very close to the original, with the first 7 being identical. Numbers 8 and 9 get flipped in the resampled rankings but that’s about it. This might suggest that the original rankings are somewhat stable.</p>
+<p>We can also look at the bottom of the list to see if there were any major changes.</p>
+<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">tail</span>(ranking, <span class="dv">10</span>),
++<span class="st">       </span><span class="kw">tail</span>(ranking2, <span class="dv">10</span>))
+     State.Name          County.Name       ozone
+<span class="dv">781</span>      Alaska    Matanuska Susitna <span class="fl">0.020911008</span>
+<span class="dv">782</span>  Washington              Whatcom <span class="fl">0.020114267</span>
+<span class="dv">783</span>      Hawaii             Honolulu <span class="fl">0.019813165</span>
+<span class="dv">784</span>   Tennessee                 Knox <span class="fl">0.018579452</span>
+<span class="dv">785</span>  California               Merced <span class="fl">0.017200647</span>
+<span class="dv">786</span>      Alaska Fairbanks North Star <span class="fl">0.014993138</span>
+<span class="dv">787</span>    Oklahoma                Caddo <span class="fl">0.014677374</span>
+<span class="dv">788</span> Puerto Rico               Juncos <span class="fl">0.013738328</span>
+<span class="dv">789</span> Puerto Rico              Bayamon <span class="fl">0.010693529</span>
+<span class="dv">790</span> Puerto Rico               Catano <span class="fl">0.004685369</span>
+     State.Name          County.Name       ozone
+<span class="dv">781</span>   Louisiana     West Baton Rouge <span class="fl">0.020718069</span>
+<span class="dv">782</span>      Hawaii             Honolulu <span class="fl">0.019891068</span>
+<span class="dv">783</span>  Washington              Whatcom <span class="fl">0.019728567</span>
+<span class="dv">784</span>   Tennessee                 Knox <span class="fl">0.019200000</span>
+<span class="dv">785</span>  California               Merced <span class="fl">0.016519393</span>
+<span class="dv">786</span>      Alaska Fairbanks North Star <span class="fl">0.014925359</span>
+<span class="dv">787</span>    Oklahoma                Caddo <span class="fl">0.014764086</span>
+<span class="dv">788</span> Puerto Rico               Juncos <span class="fl">0.013535870</span>
+<span class="dv">789</span> Puerto Rico              Bayamon <span class="fl">0.010889964</span>
+<span class="dv">790</span> Puerto Rico               Catano <span class="fl">0.004602808</span></code></pre>
+<p>Here we can see that the bottom 7 counties are identical in both rankings, but after that things shuffle a bit. We’re less concerned with the counties at the bottom of the list, but this suggests there is also reasonable stability.</p>
+</div>
+<div id="follow-up-questions" class="section level2">
+<h2><span class="header-section-number">4.10</span> Follow up questions</h2>
+<p>In this chapter I’ve presented some simple steps to take when starting off on an exploratory analysis. The example analysis conducted in this chapter was far from perfect, but it got us thinking about the data and the question of interest. It also gave us a number of things to follow up on in case we continue to be interested in this question.</p>
+<p>At this point it’s useful to consider a few followup questions.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Do you have the right data?</strong> Sometimes at the conclusion of an exploratory data analysis, the conclusion is that the dataset is not really appropriate for this question. In this case, the dataset seemed perfectly fine for answering the question of which counties had the highest levels of ozone.</p></li>
+<li><p><strong>Do you need other data?</strong> One sub-question we tried to address was whether the county rankings were stable across years. We addressed this by resampling the data once to see if the rankings changed, but the better way to do this would be to simply get the data for previous years and re-do the rankings.</p></li>
+<li><p><strong>Do you have the right question?</strong> In this case, it’s not clear that the question we tried to answer has immediate relevance, and the data didn’t really indicate anything to increase the question’s relevance. For example, it might have been more interesting to assess which counties were in violation of the national ambient air quality standard, because determining this could have regulatory implications. However, this is a much more complicated calculation to do, requiring data from at least 3 previous years.</p></li>
+</ol>
+<p>The goal of exploratory data analysis is to get you thinking about your data and reasoning about your question. At this point, we can refine our question or collect new data, all in an iterative process to get at the truth.</p>
+
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="managing-data-frames-with-the-dplyr-package.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="principles-of-analytic-graphics.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rdpeng/exdata/edit/bookdown/eda_checklist.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
