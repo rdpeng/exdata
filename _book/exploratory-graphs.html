@@ -57,23 +57,41 @@ MathJax.Hub.Config({
 
 
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -303,26 +321,26 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="getting-the-data" class="section level2">
 <h2><span class="header-section-number">6.3</span> Getting the Data</h2>
 <p>First, we can read the data into R with <code>read.csv()</code>. This dataset contains the annual mean PM2.5 averaged over the period 2008 through 2010</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>class &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;character&quot;</span>, <span class="st">&quot;factor&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>)
-&gt;<span class="st"> </span>pollution &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/avgpm25.csv&quot;</span>, <span class="dt">colClasses =</span> class)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>class &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;character&quot;</span>, <span class="st">&quot;factor&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>)
+&gt;<span class="st"> </span>pollution &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/avgpm25.csv&quot;</span>, <span class="dt">colClasses =</span> class)</code></pre></div>
 <p>Here are the first few rows of the data frame.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">head</span>(pollution)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">head</span>(pollution)
        pm25  fips region longitude latitude
 <span class="dv">1</span>  <span class="fl">9.771185</span> <span class="dv">01003</span>   east -<span class="fl">87.74826</span> <span class="fl">30.59278</span>
 <span class="dv">2</span>  <span class="fl">9.993817</span> <span class="dv">01027</span>   east -<span class="fl">85.84286</span> <span class="fl">33.26581</span>
 <span class="dv">3</span> <span class="fl">10.688618</span> <span class="dv">01033</span>   east -<span class="fl">87.72596</span> <span class="fl">34.73148</span>
 <span class="dv">4</span> <span class="fl">11.337424</span> <span class="dv">01049</span>   east -<span class="fl">85.79892</span> <span class="fl">34.45913</span>
 <span class="dv">5</span> <span class="fl">12.119764</span> <span class="dv">01055</span>   east -<span class="fl">86.03212</span> <span class="fl">34.01860</span>
-<span class="dv">6</span> <span class="fl">10.827805</span> <span class="dv">01069</span>   east -<span class="fl">85.35039</span> <span class="fl">31.18973</span></code></pre>
+<span class="dv">6</span> <span class="fl">10.827805</span> <span class="dv">01069</span>   east -<span class="fl">85.35039</span> <span class="fl">31.18973</span></code></pre></div>
 <p>Each row contains the 5-digit code indicating the county (<code>fips</code>), the region of the country in which the county resides, the longitude and latitude of the centroid for that county, and the average PM2.5 level.</p>
 <p>Here’s a bit more information on the dataset as given by <code>str()</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">str</span>(pollution)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">str</span>(pollution)
 <span class="st">&#39;data.frame&#39;</span>:<span class="st">   </span><span class="dv">576</span> obs. of  <span class="dv">5</span> variables:
 <span class="st"> </span><span class="er">$</span><span class="st"> </span>pm25     :<span class="st"> </span>num  <span class="fl">9.77</span> <span class="fl">9.99</span> <span class="fl">10.69</span> <span class="fl">11.34</span> <span class="fl">12.12</span> ...
  $<span class="st"> </span>fips     :<span class="st"> </span>chr  <span class="st">&quot;01003&quot;</span> <span class="st">&quot;01027&quot;</span> <span class="st">&quot;01033&quot;</span> <span class="st">&quot;01049&quot;</span> ...
  $<span class="st"> </span>region   :<span class="st"> </span>Factor w/<span class="st"> </span><span class="dv">2</span> levels <span class="st">&quot;east&quot;</span>,<span class="st">&quot;west&quot;</span>:<span class="st"> </span><span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...
  $<span class="st"> </span>longitude:<span class="st"> </span>num  -<span class="fl">87.7</span> -<span class="fl">85.8</span> -<span class="fl">87.7</span> -<span class="fl">85.8</span> -<span class="dv">86</span> ...
- $<span class="st"> </span>latitude :<span class="st"> </span>num  <span class="fl">30.6</span> <span class="fl">33.3</span> <span class="fl">34.7</span> <span class="fl">34.5</span> <span class="dv">34</span> ...</code></pre>
+ $<span class="st"> </span>latitude :<span class="st"> </span>num  <span class="fl">30.6</span> <span class="fl">33.3</span> <span class="fl">34.7</span> <span class="fl">34.5</span> <span class="dv">34</span> ...</code></pre></div>
 <p>Back to the question, though. How can we see if any counties exceed the standard of 12 micrograms per cubic meter?</p>
 </div>
 <div id="simple-summaries-one-dimension" class="section level2">
@@ -339,19 +357,19 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="five-number-summary" class="section level2">
 <h2><span class="header-section-number">6.5</span> Five Number Summary</h2>
 <p>A five-number summary can be computed with the <code>fivenum()</code> function, which takes a vector of numbers as input. Here, we compute a five-number summary of the PM2.5 data in the pollution dataset.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">fivenum</span>(pollution$pm25)
-[<span class="dv">1</span>]  <span class="fl">3.382626</span>  <span class="fl">8.547590</span> <span class="fl">10.046697</span> <span class="fl">11.356829</span> <span class="fl">18.440731</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">fivenum</span>(pollution$pm25)
+[<span class="dv">1</span>]  <span class="fl">3.382626</span>  <span class="fl">8.547590</span> <span class="fl">10.046697</span> <span class="fl">11.356829</span> <span class="fl">18.440731</span></code></pre></div>
 <p>We can see that the median across all the counties in the dataset is about 10 micrograms per cubic meter.</p>
 <p>For interactive work, it’s often a bit nice to use the <code>summary()</code> function, which has a default method for numeric vectors.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">summary</span>(pollution$pm25)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">summary</span>(pollution$pm25)
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  <span class="fl">3.383</span>   <span class="fl">8.549</span>  <span class="fl">10.050</span>   <span class="fl">9.836</span>  <span class="fl">11.360</span>  <span class="fl">18.440</span> </code></pre>
+  <span class="fl">3.383</span>   <span class="fl">8.549</span>  <span class="fl">10.050</span>   <span class="fl">9.836</span>  <span class="fl">11.360</span>  <span class="fl">18.440</span> </code></pre></div>
 <p>You’ll notice that in addition to the five-number summary, the <code>summary()</code> function also adds the mean of the data, which can be compared to the median to identify any skewness in the data. Given that the mean is fairly close to the median, there doesn’t appear to be a dramatic amount of skewness in the distribution of PM2.5 in this dataset.</p>
 </div>
 <div id="boxplot" class="section level2">
 <h2><span class="header-section-number">6.6</span> Boxplot</h2>
 <p>Here’s a quick boxplot of the PM2.5 data. Note that in a boxplot, the “whiskers” that stick out above and below the box have a length of 1.5 times the <em>inter-quartile range</em>, or IQR, which is simply the distance from the bottom of the box to the top of the box. Anything beyond the whiskers is marked as an “outlier” and is plotted separately as an individual point.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">boxplot</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">boxplot</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-6"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-6-1.png" alt="Boxplot of PM2.5 data" width="480" />
 <p class="caption">
@@ -360,7 +378,7 @@ Figure 6.1: Boxplot of PM2.5 data
 </div>
 <p>From the boxplot, we can see that there are a few points on both the high and the low end that appear to be outliers according to the <code>boxplot()</code> algorithm. These points migth be worth looking at individually.</p>
 <p>From the plot, it appears that the high points are all above the level of 15, so we can take a look at those data points directly. Note that although the current national ambient air quality standard is 12 micrograms per cubic meter, it used to be 15.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(dplyr)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(dplyr)
 &gt;<span class="st"> </span><span class="kw">filter</span>(pollution, pm25 &gt;<span class="st"> </span><span class="dv">15</span>)
       pm25  fips region longitude latitude
 <span class="dv">1</span> <span class="fl">16.19452</span> <span class="dv">06019</span>   west -<span class="fl">119.9035</span> <span class="fl">36.63837</span>
@@ -370,12 +388,12 @@ Figure 6.1: Boxplot of PM2.5 data
 <span class="dv">5</span> <span class="fl">15.01573</span> <span class="dv">06047</span>   west -<span class="fl">120.6741</span> <span class="fl">37.24578</span>
 <span class="dv">6</span> <span class="fl">17.42905</span> <span class="dv">06065</span>   west -<span class="fl">116.8036</span> <span class="fl">33.78331</span>
 <span class="dv">7</span> <span class="fl">16.25190</span> <span class="dv">06099</span>   west -<span class="fl">120.9588</span> <span class="fl">37.61380</span>
-<span class="dv">8</span> <span class="fl">16.18358</span> <span class="dv">06107</span>   west -<span class="fl">119.1661</span> <span class="fl">36.23465</span></code></pre>
+<span class="dv">8</span> <span class="fl">16.18358</span> <span class="dv">06107</span>   west -<span class="fl">119.1661</span> <span class="fl">36.23465</span></code></pre></div>
 <p>These counties are all in the western U.S. (<code>region == west</code>) and in fact are all in California because the first two digits of the <code>fips</code> code are <code>06</code>.</p>
 <p>We can make a quick map of these counties to get a sense of where they are in California.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(maps)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(maps)
 &gt;<span class="st"> </span><span class="kw">map</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;california&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">with</span>(<span class="kw">filter</span>(pollution, pm25 &gt;<span class="st"> </span><span class="dv">15</span>), <span class="kw">points</span>(longitude, latitude))</code></pre>
+&gt;<span class="st"> </span><span class="kw">with</span>(<span class="kw">filter</span>(pollution, pm25 &gt;<span class="st"> </span><span class="dv">15</span>), <span class="kw">points</span>(longitude, latitude))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-8"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-8-1.png" alt="Map of California counties" width="672" />
 <p class="caption">
@@ -389,7 +407,7 @@ Figure 6.2: Map of California counties
 <h2><span class="header-section-number">6.7</span> Histogram</h2>
 <p>A histogram is useful to look at when we want to see more detail on the full distribution of the data. The boxplot is quick and handy, but fundamentally only gives us a bit of information.</p>
 <p>Here is a histogram of the PM2.5 annual average data.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">hist</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">hist</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-9"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-9-1.png" alt="Histogram of PM2.5 data" width="672" />
 <p class="caption">
@@ -397,8 +415,8 @@ Figure 6.3: Histogram of PM2.5 data
 </p>
 </div>
 <p>This distribution is interesting because there appears to be a high concentration of counties in the neighborhood of 9 to 12 micrograms per cubic meter. We can get a little more detail of we use the <code>rug()</code> function to show us the actual data points.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">hist</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">rug</span>(pollution$pm25)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">hist</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)
+&gt;<span class="st"> </span><span class="kw">rug</span>(pollution$pm25)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-10"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-10-1.png" alt="Histogram of PM2.5 data with rug" width="672" />
 <p class="caption">
@@ -407,8 +425,8 @@ Figure 6.4: Histogram of PM2.5 data with rug
 </div>
 <p>The large cluster of data points in the 9 to 12 range is perhaps not surprising in this context. It’s not uncommon to observe this behavior in situations where you have a strict limit imposed at a certain level. Note that there are still quite a few counties above the level of 12, which may be worth investigating.</p>
 <p>The <code>hist()</code> function has a default algorithm for determining the number of bars to use in the histogram based on the density of the data (see <code>?nclass.Sturges</code>). However, you can override the default option by setting the <code>breaks</code> argument to something else. Here, we use more bars to try to get more detail.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">hist</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">breaks =</span> <span class="dv">100</span>)
-&gt;<span class="st"> </span><span class="kw">rug</span>(pollution$pm25)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">hist</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">breaks =</span> <span class="dv">100</span>)
+&gt;<span class="st"> </span><span class="kw">rug</span>(pollution$pm25)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-11"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-11-1.png" alt="Histogram of PM2.5 data with more breaks" width="672" />
 <p class="caption">
@@ -420,8 +438,8 @@ Figure 6.5: Histogram of PM2.5 data with more breaks
 <div id="overlaying-features" class="section level2">
 <h2><span class="header-section-number">6.8</span> Overlaying Features</h2>
 <p>Once we start seeing interesting features in our data, it’s often useful to lay down annotations on our plots as reference points are markers. For example in our boxplot above, we might want to draw a horizontal line at 12 where the national standard is.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">boxplot</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">12</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">boxplot</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)
+&gt;<span class="st"> </span><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">12</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-12"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-12-1.png" alt="Boxplot of PM2.5 data with added line" width="480" />
 <p class="caption">
@@ -430,9 +448,9 @@ Figure 6.6: Boxplot of PM2.5 data with added line
 </div>
 <p>We can see that a reasonable portion of the distribution as displayed by the boxplot is above the line (i.e. potentially in violation of the standard).</p>
 <p>While the boxplot gives a sense, the histogram might be better suited to visualizing the data here. In the plot below, we see the histogram and draw two lines, one at the median of the data and one at 12, the level of the standard.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">hist</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">hist</span>(pollution$pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)
 &gt;<span class="st"> </span><span class="kw">abline</span>(<span class="dt">v =</span> <span class="dv">12</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)
-&gt;<span class="st"> </span><span class="kw">abline</span>(<span class="dt">v =</span> <span class="kw">median</span>(pollution$pm25), <span class="dt">col =</span> <span class="st">&quot;magenta&quot;</span>, <span class="dt">lwd =</span> <span class="dv">4</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">abline</span>(<span class="dt">v =</span> <span class="kw">median</span>(pollution$pm25), <span class="dt">col =</span> <span class="st">&quot;magenta&quot;</span>, <span class="dt">lwd =</span> <span class="dv">4</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-13"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-13-1.png" alt="Histogram of PM2.5 data with annotation" width="672" />
 <p class="caption">
@@ -444,8 +462,8 @@ Figure 6.7: Histogram of PM2.5 data with annotation
 <div id="barplot" class="section level2">
 <h2><span class="header-section-number">6.9</span> Barplot</h2>
 <p>The barplot is useful for summarizing categorical data. Here we have one categorical variable, the region in which a county resides (east or west). We can see how many western and eastern counties there are with <code>barplot()</code>. We use the <code>table()</code> function to do the actual tabulation of how many counties there are in each region.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(dplyr)
-&gt;<span class="st"> </span><span class="kw">table</span>(pollution$region) %&gt;%<span class="st"> </span><span class="kw">barplot</span>(<span class="dt">col =</span> <span class="st">&quot;wheat&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(dplyr)
+&gt;<span class="st"> </span><span class="kw">table</span>(pollution$region) %&gt;%<span class="st"> </span><span class="kw">barplot</span>(<span class="dt">col =</span> <span class="st">&quot;wheat&quot;</span>)</code></pre></div>
 <p><img src="images/exploratorygraphs-unnamed-chunk-14-1.png" width="672" /></p>
 <p>We can see quite clearly that there are many more counties in the eastern U.S. in this dataset than in the western U.S.</p>
 </div>
@@ -468,7 +486,7 @@ Figure 6.7: Histogram of PM2.5 data with annotation
 <div id="multiple-boxplots" class="section level2">
 <h2><span class="header-section-number">6.11</span> Multiple Boxplots</h2>
 <p>One of the simplest ways to show the relationship between two variables (in this case, one categorical and one continuous) is to show side-by-side boxplots. Using the pollution data described above, we can show the difference in PM2.5 levels between the eastern and western parts of the U.S. with the <code>boxplot()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">boxplot</span>(pm25 ~<span class="st"> </span>region, <span class="dt">data =</span> pollution, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">boxplot</span>(pm25 ~<span class="st"> </span>region, <span class="dt">data =</span> pollution, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-15"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-15-1.png" alt="Boxplot of PM2.5 by region" width="672" />
 <p class="caption">
@@ -482,9 +500,9 @@ Figure 6.8: Boxplot of PM2.5 by region
 <h2><span class="header-section-number">6.12</span> Multiple Histograms</h2>
 <p>It can sometimes be useful to plot multiple histograms, much like with side-by-side boxplots, to see changes in the shape of the distribution of a variable across different categories. However, the number of histograms that you can effectively put on a page is limited.</p>
 <p>Here is the distribution of PM2.5 in the eastern and western regions of the U.S.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>))
 &gt;<span class="st"> </span><span class="kw">hist</span>(<span class="kw">subset</span>(pollution, region ==<span class="st"> &quot;east&quot;</span>)$pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">hist</span>(<span class="kw">subset</span>(pollution, region ==<span class="st"> &quot;west&quot;</span>)$pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">hist</span>(<span class="kw">subset</span>(pollution, region ==<span class="st"> &quot;west&quot;</span>)$pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-16"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-16-1.png" alt="Histogram of PM2.5 by region" width="768" />
 <p class="caption">
@@ -496,8 +514,8 @@ Figure 6.9: Histogram of PM2.5 by region
 <div id="scatterplots" class="section level2">
 <h2><span class="header-section-number">6.13</span> Scatterplots</h2>
 <p>For continuous variables, the most common visualization technique is the scatterplot, which simply maps each variable to an x- or y-axis coordinate. Here is a scatterplot of latitude and PM2.5, which can be made with the <code>plot()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">with</span>(pollution, <span class="kw">plot</span>(latitude, pm25))
-&gt;<span class="st"> </span><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">12</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">with</span>(pollution, <span class="kw">plot</span>(latitude, pm25))
+&gt;<span class="st"> </span><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">12</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-17"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-17-1.png" alt="Scatterplot of PM2.5 and latitude" width="672" />
 <p class="caption">
@@ -509,8 +527,8 @@ Figure 6.10: Scatterplot of PM2.5 and latitude
 <div id="scatterplot---using-color" class="section level2">
 <h2><span class="header-section-number">6.14</span> Scatterplot - Using Color</h2>
 <p>If we wanted to add a third dimension to the scatterplot above, say the <code>region</code> variable indicating east and west, we could use color to highlight that dimension. Here we color the circles in the plot to indicate east (black) or west (red).</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">with</span>(pollution, <span class="kw">plot</span>(latitude, pm25, <span class="dt">col =</span> region))
-&gt;<span class="st"> </span><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">12</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">with</span>(pollution, <span class="kw">plot</span>(latitude, pm25, <span class="dt">col =</span> region))
+&gt;<span class="st"> </span><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">12</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-18"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-18-1.png" alt="Scatterplot of PM2.5 and latitude by region" width="672" />
 <p class="caption">
@@ -518,16 +536,16 @@ Figure 6.11: Scatterplot of PM2.5 and latitude by region
 </p>
 </div>
 <p>It may be confusing at first to figure out which color gets mapped to which region. We can find out by looking directly at the levels of the <code>region</code> variable.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">levels</span>(pollution$region)
-[<span class="dv">1</span>] <span class="st">&quot;east&quot;</span> <span class="st">&quot;west&quot;</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">levels</span>(pollution$region)
+[<span class="dv">1</span>] <span class="st">&quot;east&quot;</span> <span class="st">&quot;west&quot;</span></code></pre></div>
 <p>Here we see that the first level is “east” and the second level is “west”. So the color for “east” will get mapped to 1 and the color for “west” will get mapped to 2. For plotting functions, <code>col = 1</code> is black (the default color) and <code>col = 2</code> is red.</p>
 </div>
 <div id="multiple-scatterplots" class="section level2">
 <h2><span class="header-section-number">6.15</span> Multiple Scatterplots</h2>
 <p>Using multiple scatterplots can be necessary when overlaying points with different colors or shapes is confusing (sometimes because of the volume of data). Separating the plots out can sometimes make visualization easier.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>))
 &gt;<span class="st"> </span><span class="kw">with</span>(<span class="kw">subset</span>(pollution, region ==<span class="st"> &quot;west&quot;</span>), <span class="kw">plot</span>(latitude, pm25, <span class="dt">main =</span> <span class="st">&quot;West&quot;</span>))
-&gt;<span class="st"> </span><span class="kw">with</span>(<span class="kw">subset</span>(pollution, region ==<span class="st"> &quot;east&quot;</span>), <span class="kw">plot</span>(latitude, pm25, <span class="dt">main =</span> <span class="st">&quot;East&quot;</span>))</code></pre>
+&gt;<span class="st"> </span><span class="kw">with</span>(<span class="kw">subset</span>(pollution, region ==<span class="st"> &quot;east&quot;</span>), <span class="kw">plot</span>(latitude, pm25, <span class="dt">main =</span> <span class="st">&quot;East&quot;</span>))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-20"></span>
 <img src="images/exploratorygraphs-unnamed-chunk-20-1.png" alt="Multiple Scatterplots of PM2.5 and latitude by region" width="1152" />
 <p class="caption">
@@ -535,18 +553,17 @@ Figure 6.12: Multiple Scatterplots of PM2.5 and latitude by region
 </p>
 </div>
 <p>These kinds of plots, sometimes called panel plots, are generally easier to make with either the <code>lattice</code> or <code>ggplot2</code> system, which we will learn about in greater detail in later chapters..</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Lattice
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Lattice
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(lattice)
 &gt;<span class="st"> </span><span class="kw">xyplot</span>(pm25 ~<span class="st"> </span>latitude |<span class="st"> </span>region, <span class="dt">data =</span> pollution)
 &gt;<span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span>## ggplot2
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)
-&gt;<span class="st"> </span><span class="kw">qplot</span>(latitude, pm25, <span class="dt">data =</span> pollution, <span class="dt">facets =</span> . ~<span class="st"> </span>region)</code></pre>
+&gt;<span class="st"> </span><span class="kw">qplot</span>(latitude, pm25, <span class="dt">data =</span> pollution, <span class="dt">facets =</span> . ~<span class="st"> </span>region)</code></pre></div>
 </div>
 <div id="summary-1" class="section level2">
 <h2><span class="header-section-number">6.16</span> Summary</h2>
 <p>Exploratory plots are “quick and dirty” and their purpose is to let you summarize the data and highlight any broad features. They are also useful for exploring basic questions about the data and for judging the evidence for or against certain hypotheses. Ultimately, they may be useful for suggesting modeling strategies that can be employed in the “next step” of the data analysis process.</p>
-
 
 </div>
 </div>

@@ -57,23 +57,41 @@ MathJax.Hub.Config({
 
 
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -292,11 +310,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="colors-1-2-and-3" class="section level2">
 <h2><span class="header-section-number">10.1</span> Colors 1, 2, and 3</h2>
 <p>Quite often, with plots made in R, you’ll see something like the following Christmas-themed plot.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">19</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">19</span>)
 &gt;<span class="st"> </span>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">30</span>)
 &gt;<span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">30</span>)
 &gt;<span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">col =</span> <span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dt">each =</span> <span class="dv">10</span>), <span class="dt">pch =</span> <span class="dv">19</span>)
-&gt;<span class="st"> </span><span class="kw">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="dt">legend =</span> <span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, <span class="dv">1</span>:<span class="dv">3</span>), <span class="dt">col =</span> <span class="dv">1</span>:<span class="dv">3</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="dt">legend =</span> <span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, <span class="dv">1</span>:<span class="dv">3</span>), <span class="dt">col =</span> <span class="dv">1</span>:<span class="dv">3</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-2"></span>
 <img src="images/color-unnamed-chunk-2-1.png" alt="Default colors in R" width="672" />
 <p class="caption">
@@ -305,9 +323,9 @@ Figure 10.1: Default colors in R
 </div>
 <p>The reason is simple. In R, the color black is denoted by <code>col = 1</code> in most plotting functions, red is denoted by <code>col = 2</code>, and green is denoted by <code>col = 3</code>. So if you’re plotting multiple groups of things, it’s natural to plot them using colors 1, 2, and 3.</p>
 <p>Here’s another set of common color schemes used in R, this time via the <code>image()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
 &gt;<span class="st"> </span><span class="kw">image</span>(volcano, <span class="dt">col =</span> <span class="kw">heat.colors</span>(<span class="dv">10</span>), <span class="dt">main =</span> <span class="st">&quot;heat.colors()&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">image</span>(volcano, <span class="dt">col =</span> <span class="kw">topo.colors</span>(<span class="dv">10</span>), <span class="dt">main =</span> <span class="st">&quot;topo.colors()&quot;</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">image</span>(volcano, <span class="dt">col =</span> <span class="kw">topo.colors</span>(<span class="dv">10</span>), <span class="dt">main =</span> <span class="st">&quot;topo.colors()&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-3"></span>
 <img src="images/color-unnamed-chunk-3-1.png" alt="Image plots in R" width="1152" />
 <p class="caption">
@@ -333,13 +351,13 @@ Figure 10.2: Image plots in R
 <h2><span class="header-section-number">10.4</span> <code>colorRamp()</code></h2>
 <p>For both <code>colorRamp()</code> and <code>colorRampPalette()</code>, imagine you’re a painter and you have your palette in your hand. On your palette are a set of colors, say red and blue. Now, between red and blue you can a imagine an entire spectrum of colors that can be created by mixing together different amounts of read and blue. Both <code>colorRamp()</code> and <code>colorRampPalette()</code> handle that “mixing” process for you.</p>
 <p>Let’s start with a simple palette of “red” and “blue” colors and pass them to <code>colorRamp()</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>pal &lt;-<span class="st"> </span><span class="kw">colorRamp</span>(<span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>pal &lt;-<span class="st"> </span><span class="kw">colorRamp</span>(<span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))
 &gt;<span class="st"> </span><span class="kw">pal</span>(<span class="dv">0</span>)
      [,<span class="dv">1</span>] [,<span class="dv">2</span>] [,<span class="dv">3</span>]
-[<span class="dv">1</span>,]  <span class="dv">255</span>    <span class="dv">0</span>    <span class="dv">0</span></code></pre>
+[<span class="dv">1</span>,]  <span class="dv">255</span>    <span class="dv">0</span>    <span class="dv">0</span></code></pre></div>
 <p>Notice that <code>pal</code> is in fact a function that was returned by <code>colorRamp()</code>. When we call <code>pal(0)</code> we get a 1 by 3 matrix. The numbers in the matrix will range from 0 to 255 and indicate the quantities of red, green, and blue (RGB) in columns 1, 2, and 3 respectively. Simple math tells us there are over 16 million colors that can be expressed in this way. Calling <code>pal(0)</code> gives us the maximum value (255) on red and 0 on the other colors. So this is just the color red.</p>
 <p>We can pass any value between 0 and 1 to the <code>pal()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## blue
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## blue
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">pal</span>(<span class="dv">1</span>)
      [,<span class="dv">1</span>] [,<span class="dv">2</span>] [,<span class="dv">3</span>]
 [<span class="dv">1</span>,]    <span class="dv">0</span>    <span class="dv">0</span>  <span class="dv">255</span>
@@ -347,9 +365,9 @@ Figure 10.2: Image plots in R
 <span class="er">&gt;</span><span class="st"> </span>## purple-ish
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">pal</span>(<span class="fl">0.5</span>)
       [,<span class="dv">1</span>] [,<span class="dv">2</span>]  [,<span class="dv">3</span>]
-[<span class="dv">1</span>,] <span class="fl">127.5</span>    <span class="dv">0</span> <span class="fl">127.5</span></code></pre>
+[<span class="dv">1</span>,] <span class="fl">127.5</span>    <span class="dv">0</span> <span class="fl">127.5</span></code></pre></div>
 <p>You can also pass a sequence of numbers to the <code>pal()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">pal</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">len =</span> <span class="dv">10</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">pal</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">len =</span> <span class="dv">10</span>))
            [,<span class="dv">1</span>] [,<span class="dv">2</span>]      [,<span class="dv">3</span>]
  [<span class="dv">1</span>,] <span class="fl">255.00000</span>    <span class="dv">0</span>   <span class="fl">0.00000</span>
  [<span class="dv">2</span>,] <span class="fl">226.66667</span>    <span class="dv">0</span>  <span class="fl">28.33333</span>
@@ -360,27 +378,27 @@ Figure 10.2: Image plots in R
  [<span class="dv">7</span>,]  <span class="fl">85.00000</span>    <span class="dv">0</span> <span class="fl">170.00000</span>
  [<span class="dv">8</span>,]  <span class="fl">56.66667</span>    <span class="dv">0</span> <span class="fl">198.33333</span>
  [<span class="dv">9</span>,]  <span class="fl">28.33333</span>    <span class="dv">0</span> <span class="fl">226.66667</span>
-[<span class="dv">10</span>,]   <span class="fl">0.00000</span>    <span class="dv">0</span> <span class="fl">255.00000</span></code></pre>
+[<span class="dv">10</span>,]   <span class="fl">0.00000</span>    <span class="dv">0</span> <span class="fl">255.00000</span></code></pre></div>
 <p>The idea here is that <code>colorRamp()</code> gives you a function that allows you to interpolate between the two colors red and blue. You do not have to provide just two colors in your initial color palette; you can start with multiple colors and <code>colorRamp()</code> will interpolate between all of them.</p>
 </div>
 <div id="colorramppalette" class="section level2">
 <h2><span class="header-section-number">10.5</span> <code>colorRampPalette()</code></h2>
 <p>The <code>colorRampPalette()</code> function in manner similar to <code>colorRamp(()</code>, however the function that it returns gives you a fixed number of colors that interpolate the palette.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>pal &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;yellow&quot;</span>))</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>pal &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;yellow&quot;</span>))</code></pre></div>
 <p>Again we have a function <code>pal()</code> that was returned by <code>colorRampPalette()</code>, this time interpolating a palette containing the colors red and yellow. But now, the <code>pal()</code> function takes an integer argument specifing the number of interpolated colors to return.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Just return red and yellow
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Just return red and yellow
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">pal</span>(<span class="dv">2</span>)
-[<span class="dv">1</span>] <span class="st">&quot;#FF0000&quot;</span> <span class="st">&quot;#FFFF00&quot;</span></code></pre>
+[<span class="dv">1</span>] <span class="st">&quot;#FF0000&quot;</span> <span class="st">&quot;#FFFF00&quot;</span></code></pre></div>
 <p>Note that the colors are represented as hexadecimal strings. After the # symbol, the first two characters indicate the red amount, the second two the green amount, and the last two the blue amount. Because each position can have 16 possible values (0-9 and A-F), the two positions together allow for 256 possibilities per color. In this example above, since we only asked for two colors, it gave us red and yellow, the two extremes of the palette.</p>
 <p>We can ask for more colors though.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Return 10 colors in between red and yellow
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Return 10 colors in between red and yellow
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">pal</span>(<span class="dv">10</span>)
  [<span class="dv">1</span>] <span class="st">&quot;#FF0000&quot;</span> <span class="st">&quot;#FF1C00&quot;</span> <span class="st">&quot;#FF3800&quot;</span> <span class="st">&quot;#FF5500&quot;</span> <span class="st">&quot;#FF7100&quot;</span> <span class="st">&quot;#FF8D00&quot;</span> <span class="st">&quot;#FFAA00&quot;</span>
- [<span class="dv">8</span>] <span class="st">&quot;#FFC600&quot;</span> <span class="st">&quot;#FFE200&quot;</span> <span class="st">&quot;#FFFF00&quot;</span></code></pre>
+ [<span class="dv">8</span>] <span class="st">&quot;#FFC600&quot;</span> <span class="st">&quot;#FFE200&quot;</span> <span class="st">&quot;#FFFF00&quot;</span></code></pre></div>
 <p>You’ll see that the first color is still red (“FF” in the red position) and the last color is still yellow (“FF” in both the red and green positions). But now there are 8 more colors in between. These values, in hexadecimal format, can also be specified to base plotting functions via the <code>col</code> argument.</p>
 <p>Note that the <code>rgb()</code> function can be used to produce any color via red, green, blue proportions and return a hexadecimal representation.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">234</span>, <span class="dt">maxColorValue =</span> <span class="dv">255</span>)
-[<span class="dv">1</span>] <span class="st">&quot;#0000EA&quot;</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">234</span>, <span class="dt">maxColorValue =</span> <span class="dv">255</span>)
+[<span class="dv">1</span>] <span class="st">&quot;#0000EA&quot;</span></code></pre></div>
 </div>
 <div id="rcolorbrewer-package" class="section level2">
 <h2><span class="header-section-number">10.6</span> RColorBrewer Package</h2>
@@ -393,8 +411,8 @@ Figure 10.2: Image plots in R
 </ul>
 <p>All of these palettes can be used in conjunction with the <code>colorRamp()</code> and <code>colorRampPalette()</code>.</p>
 <p>Here is a display of all the color palettes available from the <code>RColorBrewer</code> package.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(RColorBrewer)
-&gt;<span class="st"> </span><span class="kw">display.brewer.all</span>()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(RColorBrewer)
+&gt;<span class="st"> </span><span class="kw">display.brewer.all</span>()</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-11"></span>
 <img src="images/color-unnamed-chunk-11-1.png" alt="RColorBrewer palettes" width="768" />
 <p class="caption">
@@ -410,14 +428,14 @@ Figure 10.3: RColorBrewer palettes
 <li><p><code>n</code>: the number of colors you want from the palette (integer)</p></li>
 </ul>
 <p>Below we choose to use 3 colors from the “BuGn” palette, which is a sequential palette.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(RColorBrewer)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(RColorBrewer)
 &gt;<span class="st"> </span>cols &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="dv">3</span>, <span class="st">&quot;BuGn&quot;</span>)
 &gt;<span class="st"> </span>cols
-[<span class="dv">1</span>] <span class="st">&quot;#E5F5F9&quot;</span> <span class="st">&quot;#99D8C9&quot;</span> <span class="st">&quot;#2CA25F&quot;</span></code></pre>
+[<span class="dv">1</span>] <span class="st">&quot;#E5F5F9&quot;</span> <span class="st">&quot;#99D8C9&quot;</span> <span class="st">&quot;#2CA25F&quot;</span></code></pre></div>
 <p>Those three colors make up my initial palette. Then I can pass them to <code>colorRampPalette()</code> to create my interpolating function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>pal &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(cols)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>pal &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(cols)</code></pre></div>
 <p>Now I can plot the <code>volcano</code> data using this color ramp. Note that the <code>volcano</code> dataset contains elevations of a volcano, which is continuous, ordered, numerical data, for which a sequential palette is appropriate.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">image</span>(volcano, <span class="dt">col =</span> <span class="kw">pal</span>(<span class="dv">20</span>))</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">image</span>(volcano, <span class="dt">col =</span> <span class="kw">pal</span>(<span class="dv">20</span>))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-14"></span>
 <img src="images/color-unnamed-chunk-14-1.png" alt="Volcano data with color ramp palette" width="672" />
 <p class="caption">
@@ -428,10 +446,10 @@ Figure 10.4: Volcano data with color ramp palette
 <div id="the-smoothscatter-function" class="section level2">
 <h2><span class="header-section-number">10.8</span> The <code>smoothScatter()</code> function</h2>
 <p>A function that takes advantage of the color palettes in <code>RColorBrewer</code> is the <code>smoothScatter()</code> function, which is very useful for making scatterplots of very large datasets. The <code>smoothScatter()</code> function essentially gives you a 2-D histogram of the data using a sequential palette (here “Blues”).</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1</span>)
 &gt;<span class="st"> </span>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10000</span>)
 &gt;<span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10000</span>)
-&gt;<span class="st"> </span><span class="kw">smoothScatter</span>(x, y)</code></pre>
+&gt;<span class="st"> </span><span class="kw">smoothScatter</span>(x, y)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-15"></span>
 <img src="images/color-unnamed-chunk-15-1.png" alt="smoothScatter function" width="672" />
 <p class="caption">
@@ -443,13 +461,13 @@ Figure 10.5: smoothScatter function
 <h2><span class="header-section-number">10.9</span> Adding transparency</h2>
 <p>Color transparency can be added via the <code>alpha</code> parameter to <code>rgb()</code> to produce color specifications with varying levels of transparency. When transparency is used you’ll notice an extra two characters added to the right side of the hexadecimal representation (there will be 8 positions instead of 6).</p>
 <p>For example, if I wanted the color red with a high level of transparency, I could specify</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.1</span>)
-[<span class="dv">1</span>] <span class="st">&quot;#FF00001A&quot;</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.1</span>)
+[<span class="dv">1</span>] <span class="st">&quot;#FF00001A&quot;</span></code></pre></div>
 <p>Transparency can be useful when you have plots with a high density of points or lines. For example, teh scatterplot below has a lot of overplotted points and it’s difficult to see what’s happening in the middle of the plot region.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">2</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">2</span>)
 &gt;<span class="st"> </span>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">2000</span>)
 &gt;<span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">2000</span>)
-&gt;<span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">pch =</span> <span class="dv">19</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">pch =</span> <span class="dv">19</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-17"></span>
 <img src="images/color-unnamed-chunk-17-1.png" alt="Scatterplot with no transparency" width="672" />
 <p class="caption">
@@ -457,7 +475,7 @@ Figure 10.6: Scatterplot with no transparency
 </p>
 </div>
 <p>If we add some transparency to the black circles, we can get a better sense of the varying density of the points in the plot.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">col =</span> <span class="kw">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.15</span>))</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">col =</span> <span class="kw">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.15</span>))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-18"></span>
 <img src="images/color-unnamed-chunk-18-1.png" alt="Scatterplot with transparency" width="672" />
 <p class="caption">
@@ -474,7 +492,6 @@ Figure 10.7: Scatterplot with transparency
 <li><p>The <code>colorRamp</code> and <code>colorRampPalette</code> functions can be used in conjunction with color palettes to connect data to colors</p></li>
 <li><p>Transparency can sometimes be used to clarify plots with many points</p></li>
 </ul>
-
 
 </div>
 </div>

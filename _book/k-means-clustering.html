@@ -57,23 +57,41 @@ MathJax.Hub.Config({
 
 
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -308,11 +326,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="illustrating-the-k-means-algorithm" class="section level2">
 <h2><span class="header-section-number">12.1</span> Illustrating the K-means algorithm</h2>
 <p>We will use an example with simulated data to demonstrate how the K-means algorithm works. Here we simulate some data from three clusters and plot the dataset below.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1234</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1234</span>)
 &gt;<span class="st"> </span>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">12</span>, <span class="dt">mean =</span> <span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dt">each =</span> <span class="dv">4</span>), <span class="dt">sd =</span> <span class="fl">0.2</span>)
 &gt;<span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">12</span>, <span class="dt">mean =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">each =</span> <span class="dv">4</span>), <span class="dt">sd =</span> <span class="fl">0.2</span>)
 &gt;<span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>)
-&gt;<span class="st"> </span><span class="kw">text</span>(x +<span class="st"> </span><span class="fl">0.05</span>, y +<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">labels =</span> <span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">12</span>))</code></pre>
+&gt;<span class="st"> </span><span class="kw">text</span>(x +<span class="st"> </span><span class="fl">0.05</span>, y +<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">labels =</span> <span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">12</span>))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-2"></span>
 <img src="images/kmeans-unnamed-chunk-2-1.png" alt="Simulated dataset" width="672" />
 <p class="caption">
@@ -365,15 +383,15 @@ Figure 12.6: Updated centroid configuration
 <div id="using-the-kmeans-function" class="section level2">
 <h2><span class="header-section-number">12.3</span> Using the <code>kmeans()</code> function</h2>
 <p>The <code>kmeans()</code> function in R implements the K-means algorithm and can be found in the <code>stats</code> package, which comes with R and is usually already loaded when you start R. Two key parameters that you have to specify are <code>x</code>, which is a matrix or data frame of data, and <code>centers</code> which is either an integer indicating the number of clusters or a matrix indicating the locations of the initial cluster centroids. The data should be organized so that each row is an observation and each column is a variable or feature of that observation.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>dataFrame &lt;-<span class="st"> </span><span class="kw">data.frame</span>(x, y)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>dataFrame &lt;-<span class="st"> </span><span class="kw">data.frame</span>(x, y)
 &gt;<span class="st"> </span>kmeansObj &lt;-<span class="st"> </span><span class="kw">kmeans</span>(dataFrame, <span class="dt">centers =</span> <span class="dv">3</span>)
 &gt;<span class="st"> </span><span class="kw">names</span>(kmeansObj)
 [<span class="dv">1</span>] <span class="st">&quot;cluster&quot;</span>      <span class="st">&quot;centers&quot;</span>      <span class="st">&quot;totss&quot;</span>        <span class="st">&quot;withinss&quot;</span>    
 [<span class="dv">5</span>] <span class="st">&quot;tot.withinss&quot;</span> <span class="st">&quot;betweenss&quot;</span>    <span class="st">&quot;size&quot;</span>         <span class="st">&quot;iter&quot;</span>        
-[<span class="dv">9</span>] <span class="st">&quot;ifault&quot;</span>      </code></pre>
+[<span class="dv">9</span>] <span class="st">&quot;ifault&quot;</span>      </code></pre></div>
 <p>You can see which cluster each data point got assigned to by looking at the <code>cluster</code> element of the list returned by the <code>kmeans()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>kmeansObj$cluster
- [<span class="dv">1</span>] <span class="dv">3</span> <span class="dv">3</span> <span class="dv">3</span> <span class="dv">3</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>kmeansObj$cluster
+ [<span class="dv">1</span>] <span class="dv">3</span> <span class="dv">3</span> <span class="dv">3</span> <span class="dv">3</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span></code></pre></div>
 <p>Here is a plot of the K-means clustering solution. Not surprisingly for this simple dataset, K-means was able to identify the true solution.</p>
 <div class="figure"><span id="fig:unnamed-chunk-10"></span>
 <img src="images/kmeans-unnamed-chunk-10-1.png" alt="K-means clustering solution" width="672" />
@@ -386,13 +404,13 @@ Figure 12.7: K-means clustering solution
 <h2><span class="header-section-number">12.4</span> Building heatmaps from K-means solutions</h2>
 <p>A heat map or image plot is sometimes a useful way to visualize matrix or array data. The idea is that each cell of the image is colored in a manner proportional to the value in the corresponding matrix element. It take a bit of work to get this to look right in R but the result can be very useful, especially for high-dimensional datasets that can be visualized using the simple plots we used above.</p>
 <p>First, we need to find the K-means solution.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1234</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1234</span>)
 &gt;<span class="st"> </span>dataMatrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(dataFrame)[<span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">12</span>), ]
-&gt;<span class="st"> </span>kmeansObj &lt;-<span class="st"> </span><span class="kw">kmeans</span>(dataMatrix, <span class="dt">centers =</span> <span class="dv">3</span>)</code></pre>
+&gt;<span class="st"> </span>kmeansObj &lt;-<span class="st"> </span><span class="kw">kmeans</span>(dataMatrix, <span class="dt">centers =</span> <span class="dv">3</span>)</code></pre></div>
 <p>Then we can make an image plot using the K-means clusters.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
 &gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrix)[, <span class="kw">nrow</span>(dataMatrix):<span class="dv">1</span>], <span class="dt">yaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Original Data&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrix)[, <span class="kw">order</span>(kmeansObj$cluster)], <span class="dt">yaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Clustered Data&quot;</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrix)[, <span class="kw">order</span>(kmeansObj$cluster)], <span class="dt">yaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Clustered Data&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-12"></span>
 <img src="images/kmeans-unnamed-chunk-12-1.png" alt="Heatmap of K-means solution" width="672" />
 <p class="caption">
@@ -408,7 +426,6 @@ Figure 12.8: Heatmap of K-means solution
 <li><p><a href="http://www.youtube.com/watch?v=wQhVWUcXM0A">Rafael Irizarry’s Distances and Clustering Video</a></p></li>
 <li><p><a href="http://www-stat.stanford.edu/~tibs/ElemStatLearn/">Elements of statistical learning</a></p></li>
 </ul>
-
 
 </div>
 </div>

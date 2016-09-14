@@ -57,23 +57,41 @@ MathJax.Hub.Config({
 
 
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -294,12 +312,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Matrix data have some special statistical methods that can be applied to them. One category of statistical dimension reduction techniques is commonly called <em>principal components analysis</em> (PCA) or the <em>singular value decomposition</em> (SVD). These techniques generally are applied in situations where the rows of a matrix represent observations of some sort and the columns of the matrix represent features or variables (but this is by no means a requirement).</p>
 <p>In an abstract sense, the SVD or PCA can be thought of as a way to approximate a high-dimensional matrix (i.e. a large number of columns) with a a few low-dimensional matrices. So there’s a bit of data compression angle to it. We’ll take a look at what’s going on in this chapter.</p>
 <p>First, we can simulate some matrix data. Here, we simulate some random Normal data in a matrix that has 40 rows and 10 columns.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">12345</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">12345</span>)
 &gt;<span class="st"> </span>dataMatrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">400</span>), <span class="dt">nrow =</span> <span class="dv">40</span>)
-&gt;<span class="st"> </span><span class="kw">image</span>(<span class="dv">1</span>:<span class="dv">10</span>, <span class="dv">1</span>:<span class="dv">40</span>, <span class="kw">t</span>(dataMatrix)[, <span class="kw">nrow</span>(dataMatrix):<span class="dv">1</span>])</code></pre>
+&gt;<span class="st"> </span><span class="kw">image</span>(<span class="dv">1</span>:<span class="dv">10</span>, <span class="dv">1</span>:<span class="dv">40</span>, <span class="kw">t</span>(dataMatrix)[, <span class="kw">nrow</span>(dataMatrix):<span class="dv">1</span>])</code></pre></div>
 <p><img src="images/dr-randomData-1.png" width="384" /></p>
 <p>When confronted with matrix data a quick and easy thing to organize the data a bit is to apply an hierarchical clustering algorithm to it. Such a clustering can be visualized with the <code>heatmap()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">heatmap</span>(dataMatrix)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">heatmap</span>(dataMatrix)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-2"></span>
 <img src="images/dr-unnamed-chunk-2-1.png" alt="Heatmap of matrix data" width="672" />
 <p class="caption">
@@ -309,7 +327,7 @@ Figure 13.1: Heatmap of matrix data
 <p>Not surprisingly, there aren’t really any interesting patterns given that we just simulated random noise. At least it’s good to know that the clustering algorithm won’t pick up something when there’s nothing there!</p>
 <p>But now what if there were a pattern in the data? How would we discover it?</p>
 <p>Let’s first simulate some data that indeed does have a pattern. In the code below, we cycle through all the rows of the matrix and randomly add 3 to the last 5 columns of the matrix.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">678910</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">678910</span>)
 &gt;<span class="st"> </span>for (i in <span class="dv">1</span>:<span class="dv">40</span>) {
 +<span class="st">     </span>coinFlip &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> <span class="fl">0.5</span>)
 +<span class="st">     </span>
@@ -317,9 +335,9 @@ Figure 13.1: Heatmap of matrix data
 +<span class="st">     </span>if (coinFlip) {
 +<span class="st">         </span>dataMatrix[i, ] &lt;-<span class="st"> </span>dataMatrix[i, ] +<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">3</span>), <span class="dt">each =</span> <span class="dv">5</span>)
 +<span class="st">     </span>}
-+<span class="st"> </span>}</code></pre>
++<span class="st"> </span>}</code></pre></div>
 <p>Here’s what the new data look like.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">image</span>(<span class="dv">1</span>:<span class="dv">10</span>, <span class="dv">1</span>:<span class="dv">40</span>, <span class="kw">t</span>(dataMatrix)[, <span class="kw">nrow</span>(dataMatrix):<span class="dv">1</span>])</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">image</span>(<span class="dv">1</span>:<span class="dv">10</span>, <span class="dv">1</span>:<span class="dv">40</span>, <span class="kw">t</span>(dataMatrix)[, <span class="kw">nrow</span>(dataMatrix):<span class="dv">1</span>])</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-4"></span>
 <img src="images/dr-unnamed-chunk-4-1.png" alt="Matrix data with a pattern" width="672" />
 <p class="caption">
@@ -328,7 +346,7 @@ Figure 13.2: Matrix data with a pattern
 </div>
 <p>You can see that some of the rows on the right side of the matrix have higher values than on the left side.</p>
 <p>Now what happens if we cluster the data?</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">heatmap</span>(dataMatrix)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">heatmap</span>(dataMatrix)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-5"></span>
 <img src="images/dr-unnamed-chunk-5-1.png" alt="Clustered data with pattern" width="672" />
 <p class="caption">
@@ -340,7 +358,7 @@ Figure 13.3: Clustered data with pattern
 <div id="patterns-in-rows-and-columns" class="section level2">
 <h2><span class="header-section-number">13.2</span> Patterns in rows and columns</h2>
 <p>In general, with matrix data, there may be patterns that occur accross the rows and columns of the matrix. In the example above, we shifted the mean of some of the observations in columns 5 through 10. We can display this a bit more explicitly by looking at the row and column means of the data.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(dplyr)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(dplyr)
 &gt;<span class="st"> </span>hh &lt;-<span class="st"> </span><span class="kw">dist</span>(dataMatrix) %&gt;%<span class="st"> </span>hclust
 &gt;<span class="st"> </span>dataMatrixOrdered &lt;-<span class="st"> </span>dataMatrix[hh$order, ]
 &gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))
@@ -352,7 +370,7 @@ Figure 13.3: Clustered data with pattern
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">plot</span>(<span class="kw">rowMeans</span>(dataMatrixOrdered), <span class="dv">40</span>:<span class="dv">1</span>, , <span class="dt">xlab =</span> <span class="st">&quot;Row Mean&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Row&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)
 &gt;<span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span>## Show the column means
-<span class="er">&gt;</span><span class="st"> </span><span class="kw">plot</span>(<span class="kw">colMeans</span>(dataMatrixOrdered), <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Column Mean&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</code></pre>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">plot</span>(<span class="kw">colMeans</span>(dataMatrixOrdered), <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Column Mean&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-6"></span>
 <img src="images/dr-unnamed-chunk-6-1.png" alt="Pattern in rows and columns" width="1152" />
 <p class="caption">
@@ -364,11 +382,11 @@ Figure 13.4: Pattern in rows and columns
 <div id="related-problem" class="section level2">
 <h2><span class="header-section-number">13.3</span> Related problem</h2>
 <p>Here’s another way to formulate the problem that matrix data present. Suppose you have multivariate observations</p>
-<p><span class="math">\[
+<p><span class="math display">\[
 X_1,\ldots,X_n
 \]</span></p>
 <p>so that each of the <em>n</em> observations has <em>m</em> features,</p>
-<p><span class="math">\[
+<p><span class="math display">\[
 X_1 = (X_{11},\ldots,X_{1m})
 \]</span></p>
 <p>Given this setup, the goal is to find a new set of variables/features that are uncorrelated and explain as much variance in the data as possible. Put another way, if you were to put all these multivariate observations together in one matrix, find the <em>best</em> matrix created with fewer variables (lower rank) that explains the original data.</p>
@@ -377,23 +395,23 @@ X_1 = (X_{11},\ldots,X_{1m})
 <div id="svd-and-pca" class="section level2">
 <h2><span class="header-section-number">13.4</span> SVD and PCA</h2>
 <p>If <em>X</em> is a matrix with each variable in a column and each observation in a row then the SVD is a matrix decomposition that represents <em>X</em> as a matrix product of three matrices:</p>
-<p><span class="math">\[
+<p><span class="math display">\[
 X = UDV^\prime
 \]</span></p>
-<p>where the columns of <em>U</em> (left singular vectors) are orthogonal, the columns of <span class="math">\(V\)</span> (right singular vectors) are orthogonal and <span class="math">\(D\)</span> is a diagonal matrix of singular values.</p>
+<p>where the columns of <em>U</em> (left singular vectors) are orthogonal, the columns of <span class="math inline">\(V\)</span> (right singular vectors) are orthogonal and <span class="math inline">\(D\)</span> is a diagonal matrix of singular values.</p>
 <p>Principal components analysis (PCA) is simply an application of the SVD. The <em>principal components</em> are equal to the right singular values if you first scale the data by subtracting the column mean and dividing each column by its standard deviation (that can be done with the <code>scale()</code> function).</p>
 </div>
 <div id="unpacking-the-svd-u-and-v" class="section level2">
 <h2><span class="header-section-number">13.5</span> Unpacking the SVD: <em>u</em> and <em>v</em></h2>
 <p>The SVD can be computed in R using the <code>svd()</code> function. Here, we scale our original matrix data with the pattern in it and apply the svd.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))</code></pre></div>
 <p>The <code>svd()</code> function returns a list containing three components named <code>u</code>, <code>d</code>, and <code>v</code>. The <code>u</code> and <code>v</code> components correspond to the matrices of left and right singular vectors, respectively, while the <code>d</code> component is a vector of singular values, corresponding to the diagonal of the matrix <em>D</em> described above.</p>
 <p>Below we plot the first left and right singular vectors along with the original data.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))
 &gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrixOrdered)[, <span class="kw">nrow</span>(dataMatrixOrdered):<span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Original Data&quot;</span>)
 &gt;<span class="st"> </span><span class="kw">plot</span>(svd1$u[, <span class="dv">1</span>], <span class="dv">40</span>:<span class="dv">1</span>, , <span class="dt">ylab =</span> <span class="st">&quot;Row&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;First left singular vector&quot;</span>, 
 +<span class="st">     </span><span class="dt">pch =</span> <span class="dv">19</span>)
-&gt;<span class="st"> </span><span class="kw">plot</span>(svd1$v[, <span class="dv">1</span>], <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;First right singular vector&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">plot</span>(svd1$v[, <span class="dv">1</span>], <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;First right singular vector&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-8"></span>
 <img src="images/dr-unnamed-chunk-8-1.png" alt="Components of SVD" width="1152" />
 <p class="caption">
@@ -405,17 +423,17 @@ Figure 13.5: Components of SVD
 <div id="svd-for-data-compression" class="section level2">
 <h2><span class="header-section-number">13.6</span> SVD for data compression</h2>
 <p>If we believed that the first left and right singular vectors, call them u1 and v1, captured all of the variation in the data, then we could approximate the original data matrix with</p>
-<p><span class="math">\[
+<p><span class="math display">\[
 X \approx u_1 v_1^\prime
 \]</span></p>
 <p>Thus, we would reduce 400 numbers in the original matrix to 40 + 10 = 50 numbers in the compressed matrix, a nearly 90% reduction in information. Here’s what the original data and the approximation would look like.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Approximate original data with outer product of first singular vectors
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Approximate original data with outer product of first singular vectors
 <span class="er">&gt;</span><span class="st"> </span>approx &lt;-<span class="st"> </span><span class="kw">with</span>(svd1, <span class="kw">outer</span>(u[, <span class="dv">1</span>], v[, <span class="dv">1</span>]))
 &gt;<span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span>## Plot original data and approximated data
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
 &gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrixOrdered)[, <span class="kw">nrow</span>(dataMatrixOrdered):<span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Original Matrix&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(approx)[, <span class="kw">nrow</span>(approx):<span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Approximated Matrix&quot;</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(approx)[, <span class="kw">nrow</span>(approx):<span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Approximated Matrix&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-9"></span>
 <img src="images/dr-unnamed-chunk-9-1.png" alt="Approximating a matrix" width="768" />
 <p class="caption">
@@ -428,17 +446,17 @@ Figure 13.6: Approximating a matrix
 <h2><span class="header-section-number">13.7</span> Components of the SVD - Variance explained</h2>
 <p>The statistical interpretation of singular values is in the form of variance in the data explained by the various components. The singular values produced by the <code>svd()</code> are in order from largest to smallest and when squared are proportional the amount of variance explained by a given singular vector.</p>
 <p>To show how this works, here’s a very simple example. First, we’ll simulate a “dataset” that just takes two values, 0 and 1.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>constantMatrix &lt;-<span class="st"> </span>dataMatrixOrdered *<span class="st"> </span><span class="dv">0</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>constantMatrix &lt;-<span class="st"> </span>dataMatrixOrdered *<span class="st"> </span><span class="dv">0</span>
 &gt;<span class="st"> </span>for (i in <span class="dv">1</span>:<span class="kw">dim</span>(dataMatrixOrdered)[<span class="dv">1</span>]) {
 +<span class="st">     </span>constantMatrix[i, ] &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">each =</span> <span class="dv">5</span>)
-+<span class="st"> </span>}</code></pre>
++<span class="st"> </span>}</code></pre></div>
 <p>Then we can take the SVD of this matrix and show the singular values as well as the proportion of variance explained.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(constantMatrix)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(constantMatrix)
 &gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))
 &gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(constantMatrix)[, <span class="kw">nrow</span>(constantMatrix):<span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Original Data&quot;</span>)
 &gt;<span class="st"> </span><span class="kw">plot</span>(svd1$d, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Singular value&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)
 &gt;<span class="st"> </span><span class="kw">plot</span>(svd1$d^<span class="dv">2</span>/<span class="kw">sum</span>(svd1$d^<span class="dv">2</span>), <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Prop. of variance explained&quot;</span>, 
-+<span class="st">     </span><span class="dt">pch =</span> <span class="dv">19</span>)</code></pre>
++<span class="st">     </span><span class="dt">pch =</span> <span class="dv">19</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-11"></span>
 <img src="images/dr-unnamed-chunk-11-1.png" alt="Variance explained" width="1152" />
 <p class="caption">
@@ -447,11 +465,11 @@ Figure 13.7: Variance explained
 </div>
 <p>As we can see from the right-most plot, 100% of the variation in this “dataset” can be explained by the first singular value. Or, all of the variation in this dataset occurs in a single dimension. This is clear because all of the variation in the data occurs as you go from left to right across the columns. Otherwise, the values of the data are constant.</p>
 <p>In the plot below, we plot the singular values (left) and the proportion of variance explained for the slightly more complex dataset that we’d been using previously.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
 &gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))
 &gt;<span class="st"> </span><span class="kw">plot</span>(svd1$d, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Singular value&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)
 &gt;<span class="st"> </span><span class="kw">plot</span>(svd1$d^<span class="dv">2</span>/<span class="kw">sum</span>(svd1$d^<span class="dv">2</span>), <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Prop. of variance explained&quot;</span>, 
-+<span class="st">     </span><span class="dt">pch =</span> <span class="dv">19</span>)</code></pre>
++<span class="st">     </span><span class="dt">pch =</span> <span class="dv">19</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-12"></span>
 <img src="images/dr-unnamed-chunk-12-1.png" alt="Variance explained by singular vectors" width="768" />
 <p class="caption">
@@ -463,11 +481,11 @@ Figure 13.8: Variance explained by singular vectors
 <div id="relationship-to-principal-components" class="section level2">
 <h2><span class="header-section-number">13.8</span> Relationship to principal components</h2>
 <p>As we mentioned above, the SVD has a close connection to principal components analysis (PCA). PCA can be applied to the data by calling the <code>prcomp()</code> function in R. Here, we show that the first right singular vector from the SVD is equal to the first principal component vector returned by PCA.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))
 &gt;<span class="st"> </span>pca1 &lt;-<span class="st"> </span><span class="kw">prcomp</span>(dataMatrixOrdered, <span class="dt">scale =</span> <span class="ot">TRUE</span>)
 &gt;<span class="st"> </span><span class="kw">plot</span>(pca1$rotation[, <span class="dv">1</span>], svd1$v[, <span class="dv">1</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Principal Component 1&quot;</span>, 
 +<span class="st">     </span><span class="dt">ylab =</span> <span class="st">&quot;Right Singular Vector 1&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">abline</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</code></pre>
+&gt;<span class="st"> </span><span class="kw">abline</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-13"></span>
 <img src="images/dr-unnamed-chunk-13-1.png" alt="Singular vectors and principal components" width="672" />
 <p class="caption">
@@ -479,7 +497,7 @@ Figure 13.9: Singular vectors and principal components
 <div id="what-if-we-add-a-second-pattern" class="section level2">
 <h2><span class="header-section-number">13.9</span> What if we add a second pattern?</h2>
 <p>Tracking a single patter in a matrix is relatively straightforward, but typically there will be multiple layered patterns in a matrix of data. Here we add two patterns to a simulated dataset. One pattern simple adds a constant to the last 5 columns of data, while the other pattern adds an alternating pattern (every other column).</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">678910</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">678910</span>)
 &gt;<span class="st"> </span>for (i in <span class="dv">1</span>:<span class="dv">40</span>) {
 +<span class="st">     </span>coinFlip1 &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> <span class="fl">0.5</span>)
 +<span class="st">     </span>coinFlip2 &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> <span class="fl">0.5</span>)
@@ -493,14 +511,14 @@ Figure 13.9: Singular vectors and principal components
 +<span class="st">     </span>}
 +<span class="st"> </span>}
 &gt;<span class="st"> </span>hh &lt;-<span class="st"> </span><span class="kw">hclust</span>(<span class="kw">dist</span>(dataMatrix))
-&gt;<span class="st"> </span>dataMatrixOrdered &lt;-<span class="st"> </span>dataMatrix[hh$order, ]</code></pre>
+&gt;<span class="st"> </span>dataMatrixOrdered &lt;-<span class="st"> </span>dataMatrix[hh$order, ]</code></pre></div>
 <p>Here is a plot of this new dataset along with the two different patterns.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd2 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd2 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))
 &gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))
 &gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrixOrdered)[, <span class="kw">nrow</span>(dataMatrixOrdered):<span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Data&quot;</span>)
 &gt;<span class="st"> </span><span class="kw">plot</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">each =</span> <span class="dv">5</span>), <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Pattern 1&quot;</span>, 
 +<span class="st">     </span><span class="dt">main =</span> <span class="st">&quot;Block pattern&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">plot</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dv">5</span>), <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Pattern 2&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Alternating pattern&quot;</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">plot</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dv">5</span>), <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Pattern 2&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Alternating pattern&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-15"></span>
 <img src="images/dr-unnamed-chunk-15-1.png" alt="Dataset with two patterns" width="1152" />
 <p class="caption">
@@ -509,11 +527,11 @@ Figure 13.10: Dataset with two patterns
 </div>
 <p>Now, of course the plot above shows the truth, which in general we will not know.</p>
 <p>We can apply the SVD/PCA to this matrix and see how well the patterns are picked up.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd2 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd2 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))
 &gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))
 &gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrixOrdered)[, <span class="kw">nrow</span>(dataMatrixOrdered):<span class="dv">1</span>])
 &gt;<span class="st"> </span><span class="kw">plot</span>(svd2$v[, <span class="dv">1</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;First right singular vector&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">plot</span>(svd2$v[, <span class="dv">2</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Second right singular vector&quot;</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">plot</span>(svd2$v[, <span class="dv">2</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Second right singular vector&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-16"></span>
 <img src="images/dr-unnamed-chunk-16-1.png" alt="SVD with two patterns" width="1152" />
 <p class="caption">
@@ -522,11 +540,11 @@ Figure 13.11: SVD with two patterns
 </div>
 <p>We can see that the first right singular vector seems to pick up both the alternating pattern as well as the block/step pattern in the data. The second right singular vector seems to pick up a similar pattern.</p>
 <p>When we look at the variance explained, we can see that the first singular vector picks up a little more than 50% of the variation in the data.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))
 &gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
 &gt;<span class="st"> </span><span class="kw">plot</span>(svd1$d, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Singular value&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)
 &gt;<span class="st"> </span><span class="kw">plot</span>(svd1$d^<span class="dv">2</span>/<span class="kw">sum</span>(svd1$d^<span class="dv">2</span>), <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Percent of variance explained&quot;</span>, 
-+<span class="st">     </span><span class="dt">pch =</span> <span class="dv">19</span>)</code></pre>
++<span class="st">     </span><span class="dt">pch =</span> <span class="dv">19</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-17"></span>
 <img src="images/dr-unnamed-chunk-17-1.png" alt="Variation explained by singular vectors" width="768" />
 <p class="caption">
@@ -543,21 +561,21 @@ Figure 13.12: Variation explained by singular vectors
 <li><p>Is there information in the dataset that would allow you to predict/infer the values of the missing data?</p></li>
 </ul>
 <p>In the example below, we take our dataset and randomly insert some missing data.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>dataMatrix2 &lt;-<span class="st"> </span>dataMatrixOrdered
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>dataMatrix2 &lt;-<span class="st"> </span>dataMatrixOrdered
 &gt;<span class="st"> </span>## Randomly insert some missing data
-<span class="er">&gt;</span><span class="st"> </span>dataMatrix2[<span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">100</span>, <span class="dt">size =</span> <span class="dv">40</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)] &lt;-<span class="st"> </span><span class="ot">NA</span></code></pre>
+<span class="er">&gt;</span><span class="st"> </span>dataMatrix2[<span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">100</span>, <span class="dt">size =</span> <span class="dv">40</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)] &lt;-<span class="st"> </span><span class="ot">NA</span></code></pre></div>
 <p>If we try to apply the SVD on this matrix it won’t work.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrix2))
-Error in <span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrix2)):<span class="st"> </span>infinite or missing values in <span class="st">&#39;x&#39;</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrix2))
+Error in <span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrix2)):<span class="st"> </span>infinite or missing values in <span class="st">&#39;x&#39;</span></code></pre></div>
 <p>Since in this case we know that the missing data appeared completely randomly in the data, it would make sense to try to impute the values so that we can run the SVD. Here, we use the <code>impute</code> package to do a k-nearest-neighbors imputation of the missing data. The <code>impute</code> package is available from the <a href="http://bioconductor.org">Bioconductor project</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(impute)
-&gt;<span class="st"> </span>dataMatrix2 &lt;-<span class="st"> </span><span class="kw">impute.knn</span>(dataMatrix2)$data</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(impute)
+&gt;<span class="st"> </span>dataMatrix2 &lt;-<span class="st"> </span><span class="kw">impute.knn</span>(dataMatrix2)$data</code></pre></div>
 <p>Now we can compare how the SVD performs on the original dataset (no missing data) and the imputed dataset. Here, we plot the first right singular vector.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))
 &gt;<span class="st"> </span>svd2 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrix2))
 &gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
 &gt;<span class="st"> </span><span class="kw">plot</span>(svd1$v[, <span class="dv">1</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">main =</span> <span class="st">&quot;Original dataset&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">plot</span>(svd2$v[, <span class="dv">1</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">main =</span> <span class="st">&quot;Imputed dataset&quot;</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">plot</span>(svd2$v[, <span class="dv">1</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">main =</span> <span class="st">&quot;Imputed dataset&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-21"></span>
 <img src="images/dr-unnamed-chunk-21-1.png" alt="SVD on original and imputed data" width="768" />
 <p class="caption">
@@ -569,10 +587,9 @@ Figure 13.13: SVD on original and imputed data
 <div id="example-face-data" class="section level2">
 <h2><span class="header-section-number">13.11</span> Example: Face data</h2>
 <!-- ## source("http://dl.dropbox.com/u/7710864/courseraPublic/myplclust.R") -->
-
 <p>In this example, we use some data that make up an image of a face and show how the SVD can be used to produce varying approximations to this “dataset”. Here is the original data.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">load</span>(<span class="st">&quot;data/face.rda&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(faceData)[, <span class="kw">nrow</span>(faceData):<span class="dv">1</span>])</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">load</span>(<span class="st">&quot;data/face.rda&quot;</span>)
+&gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(faceData)[, <span class="kw">nrow</span>(faceData):<span class="dv">1</span>])</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-22"></span>
 <img src="images/dr-unnamed-chunk-22-1.png" alt="Face data" width="672" />
 <p class="caption">
@@ -580,8 +597,8 @@ Figure 13.14: Face data
 </p>
 </div>
 <p>If we take the SVD and plot the squared and normalized singular values, we can see that the data can be explained by just a few singular vectors, maybe 4 or 5.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(faceData))
-&gt;<span class="st"> </span><span class="kw">plot</span>(svd1$d^<span class="dv">2</span>/<span class="kw">sum</span>(svd1$d^<span class="dv">2</span>), <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Singular vector&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Variance explained&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(faceData))
+&gt;<span class="st"> </span><span class="kw">plot</span>(svd1$d^<span class="dv">2</span>/<span class="kw">sum</span>(svd1$d^<span class="dv">2</span>), <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Singular vector&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Variance explained&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-23"></span>
 <img src="images/dr-unnamed-chunk-23-1.png" alt="Proportion of variance explained" width="672" />
 <p class="caption">
@@ -589,18 +606,18 @@ Figure 13.15: Proportion of variance explained
 </p>
 </div>
 <p>Now we can start constructing approximations to the data using the left and right singular vectors. Here we create one using just the first left and right singular vectors.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Note that %*% is matrix multiplication Here svd1$d[1] is a constant
-<span class="er">&gt;</span><span class="st"> </span>approx1 &lt;-<span class="st"> </span>svd1$u[, <span class="dv">1</span>] %*%<span class="st"> </span><span class="kw">t</span>(svd1$v[, <span class="dv">1</span>]) *<span class="st"> </span>svd1$d[<span class="dv">1</span>]</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Note that %*% is matrix multiplication Here svd1$d[1] is a constant
+<span class="er">&gt;</span><span class="st"> </span>approx1 &lt;-<span class="st"> </span>svd1$u[, <span class="dv">1</span>] %*%<span class="st"> </span><span class="kw">t</span>(svd1$v[, <span class="dv">1</span>]) *<span class="st"> </span>svd1$d[<span class="dv">1</span>]</code></pre></div>
 <p>We can also create ones using 5 and 10 singular vectors, which presumably would be better approximations.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># In these examples we need to make the diagonal matrix out of d</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="co"># In these examples we need to make the diagonal matrix out of d</span>
 <span class="er">&gt;</span><span class="st"> </span>approx5 &lt;-<span class="st"> </span>svd1$u[, <span class="dv">1</span>:<span class="dv">5</span>] %*%<span class="st"> </span><span class="kw">diag</span>(svd1$d[<span class="dv">1</span>:<span class="dv">5</span>]) %*%<span class="st"> </span><span class="kw">t</span>(svd1$v[, <span class="dv">1</span>:<span class="dv">5</span>])
-&gt;<span class="st"> </span>approx10 &lt;-<span class="st"> </span>svd1$u[, <span class="dv">1</span>:<span class="dv">10</span>] %*%<span class="st"> </span><span class="kw">diag</span>(svd1$d[<span class="dv">1</span>:<span class="dv">10</span>]) %*%<span class="st"> </span><span class="kw">t</span>(svd1$v[, <span class="dv">1</span>:<span class="dv">10</span>])</code></pre>
+&gt;<span class="st"> </span>approx10 &lt;-<span class="st"> </span>svd1$u[, <span class="dv">1</span>:<span class="dv">10</span>] %*%<span class="st"> </span><span class="kw">diag</span>(svd1$d[<span class="dv">1</span>:<span class="dv">10</span>]) %*%<span class="st"> </span><span class="kw">t</span>(svd1$v[, <span class="dv">1</span>:<span class="dv">10</span>])</code></pre></div>
 <p>Now we can plot each one of these approximations along with the original data.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">4</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">4</span>))
 &gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(approx1)[, <span class="kw">nrow</span>(approx1):<span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;1 vector&quot;</span>)
 &gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(approx5)[, <span class="kw">nrow</span>(approx5):<span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;5 vectors&quot;</span>)
 &gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(approx10)[, <span class="kw">nrow</span>(approx10):<span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;10 vectors&quot;</span>)
-&gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(faceData)[, <span class="kw">nrow</span>(faceData):<span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Original data&quot;</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(faceData)[, <span class="kw">nrow</span>(faceData):<span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Original data&quot;</span>)</code></pre></div>
 <p><img src="images/dr-unnamed-chunk-26-1.png" width="1344" /></p>
 <p>Here, the approximation using 1 singular vector is pretty poor, but using 5 gets us pretty close to the truth. Using 10 vectors doesn’t seem to add much to the features, maybe just a few highlights. So 5 singular vectors is a reasonable approximation in this case.</p>
 </div>
@@ -617,7 +634,6 @@ Figure 13.15: Proportion of variance explained
 <li><a href="http://en.wikipedia.org/wiki/Independent_component_analysis">Independent components analysis</a></li>
 <li><p><a href="http://en.wikipedia.org/wiki/Latent_semantic_analysis">Latent semantic analysis</a></p></li>
 </ul>
-
 
 </div>
 </div>

@@ -57,23 +57,41 @@ MathJax.Hub.Config({
 
 
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -291,7 +309,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Clustering or cluster analysis is a bread and butter technique for visualizing high dimensional or multidimensional data. It’s very simple to use, the ideas are fairly intuitive, and it can serve as a really quick way to get a sense of what’s going on in a very high dimensional data set.</p>
 <p>Cluster analysis is a really important and widely used technique. If you just type “cluster analysis” into Google, there are many millions of results that come back.</p>
 <div class="figure">
-<img src="images/cluster_analysis_google.png" alt="Google search results for cluster analysis" /><p class="caption">Google search results for “cluster analysis”</p>
+<img src="images/cluster_analysis_google.png" alt="Google search results for cluster analysis" />
+<p class="caption">Google search results for “cluster analysis”</p>
 </div>
 <p>And it’s a widely applied method in many different areas of science, business, and other applications. So it’s useful to know how these techniques work.</p>
 <p>The point of clustering is to organize things or observations that are <strong>close</strong> together and separate them into groups. Of course, this simple definition raises some immediate questions:</p>
@@ -328,25 +347,26 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="example-euclidean-distance" class="section level2">
 <h2><span class="header-section-number">11.3</span> Example: Euclidean distance</h2>
 <div class="figure">
-<img src="images/distance.png" alt="Euclidean distance" /><p class="caption">Euclidean distance</p>
+<img src="images/distance.png" alt="Euclidean distance" />
+<p class="caption">Euclidean distance</p>
 </div>
 <p><a href="http://rafalab.jhsph.edu/688/lec/lecture5-clustering.pdf">source</a></p>
 <p>For example, take two cities, say, Baltimore and Washington D.C., and put them on a map. If you imagine that the center of each city has an X and a Y coordinate (say, longitude and latitude), and you want to map the distance between the centers of the two cities, then you can draw a straight diagonal line between the two cities. The distance can be calculated in the usual way, which is going to be a function of the difference in the x coordinates and the difference in the y coordinates. In the two-dimensional plane, you take the distance in the x coordinates, square it, take the difference in the y coordinates, square that, and then add the two squares together and take the square root of the whole thing. In other words,</p>
-<p><span class="math">\[
+<p><span class="math display">\[
 Distance = [(X_1 - X_2)^2 + (Y_1 - Y_2)^2]^{1/2}
 \]</span></p>
 <p>That’s the classical definition of Euclidian distance. You can imagine if a bird were to fly from Washington, D.C. to Baltimore, it would just fly straight from one city to another. This is possible because a bird isn’t impeded by things like roads or mountains, or whatever. Whether that makes sense for you depends on, among other things, whether you’re a bird or not. And so you have to think about the properties of this distance metric in the context of your problem.</p>
 <p>One nice feature of Euclidean distance is that it’s easily generalizable to higher dimensions. If instead of two dimensions you have 100 dimensions, you can easily take the differences between each of the 100 dimensions, square them, sum them together and then take the square root. So the Euclidean distance metric extends very naturally to very high dimensions problems.</p>
 <p>In general the formula for Euclidean distance between point</p>
-<p><span class="math">\[
+<p><span class="math display">\[
 A = (A_1, A_2, \dots, A_n)
 \]</span></p>
 <p>and</p>
-<p><span class="math">\[
+<p><span class="math display">\[
 B = (B_1, B_2, \dots, B_n)
 \]</span></p>
 <p>is</p>
-<p><span class="math">\[
+<p><span class="math display">\[
 Distance = ((A_1-B_1)^2 + (A_2-B_2)^2 + \cdots + (A_n-B_n)^2)^{(1/2)}
 \]</span></p>
 </div>
@@ -354,12 +374,13 @@ Distance = ((A_1-B_1)^2 + (A_2-B_2)^2 + \cdots + (A_n-B_n)^2)^{(1/2)}
 <h2><span class="header-section-number">11.4</span> Example: Manhattan distance</h2>
 <p>The Manhattan distance gets its name from the idea that you can look at points as being on a grid or lattice, not unlike the grid making up the streets of Manhattan in New York City.</p>
 <div class="figure">
-<img src="images/manhattan.png" alt="Manhattan distance" /><p class="caption">Manhattan distance</p>
+<img src="images/manhattan.png" alt="Manhattan distance" />
+<p class="caption">Manhattan distance</p>
 </div>
 <p>In a city, if you want to go from point A to point B, you usually cannot take the direct route there because there will be buildings in the way. So instead, you have to follow the streets, or the grid layout, of the city to navigate around. That’s the idea behind Manhattan distance</p>
 <p>In the figure above, the red, blue, and yellow lines show various way of getting between the two black circles using the grid layout, while the green line shows the Euclidean distance. The Manhattan distance between the points is simply the sum of the right-left moves plus the sum of all the up-down moves on the grid.</p>
 <p>In general:</p>
-<p><span class="math">\[
+<p><span class="math display">\[
 Distance = |A_1-B_1| + |A_2-B_2| + \cdots + |A_n-B_n|
 \]</span></p>
 <p>Check out Wikipedia’s page on <a href="http://en.wikipedia.org/wiki/Taxicab_geometry">taxicab geometry</a> for a fun diversion.</p>
@@ -367,11 +388,11 @@ Distance = |A_1-B_1| + |A_2-B_2| + \cdots + |A_n-B_n|
 <div id="example-hierarchical-clustering" class="section level2">
 <h2><span class="header-section-number">11.5</span> Example: Hierarchical clustering</h2>
 <p>Here is a simple example demonstrating how hierarchical clustering works. First we’ll simulate some data in three separate clusters.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1234</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1234</span>)
 &gt;<span class="st"> </span>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">12</span>, <span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dt">each =</span> <span class="dv">4</span>), <span class="fl">0.2</span>)
 &gt;<span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">12</span>, <span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">each =</span> <span class="dv">4</span>), <span class="fl">0.2</span>)
 &gt;<span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>)
-&gt;<span class="st"> </span><span class="kw">text</span>(x +<span class="st"> </span><span class="fl">0.05</span>, y +<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">labels =</span> <span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">12</span>))</code></pre>
+&gt;<span class="st"> </span><span class="kw">text</span>(x +<span class="st"> </span><span class="fl">0.05</span>, y +<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">labels =</span> <span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">12</span>))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-2"></span>
 <img src="images/hclust-unnamed-chunk-2-1.png" alt="Simulated clustered data" width="672" />
 <p class="caption">
@@ -380,7 +401,7 @@ Figure 11.1: Simulated clustered data
 </div>
 <p>The first step in the basic clustering approach is to calculate the distance between every point with every other point. The result is a <em>distance matrix</em>, which can be computed with the <code>dist()</code> function in R.</p>
 <p>Here is just a piece of the distance matrix associated with the figure above.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>dataFrame &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>dataFrame &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)
 &gt;<span class="st"> </span><span class="kw">dist</span>(dataFrame)
             <span class="dv">1</span>          <span class="dv">2</span>          <span class="dv">3</span>          <span class="dv">4</span>          <span class="dv">5</span>          <span class="dv">6</span>
 <span class="dv">2</span>  <span class="fl">0.34120511</span>                                                       
@@ -405,11 +426,11 @@ Figure 11.1: Simulated clustered data
 <span class="dv">9</span>  <span class="fl">1.28582631</span> <span class="fl">1.76460709</span>                                 
 <span class="dv">10</span> <span class="fl">1.32063059</span> <span class="fl">1.83517785</span> <span class="fl">0.14090406</span>                      
 <span class="dv">11</span> <span class="fl">1.37369662</span> <span class="fl">1.86999431</span> <span class="fl">0.11624471</span> <span class="fl">0.08317570</span>           
-<span class="dv">12</span> <span class="fl">1.17740375</span> <span class="fl">1.66223814</span> <span class="fl">0.10848966</span> <span class="fl">0.19128645</span> <span class="fl">0.20802789</span></code></pre>
+<span class="dv">12</span> <span class="fl">1.17740375</span> <span class="fl">1.66223814</span> <span class="fl">0.10848966</span> <span class="fl">0.19128645</span> <span class="fl">0.20802789</span></code></pre></div>
 <p>The default distance metric used by the <code>dist()</code> function is Euclidean distance.</p>
 <p>Note that usually you will <em>not</em> have to explicitly compute the distance matrix (unless you are inventing your own clustering method). Here I just print it out to show what’s going on internally.</p>
 <p>First an agglomerative clustering approach attempts to find the two points that are closest together. In other words, we want to find the smallest non-zero entry in the distance matrix.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>rdistxy &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">dist</span>(dataFrame))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>rdistxy &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">dist</span>(dataFrame))
 &gt;<span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span>## Remove the diagonal from consideration
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">diag</span>(rdistxy) &lt;-<span class="st"> </span><span class="kw">diag</span>(rdistxy) +<span class="st"> </span><span class="dv">100000</span>
@@ -419,11 +440,11 @@ Figure 11.1: Simulated clustered data
 &gt;<span class="st"> </span>ind
   row col
 <span class="dv">6</span>   <span class="dv">6</span>   <span class="dv">5</span>
-<span class="dv">5</span>   <span class="dv">5</span>   <span class="dv">6</span></code></pre>
+<span class="dv">5</span>   <span class="dv">5</span>   <span class="dv">6</span></code></pre></div>
 <p>Now we can plot the points and show which two points are closest together according to our distance metric.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>)
 &gt;<span class="st"> </span><span class="kw">text</span>(x +<span class="st"> </span><span class="fl">0.05</span>, y +<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">labels =</span> <span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">12</span>))
-&gt;<span class="st"> </span><span class="kw">points</span>(x[ind[<span class="dv">1</span>, ]], y[ind[<span class="dv">1</span>, ]], <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">points</span>(x[ind[<span class="dv">1</span>, ]], y[ind[<span class="dv">1</span>, ]], <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-5"></span>
 <img src="images/hclust-unnamed-chunk-5-1.png" alt="Two closest points" width="672" />
 <p class="caption">
@@ -431,7 +452,7 @@ Figure 11.2: Two closest points
 </p>
 </div>
 <p>The next step for the algorithm is to start drawing the tree, the first step of which would be to “merge” these two points together.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
 &gt;<span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>, <span class="dt">main =</span> <span class="st">&quot;Data&quot;</span>)
 &gt;<span class="st"> </span><span class="kw">text</span>(x +<span class="st"> </span><span class="fl">0.05</span>, y +<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">labels =</span> <span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">12</span>))
 &gt;<span class="st"> </span><span class="kw">points</span>(x[ind[<span class="dv">1</span>, ]], y[ind[<span class="dv">1</span>, ]], <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>)
@@ -441,7 +462,7 @@ Figure 11.2: Two closest points
 &gt;<span class="st"> </span>hcluster &lt;-<span class="st"> </span><span class="kw">dist</span>(dataFrame) %&gt;%<span class="st"> </span>hclust
 &gt;<span class="st"> </span>dendro &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hcluster)
 &gt;<span class="st"> </span>cutDendro &lt;-<span class="st"> </span><span class="kw">cut</span>(dendro, <span class="dt">h =</span> (hcluster$height[<span class="dv">1</span>] +<span class="st"> </span><span class="fl">0.00001</span>))
-&gt;<span class="st"> </span><span class="kw">plot</span>(cutDendro$lower[[<span class="dv">11</span>]], <span class="dt">yaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Begin building tree&quot;</span>)</code></pre>
+&gt;<span class="st"> </span><span class="kw">plot</span>(cutDendro$lower[[<span class="dv">11</span>]], <span class="dt">yaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Begin building tree&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-6"></span>
 <img src="images/hclust-unnamed-chunk-6-1.png" alt="Merging of first two points" width="1152" />
 <p class="caption">
@@ -456,12 +477,12 @@ Figure 11.4: First set of merged points/cluster
 </p>
 </div>
 <p>We need to search the distance matrix for the <em>next</em> two closest points, ignoring the first two that we already merged.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>nextmin &lt;-<span class="st"> </span>rdistxy[<span class="kw">order</span>(rdistxy)][<span class="dv">3</span>]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>nextmin &lt;-<span class="st"> </span>rdistxy[<span class="kw">order</span>(rdistxy)][<span class="dv">3</span>]
 &gt;<span class="st"> </span>ind &lt;-<span class="st"> </span><span class="kw">which</span>(rdistxy ==<span class="st"> </span>nextmin,<span class="dt">arr.ind=</span><span class="ot">TRUE</span>)
 &gt;<span class="st"> </span>ind
    row col
 <span class="dv">11</span>  <span class="dv">11</span>  <span class="dv">10</span>
-<span class="dv">10</span>  <span class="dv">10</span>  <span class="dv">11</span></code></pre>
+<span class="dv">10</span>  <span class="dv">10</span>  <span class="dv">11</span></code></pre></div>
 <p>Now we can plot the data with this next pair of points and the merged tree leaves.</p>
 <div class="figure"><span id="fig:unnamed-chunk-9"></span>
 <img src="images/hclust-unnamed-chunk-9-1.png" alt="Second set of merged points" width="1344" />
@@ -470,8 +491,8 @@ Figure 11.5: Second set of merged points
 </p>
 </div>
 <p>And on and on in this manner. If we were to continue in this fashion–identifying the two closest points and merging them, we’d end up with a <em>dendrogram</em> that looks like this one. Here, we call the <code>hclust()</code> do run the clustering algorithm.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>hClustering &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y) %&gt;%<span class="st"> </span>dist %&gt;%<span class="st"> </span>hclust
-&gt;<span class="st"> </span><span class="kw">plot</span>(hClustering)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>hClustering &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y) %&gt;%<span class="st"> </span>dist %&gt;%<span class="st"> </span>hclust
+&gt;<span class="st"> </span><span class="kw">plot</span>(hClustering)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-10"></span>
 <img src="images/hclust-unnamed-chunk-10-1.png" alt="Full hierarchical clustering dendrogram" width="672" />
 <p class="caption">
@@ -483,7 +504,7 @@ Figure 11.6: Full hierarchical clustering dendrogram
 <div id="prettier-dendrograms" class="section level2">
 <h2><span class="header-section-number">11.6</span> Prettier dendrograms</h2>
 <p>It’s possible to make slightly prettier dendrograms with some modification to the usual plotting method for the output of <code>hclust()</code>. Here’s a function that takes the output of <code>hclust()</code> and color codes each of the cluster members by their cluster membership.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>myplclust &lt;-<span class="st"> </span>function(hclust, <span class="dt">lab =</span> hclust$labels, <span class="dt">lab.col =</span> <span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">length</span>(hclust$labels)), 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>myplclust &lt;-<span class="st"> </span>function(hclust, <span class="dt">lab =</span> hclust$labels, <span class="dt">lab.col =</span> <span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">length</span>(hclust$labels)), 
 +<span class="st">     </span><span class="dt">hang =</span> <span class="fl">0.1</span>, ...) {
 +<span class="st">     </span>## modifiction of plclust for plotting hclust objects *in colour*!  Copyright
 +<span class="st">     </span>## Eva KF Chan 2009 Arguments: hclust: hclust object lab: a character vector
@@ -500,10 +521,10 @@ Figure 11.6: Full hierarchical clustering dendrogram
 +<span class="st">     </span><span class="kw">plot</span>(hclust, <span class="dt">labels =</span> <span class="ot">FALSE</span>, <span class="dt">hang =</span> hang, ...)
 +<span class="st">     </span><span class="kw">text</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y[hclust$order] -<span class="st"> </span>(<span class="kw">max</span>(hclust$height) *<span class="st"> </span>hang), <span class="dt">labels =</span> lab[hclust$order], 
 +<span class="st">         </span><span class="dt">col =</span> lab.col[hclust$order], <span class="dt">srt =</span> <span class="dv">90</span>, <span class="dt">adj =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="fl">0.5</span>), <span class="dt">xpd =</span> <span class="ot">NA</span>, ...)
-+<span class="st"> </span>}</code></pre>
++<span class="st"> </span>}</code></pre></div>
 <p>And here’s the output the function produces.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>hClustering &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y) %&gt;%<span class="st"> </span>dist %&gt;%<span class="st"> </span>hclust
-&gt;<span class="st"> </span><span class="kw">myplclust</span>(hClustering, <span class="dt">lab =</span> <span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dt">each =</span> <span class="dv">4</span>), <span class="dt">lab.col =</span> <span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dt">each =</span> <span class="dv">4</span>))</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>hClustering &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y) %&gt;%<span class="st"> </span>dist %&gt;%<span class="st"> </span>hclust
+&gt;<span class="st"> </span><span class="kw">myplclust</span>(hClustering, <span class="dt">lab =</span> <span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dt">each =</span> <span class="dv">4</span>), <span class="dt">lab.col =</span> <span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dt">each =</span> <span class="dv">4</span>))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-11"></span>
 <img src="images/hclust-unnamed-chunk-11-1.png" alt="Prettier dendrogram" width="672" />
 <p class="caption">
@@ -538,8 +559,8 @@ Figure 11.9: Average merging
 <div id="using-the-heatmap-function" class="section level2">
 <h2><span class="header-section-number">11.9</span> Using the <code>heatmap()</code> function</h2>
 <p>The <code>heatmap()</code> function is a handy way to visualize matrix data. The basic idea is that <code>heatmap()</code> sorts the rows and columns of a matrix according to the clustering determined by a call to <code>hclust()</code>. Conceptually, <code>heatmap()</code> first treats the rows of a matrix as observations and calls <code>hclust()</code> on them, then it treats the columns of a matrix as observations and calls <code>hclust()</code> on those values. The end result is that you get a dendrogram associated with both the rows and columns of a matrix, which can help you to spot obvious patterns in the data.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>dataMatrix &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y) %&gt;%<span class="st"> </span>data.matrix
-&gt;<span class="st"> </span><span class="kw">heatmap</span>(dataMatrix)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>dataMatrix &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y) %&gt;%<span class="st"> </span>data.matrix
+&gt;<span class="st"> </span><span class="kw">heatmap</span>(dataMatrix)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-14"></span>
 <img src="images/hclust-unnamed-chunk-14-1.png" alt="Heatmap with dendrograms on rows and columns" width="672" />
 <p class="caption">
@@ -563,7 +584,6 @@ Figure 11.10: Heatmap with dendrograms on rows and columns
 <li><p><a href="http://www.youtube.com/watch?v=wQhVWUcXM0A">Rafa’s Distances and Clustering Video</a></p></li>
 <li><p><a href="http://www-stat.stanford.edu/~tibs/ElemStatLearn/">Elements of statistical learning</a></p></li>
 </ul>
-
 
 </div>
 </div>

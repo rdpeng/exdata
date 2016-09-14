@@ -57,23 +57,41 @@ MathJax.Hub.Config({
 
 
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -318,8 +336,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>There is a suggestion that overweight individuals may be more susceptible to the negative effects of inhaling PM2.5. This would suggest that increases in PM2.5 exposure in the home of an overweight child would be more deleterious to his/her asthma symptoms than they would be in the home of a normal weight child. We want to see if we can see that difference in the data from MAACS.</p>
 <p>NOTE: Because the individual-level data for this study are protected by various U.S. privacy laws, we cannot make those data available. For the purposes of this chapter, we have simulated data that share many of the same features of the original data, but do not contain any of the actual measurements or values contained in the original dataset.</p>
 <p>We can look at the data quickly with <code>str()</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">maacs &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/bmi_pm25_no2_sim.csv&quot;</span>)
-<span class="kw">str</span>(maacs)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">maacs &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/bmi_pm25_no2_sim.csv&quot;</span>)
+<span class="kw">str</span>(maacs)</code></pre></div>
 <pre><code>&#39;data.frame&#39;:   517 obs. of  4 variables:
  $ logpm25       : num  1.248 1.122 1.93 1.368 0.775 ...
  $ logno2_new    : num  1.184 1.552 1.432 1.774 0.765 ...
@@ -330,7 +348,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="building-up-in-layers" class="section level2">
 <h2><span class="header-section-number">15.3</span> Building Up in Layers</h2>
 <p>First we can create a <code>ggplot</code> object that stores the dataset and the basic aesthetics for mapping the x- and y-coordinates for the plot. Here we will eventually be plotting the log of PM2.5 and <code>NocturnalSymp</code> variable.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(maacs)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(maacs)</code></pre></div>
 <pre><code>    logpm25 logno2_new        bmicat NocturnalSympt
 1 1.2476997  1.1837987 normal weight              1
 2 1.1216476  1.5515362    overweight              0
@@ -338,30 +356,30 @@ code > span.er { color: #ff0000; font-weight: bold; }
 4 1.3679246  1.7736804    overweight              2
 5 0.7753367  0.7654826 normal weight              0
 6 1.4872785  1.1127378 normal weight              0</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(maacs, <span class="kw">aes</span>(logpm25, NocturnalSympt))
-<span class="kw">summary</span>(g)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(maacs, <span class="kw">aes</span>(logpm25, NocturnalSympt))
+<span class="kw">summary</span>(g)</code></pre></div>
 <pre><code>data: logpm25, logno2_new, bmicat, NocturnalSympt [517x4]
 mapping:  x = logpm25, y = NocturnalSympt
 faceting: facet_null() </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(g)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(g)</code></pre></div>
 <pre><code>[1] &quot;gg&quot;     &quot;ggplot&quot;</code></pre>
 <p>You can see above that the object <code>g</code> contains the dataset <code>maacs</code> and the mappings.</p>
 <p>Now, normally if you were to <code>print()</code> a <code>ggplot</code> object a plot would appear on the plot device, however, our object <code>g</code> actually doesn’t contain enough information to make a plot yet.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(maacs, <span class="kw">aes</span>(logpm25, NocturnalSympt))
-<span class="kw">print</span>(g)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(maacs, <span class="kw">aes</span>(logpm25, NocturnalSympt))
+<span class="kw">print</span>(g)</code></pre></div>
 <p><img src="images/ggplot2-unnamed-chunk-25-1.png" width="672" /></p>
 </div>
 <div id="first-plot-with-point-layer" class="section level2">
 <h2><span class="header-section-number">15.4</span> First Plot with Point Layer</h2>
 <p>To make a scatterplot we need add at least one <em>geom</em>, such as points. Here we add the <code>geom_point()</code> function to create a traditional scatterplot.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(maacs, <span class="kw">aes</span>(logpm25, NocturnalSympt))
-g +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(maacs, <span class="kw">aes</span>(logpm25, NocturnalSympt))
+g +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
 <p><img src="images/ggplot2-Scatterplot of PM2.5 and days with nocturnal symptoms-1.png" width="672" /></p>
 </div>
 <div id="adding-more-layers-smooth" class="section level2">
 <h2><span class="header-section-number">15.5</span> Adding More Layers: Smooth</h2>
 <p>Because the data appear rather noisy, it might be better if we added a smoother on top of the points to see if there is a trend in the data with PM2.5.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>() +<span class="st"> </span><span class="kw">geom_smooth</span>()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>() +<span class="st"> </span><span class="kw">geom_smooth</span>()</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-26"></span>
 <img src="images/ggplot2-unnamed-chunk-26-1.png" alt="Scatterplot with smoother" width="672" />
 <p class="caption">
@@ -369,7 +387,7 @@ Figure 15.1: Scatterplot with smoother
 </p>
 </div>
 <p>The default smoother is a loess smoother, which is flexible and nonparametric but might be too flexible for our purposes. Perhaps we’d prefer a simple linear regression line to highlight any first order trends. We can do this by specifying <code>method = &quot;lm&quot;</code> to <code>geom_smooth()</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>() +<span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>() +<span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-27"></span>
 <img src="images/ggplot2-unnamed-chunk-27-1.png" alt="Scatterplot with linear regression line" width="672" />
 <p class="caption">
@@ -381,9 +399,9 @@ Figure 15.2: Scatterplot with linear regression line
 <div id="adding-more-layers-facets" class="section level2">
 <h2><span class="header-section-number">15.6</span> Adding More Layers: Facets</h2>
 <p>Because our primary question involves comparing overweight individuals to normal weight individuals, we can stratify the scatterplot of PM2.5 and nocturnal symptoms by the BMI category (<code>bmicat</code>) variable, which indicates whether an individual is overweight or now. To visualize this we can add a <code>facet_grid()</code>, which takes a formula argument. Here we want one row and two columns, one column for each weight category. So we specify <code>bmicat</code> on the right hand side of the forumla passed to <code>facet_grid()</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>() +<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>() +<span class="st"> </span>
 <span class="st">        </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) +
-<span class="st">        </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>bmicat) </code></pre>
+<span class="st">        </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>bmicat) </code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-28"></span>
 <img src="images/ggplot2-unnamed-chunk-28-1.png" alt="Scatterplot of PM2.5 and nocturnal symptoms by BMI category" width="864" />
 <p class="caption">
@@ -401,7 +419,7 @@ Figure 15.3: Scatterplot of PM2.5 and nocturnal symptoms by BMI category
 <div id="modifying-geom-properties" class="section level2">
 <h2><span class="header-section-number">15.7</span> Modifying Geom Properties</h2>
 <p>You can modify properties of geoms by specifying options to their respective <code>geom_*</code> functions. For example, here we modify the points in the scatterplot to make the color “steelblue”, the size larger , and the alpha transparency greater.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">alpha =</span> <span class="dv">1</span>/<span class="dv">2</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">alpha =</span> <span class="dv">1</span>/<span class="dv">2</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-29"></span>
 <img src="images/ggplot2-unnamed-chunk-29-1.png" alt="Modifying point color with a constant" width="672" />
 <p class="caption">
@@ -409,7 +427,7 @@ Figure 15.4: Modifying point color with a constant
 </p>
 </div>
 <p>In addition to setting specific geom attributes to constants, we can map aesthetics to variables. So, here, we map the color aesthetic <code>color</code> to the variable <code>bmicat</code>, so the points will be colored according to the levels of <code>bmicat</code>. We use the <code>aes()</code> function to indicate this difference from the plot above.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat), <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">alpha =</span> <span class="dv">1</span>/<span class="dv">2</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat), <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">alpha =</span> <span class="dv">1</span>/<span class="dv">2</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-30"></span>
 <img src="images/ggplot2-unnamed-chunk-30-1.png" alt="Mapping color to a variable" width="672" />
 <p class="caption">
@@ -420,9 +438,9 @@ Figure 15.5: Mapping color to a variable
 <div id="modifying-labels" class="section level2">
 <h2><span class="header-section-number">15.8</span> Modifying Labels</h2>
 <p>Here is an example of modifying the title and the x and y labels to make the plot a bit more informative.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat)) +<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat)) +<span class="st"> </span>
 <span class="st">        </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;MAACS Cohort&quot;</span>) +<span class="st"> </span>
-<span class="st">        </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="kw">expression</span>(<span class="st">&quot;log &quot;</span> *<span class="st"> </span>PM[<span class="fl">2.5</span>]), <span class="dt">y =</span> <span class="st">&quot;Nocturnal Symptoms&quot;</span>)</code></pre>
+<span class="st">        </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="kw">expression</span>(<span class="st">&quot;log &quot;</span> *<span class="st"> </span>PM[<span class="fl">2.5</span>]), <span class="dt">y =</span> <span class="st">&quot;Nocturnal Symptoms&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-31"></span>
 <img src="images/ggplot2-unnamed-chunk-31-1.png" alt="Modifying plot labels" width="672" />
 <p class="caption">
@@ -433,8 +451,8 @@ Figure 15.6: Modifying plot labels
 <div id="customizing-the-smooth" class="section level2">
 <h2><span class="header-section-number">15.9</span> Customizing the Smooth</h2>
 <p>We can also customize aspects of the smoother that we overlay on the points with <code>geom_smooth()</code>. Here we change the line type and increase the size from the default. We also remove the shaded standard error from the line.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat), <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">alpha =</span> <span class="dv">1</span>/<span class="dv">2</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">linetype =</span> <span class="dv">3</span>, <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat), <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">alpha =</span> <span class="dv">1</span>/<span class="dv">2</span>) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">linetype =</span> <span class="dv">3</span>, <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-32"></span>
 <img src="images/ggplot2-unnamed-chunk-32-1.png" alt="Customizing a smoother" width="672" />
 <p class="caption">
@@ -445,7 +463,7 @@ Figure 15.7: Customizing a smoother
 <div id="changing-the-theme" class="section level2">
 <h2><span class="header-section-number">15.10</span> Changing the Theme</h2>
 <p>The default theme for <code>ggplot2</code> uses the gray background with white grid lines. If you don’t find this suitable, you can use the black and white theme by using the <code>theme_bw()</code> function. The <code>theme_bw()</code> function also allows you to set the typeface for the plot, in case you don’t want the default Helvetica. Here we change the typeface to Times.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat)) +<span class="st"> </span><span class="kw">theme_bw</span>(<span class="dt">base_family =</span> <span class="st">&quot;Times&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat)) +<span class="st"> </span><span class="kw">theme_bw</span>(<span class="dt">base_family =</span> <span class="st">&quot;Times&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-33"></span>
 <img src="images/ggplot2-unnamed-chunk-33-1.png" alt="Modifying the theme for a plot" width="672" />
 <p class="caption">
@@ -461,15 +479,15 @@ Figure 15.8: Modifying the theme for a plot
 </blockquote>
 <p>Unlike our previous BMI variable, NO2 is continuous, and so we need to make NO2 categorical so we can condition on it in the plotting. We can use the <code>cut()</code> function for this purpose. We will divide the NO2 variable into tertiles.</p>
 <p>First we need to calculate the tertiles with the <code>quantile()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">cutpoints &lt;-<span class="st"> </span><span class="kw">quantile</span>(maacs$logno2_new, <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">length =</span> <span class="dv">4</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cutpoints &lt;-<span class="st"> </span><span class="kw">quantile</span>(maacs$logno2_new, <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">length =</span> <span class="dv">4</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>Then we need to divide the original <code>logno2_new</code> variable into the ranges defined by the cut points computed above.</p>
-<pre class="sourceCode r"><code class="sourceCode r">maacs$no2tert &lt;-<span class="st"> </span><span class="kw">cut</span>(maacs$logno2_new, cutpoints)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">maacs$no2tert &lt;-<span class="st"> </span><span class="kw">cut</span>(maacs$logno2_new, cutpoints)</code></pre></div>
 <p>The <code>not2tert</code> variable is now a categorical factor variable containing 3 levels, indicating the ranges of NO2 (on the log scale).</p>
-<pre class="sourceCode r"><code class="sourceCode r">## See the levels of the newly created factor variable
-<span class="kw">levels</span>(maacs$no2tert)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## See the levels of the newly created factor variable
+<span class="kw">levels</span>(maacs$no2tert)</code></pre></div>
 <pre><code>[1] &quot;(0.342,1.23]&quot; &quot;(1.23,1.47]&quot;  &quot;(1.47,2.17]&quot; </code></pre>
 <p>The final plot shows the relationship between PM2.5 and nocturnal symptoms by BMI category and NO2 tertile.</p>
-<pre class="sourceCode r"><code class="sourceCode r">## Setup ggplot with data frame
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Setup ggplot with data frame
 g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(maacs, <span class="kw">aes</span>(logpm25, NocturnalSympt))
 
 ## Add layers
@@ -479,7 +497,7 @@ g +<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">
 <span class="st">  </span><span class="kw">theme_bw</span>(<span class="dt">base_family =</span> <span class="st">&quot;Avenir&quot;</span>, <span class="dt">base_size =</span> <span class="dv">10</span>) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="kw">expression</span>(<span class="st">&quot;log &quot;</span> *<span class="st"> </span>PM[<span class="fl">2.5</span>])) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Nocturnal Symptoms&quot;</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;MAACS Cohort&quot;</span>)</code></pre>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;MAACS Cohort&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-37"></span>
 <img src="images/ggplot2-unnamed-chunk-37-1.png" alt="PM2.5 and nocturnal symptoms by BMI category and NO2 tertile" width="864" />
 <p class="caption">
@@ -490,9 +508,9 @@ Figure 15.9: PM2.5 and nocturnal symptoms by BMI category and NO2 tertile
 <div id="a-quick-aside-about-axis-limits" class="section level2">
 <h2><span class="header-section-number">15.12</span> A Quick Aside about Axis Limits</h2>
 <p>One quick quirk about <code>ggplot2</code> that caught me up when I first started using the package can be displayed in the following example. I make a lot of time series plots and I often want to restrict the range of the y-axis while still plotting all the data. In the base graphics system you can do that as follows.</p>
-<pre class="sourceCode r"><code class="sourceCode r">testdat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">1</span>:<span class="dv">100</span>, <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">testdat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">1</span>:<span class="dv">100</span>, <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>))
 testdat[<span class="dv">50</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">100</span>  ## Outlier!
-<span class="kw">plot</span>(testdat$x, testdat$y, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(-<span class="dv">3</span>,<span class="dv">3</span>))</code></pre>
+<span class="kw">plot</span>(testdat$x, testdat$y, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(-<span class="dv">3</span>,<span class="dv">3</span>))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-38"></span>
 <img src="images/ggplot2-unnamed-chunk-38-1.png" alt="Time series plot with base graphics" width="672" />
 <p class="caption">
@@ -501,8 +519,8 @@ Figure 15.10: Time series plot with base graphics
 </div>
 <p>Here I’ve restricted the y-axis range to be between -3 and 3, even though there is a clear outlier in the data.</p>
 <p>With <code>ggplot2</code> the default settings will give you this.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(testdat, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y))
-g +<span class="st"> </span><span class="kw">geom_line</span>()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(testdat, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y))
+g +<span class="st"> </span><span class="kw">geom_line</span>()</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-39"></span>
 <img src="images/ggplot2-unnamed-chunk-39-1.png" alt="Time series plot with default settings" width="672" />
 <p class="caption">
@@ -510,7 +528,7 @@ Figure 15.11: Time series plot with default settings
 </p>
 </div>
 <p>Modifying the <code>ylim()</code> attribute would seem to give you the same thing as the base plot, but it doesn’t.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_line</span>() +<span class="st"> </span><span class="kw">ylim</span>(-<span class="dv">3</span>, <span class="dv">3</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_line</span>() +<span class="st"> </span><span class="kw">ylim</span>(-<span class="dv">3</span>, <span class="dv">3</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-40"></span>
 <img src="images/ggplot2-unnamed-chunk-40-1.png" alt="Time series plot with modified ylim" width="672" />
 <p class="caption">
@@ -519,7 +537,7 @@ Figure 15.12: Time series plot with modified ylim
 </div>
 <p>Effectively, what this does is subset the data so that only observations between -3 and 3 are included, then plot the data.</p>
 <p>To plot the data without subsetting it first and still get the restricted range, you have to do the following.</p>
-<pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_line</span>() +<span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(-<span class="dv">3</span>, <span class="dv">3</span>))</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">geom_line</span>() +<span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(-<span class="dv">3</span>, <span class="dv">3</span>))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-41"></span>
 <img src="images/ggplot2-unnamed-chunk-41-1.png" alt="Time series plot with restricted y-axis range" width="672" />
 <p class="caption">
@@ -533,10 +551,9 @@ Figure 15.13: Time series plot with restricted y-axis range
 <ul>
 <li>The <em>ggplot2</em> book by Hadley Wickham</li>
 <li>The <em>R Graphics Cookbook</em> by Winston Chang (examples in base plots and in ggplot2)</li>
-<li>ggplot2 web site (<a href="http://ggplot2.org">http://ggplot2.org</a>)</li>
-<li>ggplot2 mailing list (<a href="http://goo.gl/OdW3uB">http://goo.gl/OdW3uB</a>), primarily for developers</li>
+<li>ggplot2 web site (<a href="http://ggplot2.org" class="uri">http://ggplot2.org</a>)</li>
+<li>ggplot2 mailing list (<a href="http://goo.gl/OdW3uB" class="uri">http://goo.gl/OdW3uB</a>), primarily for developers</li>
 </ul>
-
 
 </div>
 </div>

@@ -57,23 +57,41 @@ MathJax.Hub.Config({
 
 
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -287,7 +305,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
             <section class="normal" id="section-">
 <div id="the-ggplot2-plotting-system-part-1" class="section level1">
 <h1><span class="header-section-number">14</span> The ggplot2 Plotting System: Part 1</h1>
-<p>The <code>ggplot2</code> package in R is an implementation of <em>The Grammar of Graphics</em> as described by Leland Wilkinson in his book. The package was originally written by Hadley Wickham while he was a graduate student at Iowa State University (he still actively maintains the packgae). The package implements what might be considered a third graphics system for R (along with <code>base</code> graphics and <code>lattice</code>). The package is available from <a href="http://cran.r-project.org/package=ggplot2">CRAN</a> via <code>install.packages()</code>; the latest version of the source can be found on the package’s <a href="https://github.com/hadley/ggplot2">GitHub Repository</a>. Documentation of the package can be found at <a href=""><a href="http://docs.ggplot2.org/current/">http://docs.ggplot2.org/current/</a></a></p>
+<p>The <code>ggplot2</code> package in R is an implementation of <em>The Grammar of Graphics</em> as described by Leland Wilkinson in his book. The package was originally written by Hadley Wickham while he was a graduate student at Iowa State University (he still actively maintains the packgae). The package implements what might be considered a third graphics system for R (along with <code>base</code> graphics and <code>lattice</code>). The package is available from <a href="http://cran.r-project.org/package=ggplot2">CRAN</a> via <code>install.packages()</code>; the latest version of the source can be found on the package’s <a href="https://github.com/hadley/ggplot2">GitHub Repository</a>. Documentation of the package can be found at <a href="">http://docs.ggplot2.org/current/</a></p>
 <p>The grammar of graphics represents an abstraction of graphics ideas and objects. You can think of this as developing the verbs, nouns, and adjectives for data graphics. Developing such a grammar allows for a “theory” of graphics on which to build new graphics and graphics objects. To quote from Hadley Wickham’s book on <code>ggplot2</code>, we want to “shorten the distance from mind to page”. In summary,</p>
 <blockquote>
 <p>“…the grammar tells us that a statistical graphic is a <strong>mapping</strong> from data to <strong>aesthetic</strong> attributes (colour, shape, size) of <strong>geometric</strong> objects (points, lines, bars). The plot may also contain statistical transformations of the data and is drawn on a specific coordinate system” – from <em>ggplot2</em> book</p>
@@ -295,10 +313,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>You might ask yourself “Why do we need a grammar of graphics?” Well, for much the same reasons that having a grammar is useful for spoken languages. The grammer allows for a more compact summary of the base components of a language, and it allows us to extend the language and to handle situations that we have not before seen.</p>
 <p>If you think about making a plot with the base graphics system, the plot is constructed by calling a series of functions that either create or annotate a plot. There’s no convenient agreed-upon way to describe the plot, except to just recite the series of R functions that were called to create the thing in the first place. In a previous chapter, we described the base plotting system as a kind of “artist’s palette” model, where you start with blank “canvas” and build up from there.</p>
 <p>For example, consider the following plot made using base graphics.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with</span>(airquality, { 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">with</span>(airquality, { 
         <span class="kw">plot</span>(Temp, Ozone)
         <span class="kw">lines</span>(<span class="kw">loess.smooth</span>(Temp, Ozone))
-})</code></pre>
+})</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-1"></span>
 <img src="images/ggplot2-unnamed-chunk-1-1.png" alt="Scatterplot of Temperature and Ozone in New York (base graphics)" width="672" />
 <p class="caption">
@@ -308,10 +326,10 @@ Figure 14.1: Scatterplot of Temperature and Ozone in New York (base graphics)
 <p>How would one describe the creation of this plot? Well, we could say that we called the <code>plot()</code> function and then added a loess smoother by calling the <code>lines()</code> function on the output of <code>loess.smooth()</code>.</p>
 <p>The base plotting system is convenient and it often mirrors how we think of building plots and analyzing data. But a key drawback is that you can’t go back once plot has started (e.g. to adjust margins), so there is in fact a need to plan in advance. Furthermore, it is difficult to “translate” a plot to others because there’s no formal graphical language; each plot is just a series of R commands.</p>
 <p>Here’s the same plot made using <code>ggplot2</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">ggplot</span>(airquality, <span class="kw">aes</span>(Temp, Ozone)) +<span class="st"> </span>
 <span class="st">        </span><span class="kw">geom_point</span>() +<span class="st"> </span>
-<span class="st">        </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre>
+<span class="st">        </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-2"></span>
 <img src="images/ggplot2-unnamed-chunk-2-1.png" alt="Scatterplot of Temperature and Ozone in New York (ggplot2)" width="672" />
 <p class="caption">
@@ -339,8 +357,8 @@ Figure 14.2: Scatterplot of Temperature and Ozone in New York (ggplot2)
 <div id="ggplot2-hello-world" class="section level2">
 <h2><span class="header-section-number">14.3</span> ggplot2 “Hello, world!”</h2>
 <p>This example dataset comes with the <code>ggplot2</code> package and contains data on the fuel economy of 38 popular models of car from 1999 to 2008.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
-<span class="kw">str</span>(mpg)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">str</span>(mpg)</code></pre></div>
 <pre><code>Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:   234 obs. of  11 variables:
  $ manufacturer: chr  &quot;audi&quot; &quot;audi&quot; &quot;audi&quot; &quot;audi&quot; ...
  $ model       : chr  &quot;a4&quot; &quot;a4&quot; &quot;a4&quot; &quot;a4&quot; ...
@@ -355,7 +373,7 @@ Figure 14.2: Scatterplot of Temperature and Ozone in New York (ggplot2)
  $ class       : chr  &quot;compact&quot; &quot;compact&quot; &quot;compact&quot; &quot;compact&quot; ...</code></pre>
 <p>You can see from the <code>str()</code> output that all of the factor variables are appropriately coded with meaningful labels. This will come in handy when <code>qplot()</code> has to label different aspects of a plot. Also note that all of the columns/variables have meaningful (if sometimes abbreviated) names, rather than names like “X1”, and “X2”, etc.</p>
 <p>We can make a quick scatterplot of the engine displacement (<code>displ</code>) and the highway miles per gallon (<code>hwy</code>).</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-4"></span>
 <img src="images/ggplot2-unnamed-chunk-4-1.png" alt="Plot of engine displacement and highway mileage" width="672" />
 <p class="caption">
@@ -367,7 +385,7 @@ Figure 14.3: Plot of engine displacement and highway mileage
 <div id="modifying-aesthetics" class="section level2">
 <h2><span class="header-section-number">14.4</span> Modifying aesthetics</h2>
 <p>We can introduce a third variable into the plot by modifying the color of the points based on the value of that third variable. Color is an aesthetic and the color of each point can be mapped to a variable. Note that the x-coordinates and y-coordinates are aesthetics too, and they got mapped to the <code>displ</code> and <code>hwy</code> variables, respectively. In this case we will map the color to the <code>drv</code> variable which indicates whether a car is front wheel drive, rear wheel drive, or 4-wheel drive.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg, <span class="dt">color =</span> drv)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg, <span class="dt">color =</span> drv)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-5"></span>
 <img src="images/ggplot2-unnamed-chunk-5-1.png" alt="Engine displacement and highway mileage by drive class" width="672" />
 <p class="caption">
@@ -379,7 +397,7 @@ Figure 14.4: Engine displacement and highway mileage by drive class
 <div id="adding-a-geom" class="section level2">
 <h2><span class="header-section-number">14.5</span> Adding a geom</h2>
 <p>Sometimes it’s nice to add a smoother to a scatterplot ot highlight any trends. Trends can be difficult to see if the data are very noisy or there are many data points obscuring the view. A smooth is a “geom” that you can add along with your data points.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg, <span class="dt">geom =</span> <span class="kw">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;smooth&quot;</span>))</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg, <span class="dt">geom =</span> <span class="kw">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;smooth&quot;</span>))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-6"></span>
 <img src="images/ggplot2-unnamed-chunk-6-1.png" alt="Engine displacement and highway mileage w/smoother" width="672" />
 <p class="caption">
@@ -392,7 +410,7 @@ Figure 14.5: Engine displacement and highway mileage w/smoother
 <div id="histograms" class="section level2">
 <h2><span class="header-section-number">14.6</span> Histograms</h2>
 <p>The <code>qplot()</code> function can be used to be used to plot 1-dimensional data too. By specifying a single variable, <code>qplot()</code> will by default make a histogram. Here we make a histogram if the highway mileage data and stratify on the drive class. So technically this is three histograms overlayed on top of each other.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(hwy, <span class="dt">data =</span> mpg, <span class="dt">fill =</span> drv, <span class="dt">binwidth =</span> <span class="dv">2</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(hwy, <span class="dt">data =</span> mpg, <span class="dt">fill =</span> drv, <span class="dt">binwidth =</span> <span class="dv">2</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-7"></span>
 <img src="images/ggplot2-unnamed-chunk-7-1.png" alt="Histogram of highway mileage by drive class" width="672" />
 <p class="caption">
@@ -400,7 +418,7 @@ Figure 14.6: Histogram of highway mileage by drive class
 </p>
 </div>
 <p>Having the different colors for each drive class is nice, but the three histograms can be a bit difficult to separate out. Side-by-side boxplots is one solution to this problem.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(drv, hwy, <span class="dt">data =</span> mpg, <span class="dt">geom =</span> <span class="st">&quot;boxplot&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(drv, hwy, <span class="dt">data =</span> mpg, <span class="dt">geom =</span> <span class="st">&quot;boxplot&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-8"></span>
 <img src="images/ggplot2-unnamed-chunk-8-1.png" alt="Boxplots of highway mileage by drive class" width="672" />
 <p class="caption">
@@ -413,7 +431,7 @@ Figure 14.7: Boxplots of highway mileage by drive class
 <h2><span class="header-section-number">14.7</span> Facets</h2>
 <p>Facets are a way to create multiple panels of plots based on the levels of categorical variable. Here, we want to see a histogram of the highway mileages and the categorical variable is the drive class variable. We can do that using the <code>facets</code> argument to <code>qplot()</code>.</p>
 <p>The <code>facets</code> argument expects a formula type of input, with a <code>~</code> separating the left hand side variable and the right hand side variable. The left hand side variable indicates how the rows of the panels should be divided and the right hand side variable indicates how the columns of the panels should be divided. Here, we just want three rows of histograms (and just one column), one for each drive class, so we specify <code>drv</code> on the left hand side and <code>.</code> on the right hand side indicating that there’s no variable there (it’s empty).</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(hwy, <span class="dt">data =</span> mpg, <span class="dt">facets =</span> drv ~<span class="st"> </span>., <span class="dt">binwidth =</span> <span class="dv">2</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(hwy, <span class="dt">data =</span> mpg, <span class="dt">facets =</span> drv ~<span class="st"> </span>., <span class="dt">binwidth =</span> <span class="dv">2</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-9"></span>
 <img src="images/ggplot2-unnamed-chunk-9-1.png" alt="Histogram of highway mileage by drive class" width="480" />
 <p class="caption">
@@ -421,7 +439,7 @@ Figure 14.8: Histogram of highway mileage by drive class
 </p>
 </div>
 <p>We could also look at more data using facets, so instead of histograms we could look at scatterplots of engine displacement and highway mileage by drive class. Here we put the <code>drv</code> variable on the right hand side to indicate that we want a column for each drive class (as opposed to splitting by rows like we did above).</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg, <span class="dt">facets =</span> . ~<span class="st"> </span>drv)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg, <span class="dt">facets =</span> . ~<span class="st"> </span>drv)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-10"></span>
 <img src="images/ggplot2-unnamed-chunk-10-1.png" alt="Engine displacement and highway mileage by drive class" width="576" />
 <p class="caption">
@@ -429,7 +447,7 @@ Figure 14.9: Engine displacement and highway mileage by drive class
 </p>
 </div>
 <p>What if you wanted to add a smoother to each one of those panels? Simple, you literally just add the smoother as another geom.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg, <span class="dt">facets =</span> . ~<span class="st"> </span>drv) +<span class="st"> </span><span class="kw">geom_smooth</span>()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg, <span class="dt">facets =</span> . ~<span class="st"> </span>drv) +<span class="st"> </span><span class="kw">geom_smooth</span>()</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-11"></span>
 <img src="images/ggplot2-unnamed-chunk-11-1.png" alt="Engine displacement and highway mileage by drive class w/smoother" width="576" />
 <p class="caption">
@@ -437,7 +455,7 @@ Figure 14.10: Engine displacement and highway mileage by drive class w/smoother
 </p>
 </div>
 <p>You could have also used the “geom” argument to <code>qplot()</code>, as in</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg, <span class="dt">facets =</span> . ~<span class="st"> </span>drv, <span class="dt">geom =</span> <span class="kw">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;smooth&quot;</span>))</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg, <span class="dt">facets =</span> . ~<span class="st"> </span>drv, <span class="dt">geom =</span> <span class="kw">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;smooth&quot;</span>))</code></pre></div>
 <p>There’s more than one way to do it.</p>
 </div>
 <div id="case-study-maacs-cohort" class="section level2">
@@ -456,7 +474,7 @@ Figure 14.10: Engine displacement and highway mileage by drive class w/smoother
 <li><p><code>eno</code>: exhaled nitric oxide</p></li>
 </ul>
 <p>The outcome of interest for this analysis will be exhaled nitric oxide (eNO), which is a measure of pulmonary inflamation. We can get a sense of how eNO is distributed in this population by making a quick histogram of the variable. Here, we take the log of eNO because some right-skew in the data.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(eno), <span class="dt">data =</span> maacs)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(eno), <span class="dt">data =</span> maacs)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-14"></span>
 <img src="images/ggplot2-unnamed-chunk-14-1.png" alt="Histogram of log eNO" width="672" />
 <p class="caption">
@@ -464,7 +482,7 @@ Figure 14.11: Histogram of log eNO
 </p>
 </div>
 <p>A quick glance suggests that the histogram is a bit “fat”, suggesting that there might be multiple groups of people being lumped together. We can stratify the histogram by whether they are allergic to mouse.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">fill =</span> mopos)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">fill =</span> mopos)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-15"></span>
 <img src="images/ggplot2-unnamed-chunk-15-1.png" alt="Histogram of log eNO by mouse allergic status" width="672" />
 <p class="caption">
@@ -473,7 +491,7 @@ Figure 14.12: Histogram of log eNO by mouse allergic status
 </div>
 <p>We can see from this plot that the non-allergic subjects are shifted slightly to the left, indicating a lower eNO and less pulmonary inflammation. That said, there is significant overlap between the two groups.</p>
 <p>An alternative to histograms is a density smoother, which sometimes can be easier to visualize when there are multiple groups. Here is a density smooth of the entire study population.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">geom =</span> <span class="st">&quot;density&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">geom =</span> <span class="st">&quot;density&quot;</span>)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-16"></span>
 <img src="images/ggplot2-unnamed-chunk-16-1.png" alt="Density smooth of log eNO" width="672" />
 <p class="caption">
@@ -481,7 +499,7 @@ Figure 14.13: Density smooth of log eNO
 </p>
 </div>
 <p>And here are the densities straitified by allergic status. We can map the color aesthetic to the <code>mopos</code> variable.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">geom =</span> <span class="st">&quot;density&quot;</span>, <span class="dt">color =</span> mopos)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">geom =</span> <span class="st">&quot;density&quot;</span>, <span class="dt">color =</span> mopos)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-17"></span>
 <img src="images/ggplot2-unnamed-chunk-17-1.png" alt="Density smooth of log eNO by mouse allergic status" width="672" />
 <p class="caption">
@@ -490,7 +508,7 @@ Figure 14.14: Density smooth of log eNO by mouse allergic status
 </div>
 <p>These tell the same story as the stratified histograms, which sould come as no surprise.</p>
 <p>Now we can examine the indoor environment and its relationship to eNO. Here, we use the level of indoor PM2.5 as a measure of indoor environment air quality. We can make a simple scatterplot of PM2.5 and eNO.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(pm25), <span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">geom =</span> <span class="kw">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;smooth&quot;</span>))</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(pm25), <span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">geom =</span> <span class="kw">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;smooth&quot;</span>))</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-18"></span>
 <img src="images/ggplot2-unnamed-chunk-18-1.png" alt="eNO and PM2.5" width="672" />
 <p class="caption">
@@ -499,7 +517,7 @@ Figure 14.15: eNO and PM2.5
 </div>
 <p>The relationship appears modest at best, as there is substantial noise in the data. However, one question that we might be interested in is whether allergic individuals are prehaps more sensitive to PM2.5 inhalation than non-allergic individuals. To examine that question we can stratify the data into two groups.</p>
 <p>This first plot uses different plot symbols for the two groups and overlays them on a single canvas. We can do this by mapping the <code>mopos</code> variable to the <code>shape</code> aesthetic.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(pm25), <span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">shape =</span> mopos)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(pm25), <span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">shape =</span> mopos)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-19"></span>
 <img src="images/ggplot2-unnamed-chunk-19-1.png" alt="eNO and PM2.5 by mouse allergic status" width="672" />
 <p class="caption">
@@ -508,7 +526,7 @@ Figure 14.16: eNO and PM2.5 by mouse allergic status
 </div>
 <p>Because there is substantial overlap in the data it is a bit challenging to discern the circles from the triangles. Part of the reason might be that all of the symbols are the same color (black).</p>
 <p>We can plot each group a different color to see if that helps.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(pm25), <span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">color =</span> mopos)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(pm25), <span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">color =</span> mopos)</code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-20"></span>
 <img src="images/ggplot2-unnamed-chunk-20-1.png" alt="eNO and PM2.5 by mouse allergic status" width="672" />
 <p class="caption">
@@ -516,11 +534,11 @@ Figure 14.17: eNO and PM2.5 by mouse allergic status
 </p>
 </div>
 <p>This is slightly better but the substantial overlap makes it difficult to discern any trends in the data. For this we need to add a smoother of some sort. Here we add a linear regression line (a type of smoother) to each group to see if there’s any difference.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(pm25), <span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">color =</span> mopos) +<span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(pm25), <span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">color =</span> mopos) +<span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre></div>
 <p><img src="images/ggplot2-unnamed-chunk-21-1.png" width="672" /></p>
 <p>Here we see quite clearly that the red group and the green group exhibit rather different relationships between PM2.5 and eNO. For the non-allergic individuals, there appears to be a slightly negative relationship between PM2.5 and eNO and for the allergic individuals, there is a positive relationship. This suggests a strong interaction between PM2.5 and allergic status, an hypothesis perhaps worth following up on in greater detail than this brief exploratory analysis.</p>
 <p>Another, and perhaps more clear, way to visualize this interaction is to use separate panels for the non-allergic and allergic individuals using the <code>facets</code> argument to <code>qplot()</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(pm25), <span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">facets =</span> . ~<span class="st"> </span>mopos) +<span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(<span class="kw">log</span>(pm25), <span class="kw">log</span>(eno), <span class="dt">data =</span> maacs, <span class="dt">facets =</span> . ~<span class="st"> </span>mopos) +<span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre></div>
 <p><img src="images/ggplot2-unnamed-chunk-22-1.png" width="864" /></p>
 </div>
 <div id="summary-of-qplot" class="section level2">

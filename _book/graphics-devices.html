@@ -57,23 +57,41 @@ MathJax.Hub.Config({
 
 
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -306,7 +324,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <ul>
 <li><p>Where will the plot be made? On the screen? In a file?</p></li>
 <li>How will the plot be used?</li>
-<li>Is the plot for viewing temporarily on the screen?<br /></li>
+<li>Is the plot for viewing temporarily on the screen?<br />
+</li>
 <li>Will it be presented in a web browser?</li>
 <li>Will it eventually end up in a paper that might be printed?</li>
 <li><p>Are you using it in a presentation?</p></li>
@@ -326,11 +345,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><p>Enjoy</p></li>
 </ol>
 <p>Here’s an example of this process in making a plot with the <code>plot()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Make plot appear on screen device
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Make plot appear on screen device
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">with</span>(faithful, <span class="kw">plot</span>(eruptions, waiting)) 
 &gt;<span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span>## Annotate with a title
-<span class="er">&gt;</span><span class="st"> </span><span class="kw">title</span>(<span class="dt">main =</span> <span class="st">&quot;Old Faithful Geyser data&quot;</span>)  </code></pre>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">title</span>(<span class="dt">main =</span> <span class="st">&quot;Old Faithful Geyser data&quot;</span>)  </code></pre></div>
 <p>The second basic approach to plotting is most commonly used for file devices:</p>
 <ol style="list-style-type: decimal">
 <li><p>Explicitly launch a graphics device</p></li>
@@ -339,7 +358,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><p>Explicitly close graphics device with <code>dev.off()</code> (this is very important!)</p></li>
 </ol>
 <p>Here’s an example of how to make a plot using this second approach. In this case we make a plot that gets saved in a PDF file.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Open PDF device; create &#39;myplot.pdf&#39; in my working directory
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>## Open PDF device; create &#39;myplot.pdf&#39; in my working directory
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">pdf</span>(<span class="dt">file =</span> <span class="st">&quot;myplot.pdf&quot;</span>)  
 &gt;<span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span>## Create plot and send to a file (no plot appears on screen)
@@ -351,7 +370,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="er">&gt;</span><span class="st"> </span>## Close the PDF file device
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">dev.off</span>()  
 &gt;<span class="st"> </span>
-<span class="er">&gt;</span><span class="st"> </span>## Now you can view the file &#39;myplot.pdf&#39; on your computer</code></pre>
+<span class="er">&gt;</span><span class="st"> </span>## Now you can view the file &#39;myplot.pdf&#39; on your computer</code></pre></div>
 </div>
 <div id="graphics-file-devices" class="section level2">
 <h2><span class="header-section-number">8.3</span> Graphics File Devices</h2>
@@ -380,7 +399,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Copying a plot to another device can be useful because some plots require a lot of code and it can be a pain to type all that in again for a different device. Of course, it is always good to save the code that creates your plots, especially for any plots that you might publish or give to other people.</p>
 <p>The <code>dev.copy()</code> can be used to copy a plot from one device to another. For example you might copy a plot from the screen device to a file device. The <code>dev.copy2pdf()</code> function is used specifically to copy a plot from the current device (usually the screen device) to a PDF file.</p>
 <p>Note that copying a plot is not an exact operation, so the result may not be identical to the original. In particular, when copying from the screen device to a file, depending on the size of the file device, many annotations such as axis labels may not look right.</p>
-<pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(datasets)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">library</span>(datasets)
 &gt;<span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span>## Create plot on screen device
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">with</span>(faithful, <span class="kw">plot</span>(eruptions, waiting))  
@@ -392,7 +411,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">dev.copy</span>(png, <span class="dt">file =</span> <span class="st">&quot;geyserplot.png&quot;</span>)  
 &gt;<span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span>## Don&#39;t forget to close the PNG device!
-<span class="er">&gt;</span><span class="st"> </span><span class="kw">dev.off</span>()  </code></pre>
+<span class="er">&gt;</span><span class="st"> </span><span class="kw">dev.off</span>()  </code></pre></div>
 </div>
 <div id="summary-2" class="section level2">
 <h2><span class="header-section-number">8.6</span> Summary</h2>
@@ -402,7 +421,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><p>Vector formats are good for line drawings and plots with solid colors using a modest number of points</p></li>
 <li><p>Bitmap formats are good for plots with a large number of points, natural scenes or web-based plots</p></li>
 </ul>
-
 
 </div>
 </div>
