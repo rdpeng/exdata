@@ -1,0 +1,17 @@
+contact.md
+whatisEDA.md
+gettingstarted.md
+dplyr.md
+eda_checklist.md
+principles.md
+exploratorygraphs.md
+plottingsystems.md
+grdevices.md
+plotbase.md
+colors.md
+hclust.md
+kmeans.md
+dimensionreduction.md
+ggplot2.md
+example.md
+about.md
