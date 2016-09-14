@@ -3,8 +3,8 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">R Programming for Data Science</a></li>
+        <li><a href="./">Exploratory Data Analysis with R</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
     edit:
-      link: https://github.com/rdpeng/rprogdatascience/edit/bookdown/%s
+      link: https://github.com/rdpeng/exdata/edit/bookdown/%s
