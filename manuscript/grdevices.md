@@ -156,7 +156,7 @@ for a different device. Of course, it is always good to save the code that creat
 The `dev.copy()` can be used to copy a plot from one device to another. For example you might copy a plot from the screen device to a file device. The  `dev.copy2pdf()` function is used specifically to copy a plot from the current device (usually the screen device) to a PDF file.
 
 Note that copying a plot is not an exact operation, so the result may not
-be identical to the original. In particulary, when copying from the screen device to a file, depending on the size of the file device, many annotations such as axis labels may not look right.
+be identical to the original. In particular, when copying from the screen device to a file, depending on the size of the file device, many annotations such as axis labels may not look right.
 
 
 
