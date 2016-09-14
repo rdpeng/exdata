@@ -109,7 +109,7 @@ pm <- mutate(pm, year = factor(rep(c(1999, 2012), c(nrow(pm0), nrow(pm1))))) %>%
 
 In order to show aggregate changes in PM across the entire monitoring network, we can make boxplots of all monitor values in 1999 and 2012. Here, we take the log of the PM values to adjust for the skew in the data.
 
-```{r boxplot log values, warning = FALSE,fig.cap="Boxplot of PM values in 1999 and 2012"}
+```{r boxplotlogvalues, warning = FALSE,fig.cap="Boxplot of PM values in 1999 and 2012"}
 library(ggplot2)
 
 ## Take a random sample because it's faster
