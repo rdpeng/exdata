@@ -39,16 +39,16 @@ After reading in the 1999 we check the first few rows (there are 117,421) rows i
 > dim(pm0)
 [1] 117421     28
 > head(pm0[, 1:13])
-# A tibble: 6 × 13
-     X1    X2    X3    X4    X5    X6    X7    X8    X9   X10      X11
-  <chr> <chr> <chr> <chr> <chr> <int> <int> <int> <int> <int>    <int>
-1    RD     I    01   027  0001 88101     1     7   105   120 19990103
-2    RD     I    01   027  0001 88101     1     7   105   120 19990106
-3    RD     I    01   027  0001 88101     1     7   105   120 19990109
-4    RD     I    01   027  0001 88101     1     7   105   120 19990112
-5    RD     I    01   027  0001 88101     1     7   105   120 19990115
-6    RD     I    01   027  0001 88101     1     7   105   120 19990118
-# ... with 2 more variables: X12 <time>, X13 <dbl>
+# A tibble: 6 x 13
+  X1    X2    X3    X4    X5       X6    X7    X8    X9   X10    X11 X12   
+  <chr> <chr> <chr> <chr> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl> <time>
+1 RD    I     01    027   0001  88101     1     7   105   120 2.00e7 00'00"
+2 RD    I     01    027   0001  88101     1     7   105   120 2.00e7 00'00"
+3 RD    I     01    027   0001  88101     1     7   105   120 2.00e7 00'00"
+4 RD    I     01    027   0001  88101     1     7   105   120 2.00e7 00'00"
+5 RD    I     01    027   0001  88101     1     7   105   120 2.00e7 00'00"
+6 RD    I     01    027   0001  88101     1     7   105   120 2.00e7 00'00"
+# … with 1 more variable: X13 <dbl>
 ~~~~~~~~
 
 We then attach the column headers to the dataset and make sure that they are properly formated for R data frames.
@@ -61,17 +61,17 @@ We then attach the column headers to the dataset and make sure that they are pro
 > ## Ensure names are properly formatted
 > names(pm0) <- make.names(cnames[[1]])  
 > head(pm0[, 1:13])
-# A tibble: 6 × 13
+# A tibble: 6 x 13
   X..RD Action.Code State.Code County.Code Site.ID Parameter   POC
-  <chr>       <chr>      <chr>       <chr>   <chr>     <int> <int>
-1    RD           I         01         027    0001     88101     1
-2    RD           I         01         027    0001     88101     1
-3    RD           I         01         027    0001     88101     1
-4    RD           I         01         027    0001     88101     1
-5    RD           I         01         027    0001     88101     1
-6    RD           I         01         027    0001     88101     1
-# ... with 6 more variables: Sample.Duration <int>, Unit <int>,
-#   Method <int>, Date <int>, Start.Time <time>, Sample.Value <dbl>
+  <chr> <chr>       <chr>      <chr>       <chr>       <dbl> <dbl>
+1 RD    I           01         027         0001        88101     1
+2 RD    I           01         027         0001        88101     1
+3 RD    I           01         027         0001        88101     1
+4 RD    I           01         027         0001        88101     1
+5 RD    I           01         027         0001        88101     1
+6 RD    I           01         027         0001        88101     1
+# … with 6 more variables: Sample.Duration <dbl>, Unit <dbl>, Method <dbl>,
+#   Date <dbl>, Start.Time <time>, Sample.Value <dbl>
 ~~~~~~~~
 
 The column we are interested in is the `Sample.Value` column which contains the PM2.5 measurements. Here we extract that column and print a brief summary.
@@ -166,7 +166,7 @@ $`1999`
 
 $`2012`
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
- -10.00    4.00    7.63    9.14   12.00  909.00   73133 
+ -10.00    4.00    7.63    9.14   12.00  908.97   73133 
 ~~~~~~~~
 
 Interestingly, from the summary of 2012 it appears there are some negative values of PM, which in general should not occur. We can investigate that somewhat to see if there is anything we should worry about.
@@ -174,10 +174,10 @@ Interestingly, from the summary of 2012 it appears there are some negative value
 
 ~~~~~~~~
 > filter(pm, year == "2012") %>% summarize(negative = mean(PM < 0, na.rm = TRUE))
-# A tibble: 1 × 1
-   negative
-      <dbl>
-1 0.0215034
+# A tibble: 1 x 1
+  negative
+     <dbl>
+1   0.0215
 ~~~~~~~~
 
 There is a relatively small proportion of values that are negative, which is perhaps reassuring. In order to investigate this a step further we can extract the date of each measurement from the original data frame. The idea here is that perhaps negative values occur more often in some parts of the year than other parts. However, the original data are formatted as character strings so we convert them to R's `Date` format for easier manipulation.
@@ -185,12 +185,11 @@ There is a relatively small proportion of values that are negative, which is per
 
 ~~~~~~~~
 > library(lubridate)
-Loading required package: methods
 
 Attaching package: 'lubridate'
-The following object is masked from 'package:base':
+The following objects are masked from 'package:base':
 
-    date
+    date, intersect, setdiff, union
 > negative <- filter(pm, year == "2012") %>% 
 +         mutate(negative = PM < 0, date = ymd(Date)) %>%
 +         select(date, negative)
@@ -204,19 +203,19 @@ We can then extract the month from each of the dates with negative values and at
 > mutate(negative, month = factor(month.name[month(date)], levels = month.name)) %>%
 +         group_by(month) %>%
 +         summarize(pct.negative = mean(negative, na.rm = TRUE) * 100)
-# A tibble: 10 × 2
-       month pct.negative
-      <fctr>        <dbl>
-1    January     2.970297
-2   February     2.425408
-3      March     2.408168
-4      April     2.183876
-5        May     1.726049
-6       June     2.563424
-7       July     0.791986
-8     August     1.062328
-9  September     1.519834
-10   October     0.000000
+# A tibble: 10 x 2
+   month     pct.negative
+ * <fct>            <dbl>
+ 1 January          2.97 
+ 2 February         2.43 
+ 3 March            2.41 
+ 4 April            2.18 
+ 5 May              1.73 
+ 6 June             2.56 
+ 7 July             0.792
+ 8 August           1.06 
+ 9 September        1.52 
+10 October          0    
 ~~~~~~~~
 
 From the table above it appears that bulk of the negative values occur in the first four months of the year (January--April). However, beyond that simple observation, it is not clear why the negative values occur. That said, given the relatively low proportion of negative values, we will ignore them for now.
@@ -239,11 +238,11 @@ Then we create a new variable that combines the county code and the site ID into
 ~~~~~~~~
 > sites <- mutate(sites, site.code = paste(County.Code, Site.ID, sep = "."))
 > str(sites)
-Classes 'tbl_df', 'tbl' and 'data.frame':	51 obs. of  4 variables:
- $ County.Code: chr  "001" "001" "005" "005" ...
- $ Site.ID    : chr  "0005" "0012" "0073" "0080" ...
+tibble [51 × 4] (S3: tbl_df/tbl/data.frame)
+ $ County.Code: chr [1:51] "001" "001" "005" "005" ...
+ $ Site.ID    : chr [1:51] "0005" "0012" "0073" "0080" ...
  $ year       : Factor w/ 2 levels "1999","2012": 1 1 1 1 1 1 1 1 1 1 ...
- $ site.code  : chr  "001.0005" "001.0012" "005.0073" "005.0080" ...
+ $ site.code  : chr [1:51] "001.0005" "001.0012" "005.0073" "005.0080" ...
 ~~~~~~~~
 
 Finally, we want the intersection between the sites present in 1999 and 2012 so that we might choose a monitor that has data in both periods.
@@ -270,19 +269,19 @@ Now that we have subsetted the original data frames to only include the data fro
 
 ~~~~~~~~
 > group_by(count, site.code) %>% summarize(n = n())
-# A tibble: 10 × 2
+# A tibble: 10 x 2
    site.code     n
-       <chr> <int>
-1   001.0005   186
-2   001.0012    92
-3   005.0080    92
-4   013.0011   213
-5   029.0005    94
-6   031.0003   198
-7   063.2008   152
-8   067.1015   153
-9   085.0055    38
-10  101.0003   527
+ * <chr>     <int>
+ 1 001.0005    186
+ 2 001.0012     92
+ 3 005.0080     92
+ 4 013.0011    213
+ 5 029.0005     94
+ 6 031.0003    198
+ 7 063.2008    152
+ 8 067.1015    153
+ 9 085.0055     38
+10 101.0003    527
 ~~~~~~~~
 
 A number of monitors seem suitable from the output, but we will focus here on County 63 and site ID 2008. 
@@ -317,29 +316,27 @@ What we do here is calculate the mean of PM for each state in 1999 and 2012.
 ~~~~~~~~
 > mn <- group_by(pm, year, State.Code) %>% summarize(PM = mean(PM, na.rm = TRUE))
 > head(mn)
-Source: local data frame [6 x 3]
-Groups: year [1]
-
-    year State.Code        PM
-  <fctr>      <chr>     <dbl>
-1   1999         01 19.956391
-2   1999         02  6.665929
-3   1999         04 10.795547
-4   1999         05 15.676067
-5   1999         06 17.655412
-6   1999         08  7.533304
+# A tibble: 6 x 3
+# Groups:   year [1]
+  year  State.Code    PM
+  <fct> <chr>      <dbl>
+1 1999  01         20.0 
+2 1999  02          6.67
+3 1999  04         10.8 
+4 1999  05         15.7 
+5 1999  06         17.7 
+6 1999  08          7.53
 > tail(mn)
-Source: local data frame [6 x 3]
-Groups: year [1]
-
-    year State.Code       PM
-  <fctr>      <chr>    <dbl>
-1   2012         51 8.708080
-2   2012         53 6.364667
-3   2012         54 9.821294
-4   2012         55 7.914545
-5   2012         56 4.005564
-6   2012         72 6.048045
+# A tibble: 6 x 3
+# Groups:   year [1]
+  year  State.Code    PM
+  <fct> <chr>      <dbl>
+1 2012  51          8.71
+2 2012  53          6.36
+3 2012  54          9.82
+4 2012  55          7.91
+5 2012  56          4.01
+6 2012  72          6.05
 ~~~~~~~~
 
 Now make a plot that shows the 1999 state-wide means in one "column" and the 2012 state-wide means in another columns. We then draw a line connecting the means for each year in the same state to highlight the trend.

@@ -96,9 +96,8 @@ The `kmeans()` function in R implements the K-means algorithm and can be found i
 > dataFrame <- data.frame(x, y)
 > kmeansObj <- kmeans(dataFrame, centers = 3)
 > names(kmeansObj)
-[1] "cluster"      "centers"      "totss"        "withinss"    
-[5] "tot.withinss" "betweenss"    "size"         "iter"        
-[9] "ifault"      
+[1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss"
+[6] "betweenss"    "size"         "iter"         "ifault"      
 ~~~~~~~~
 
 You can see which cluster each data point got assigned to by looking at the `cluster` element of the list returned by the `kmeans()` function.
@@ -106,7 +105,7 @@ You can see which cluster each data point got assigned to by looking at the `clu
 
 ~~~~~~~~
 > kmeansObj$cluster
- [1] 3 3 3 3 1 1 1 1 2 2 2 2
+ [1] 3 1 1 3 2 2 2 2 2 2 2 2
 ~~~~~~~~
 
 Here is a plot of the K-means clustering solution. Not surprisingly for this simple dataset, K-means was able to identify the true solution.
