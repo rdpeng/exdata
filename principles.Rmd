@@ -103,7 +103,8 @@ m <- merge(dd, pm, by = "date") %>%
                                labels = c("Winter","Spring","Summer","Fall")))
 
 library(ggplot2)
-qplot(pm10, death, data = m, xlab = expression(PM[10] * " concentration (centered)"), ylab = "Daily mortality (all cuases)") + geom_smooth(method = "lm")
+qplot(pm10, death, data = m, xlab = expression(PM[10] * " concentration (centered)"), ylab = "Daily mortality (all cuases)") + 
+        geom_smooth(method = "lm", formula = y ~ x)
 ```
 
 This is a bivariate plot showing two variables in this dataset. From the plot it seems that there is a slight negative relationship between the two variables. That is, higher daily average levels of PM10 appear to be associated with lower levels of mortality (fewer deaths per day). 
@@ -118,7 +119,8 @@ dd <- filter(d, date < as.Date("1991-01-01")) %>%
         summarize(death = sum(death))
 ## idx <- sample(nrow(dd), round(nrow(dd) / 5))
 library(ggplot2)
-qplot(date, death, data = dd, ylab = "Daily mortality") + geom_smooth(method = "loess", span = 1/10)
+qplot(date, death, data = dd, ylab = "Daily mortality") + 
+        geom_smooth(method = "loess", span = 1/10, formula = y ~ x)
 ```
 
 Similarly, we can show that in New York City, PM10 levels tend to be high in the summer and low in the winter. Here's the plot for daily PM10 over the same time period. Note that the PM10 data have been centered (the overall mean has been subtracted from them) so that is why there are both positive and negative values.
@@ -127,7 +129,8 @@ Similarly, we can show that in New York City, PM10 levels tend to be high in the
 d <- readRDS("data/ny.rds")
 pm <- select(d, pm10tmean, date) %>% unique %>% 
         filter(date < as.Date("2001-01-01"))
-qplot(date, pm10tmean, data = pm, ylab = expression(PM[10])) + geom_smooth(method = "loess", span = 1/10)
+qplot(date, pm10tmean, data = pm, ylab = expression(PM[10])) + 
+        geom_smooth(method = "loess", span = 1/10, formula = y ~ x)
 ```
 
 From the two plots we can see that PM10 and mortality have opposite seasonality with mortality being high in the winter and PM10 being high in the summer. What happens if we plot the relationship between mortality and PM10 *by season*? That plot is below.
@@ -148,7 +151,7 @@ m <- merge(dd, pm, by = "date") %>%
                                labels = c("Winter","Spring","Summer","Fall")))
 
 library(ggplot2)
-qplot(pm10, death, data = m, facets = . ~ season, xlab = expression(PM[10] * " concentration (centered)"), ylab = "Daily mortality (all cuases)") + geom_smooth(method = "lm")
+qplot(pm10, death, data = m, facets = . ~ season, xlab = expression(PM[10] * " concentration (centered)"), ylab = "Daily mortality (all cuases)") + geom_smooth(method = "lm", formula = y ~ x)
 ```
 
 Interestingly, before, when we plotted PM10 and mortality by itself, the relationship appeared to be slightly negative. However, in each of the plots above, the relationship is slightly positive. This set of plots illustrates the effect of confounding by season, because season is related to both PM10 levels and to mortality counts, but in different ways for each one. 
