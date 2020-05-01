@@ -98,7 +98,7 @@ For interactive work, it's often a bit nice to use the `summary()` function, whi
 ```r
 > summary(pollution$pm25)
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  3.383   8.549  10.050   9.836  11.360  18.440 
+  3.383   8.549  10.047   9.836  11.356  18.441 
 ```
 
 You'll notice that in addition to the five-number summary, the `summary()` function also adds the mean of the data, which can be compared to the median to identify any skewness in the data. Given that the mean is fairly close to the median, there doesn't appear to be a dramatic amount of skewness in the distribution of PM2.5 in this dataset.

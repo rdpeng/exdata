@@ -167,8 +167,7 @@ Below we plot the first left and right singular vectors along with the original 
 ```r
 > par(mfrow = c(1, 3))
 > image(t(dataMatrixOrdered)[, nrow(dataMatrixOrdered):1], main = "Original Data")
-> plot(svd1$u[, 1], 40:1, , ylab = "Row", xlab = "First left singular vector", 
-+     pch = 19)
+> plot(svd1$u[, 1], 40:1, , ylab = "Row", xlab = "First left singular vector", pch = 19)
 > plot(svd1$v[, 1], xlab = "Column", ylab = "First right singular vector", pch = 19)
 ```
 
@@ -270,8 +269,7 @@ As we mentioned above, the SVD has a close connection to principal components an
 ```r
 > svd1 <- svd(scale(dataMatrixOrdered))
 > pca1 <- prcomp(dataMatrixOrdered, scale = TRUE)
-> plot(pca1$rotation[, 1], svd1$v[, 1], pch = 19, xlab = "Principal Component 1", 
-+     ylab = "Right Singular Vector 1")
+> plot(pca1$rotation[, 1], svd1$v[, 1], pch = 19, xlab = "Principal Component 1", ylab = "Right Singular Vector 1")
 > abline(c(0, 1))
 ```
 
@@ -313,8 +311,7 @@ Here is a plot of this new dataset along with the two different patterns.
 > svd2 <- svd(scale(dataMatrixOrdered))
 > par(mfrow = c(1, 3))
 > image(t(dataMatrixOrdered)[, nrow(dataMatrixOrdered):1], main = "Data")
-> plot(rep(c(0, 1), each = 5), pch = 19, xlab = "Column", ylab = "Pattern 1", 
-+     main = "Block pattern")
+> plot(rep(c(0, 1), each = 5), pch = 19, xlab = "Column", ylab = "Pattern 1", main = "Block pattern")
 > plot(rep(c(0, 1), 5), pch = 19, xlab = "Column", ylab = "Pattern 2", main = "Alternating pattern")
 ```
 

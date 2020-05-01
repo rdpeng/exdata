@@ -52,7 +52,7 @@ The next task in any exploratory data analysis is to read in some data. Sometime
 
 We won't go through the pain of cleaning up a dataset here, not because it's not important, but rather because there's often not much generalizable knowledge to obtain from going through it. Every dataset has its unique quirks and so for now it's probably best to not get bogged down in the details.
 
-Here we have a relatively clean dataset from the U.S. EPA on hourly ozone measurements in the entire U.S. for the year 2014. The data are available from the EPA's [Air Quality System web page](http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html). I've simply downloaded the zip file from the web site, unzipped the archive, and put the resulting file in a directory called "data". If you want to run this code you'll have to use the same directory structure.
+Here we have a relatively clean dataset from the U.S. EPA on hourly ozone measurements in the entire U.S. for the year 2014. The data are available from the EPA's [Air Quality System web page](https://aqs.epa.gov/aqsweb/airdata/download_files.html). I've simply downloaded the zip file from the web site, unzipped the archive, and put the resulting file in a directory called "data". If you want to run this code you'll have to use the same directory structure.
 
 The dataset is a comma-separated value (CSV) file, where each row of the file contains one hourly measurement of ozone at some location in the country.
 
@@ -214,12 +214,12 @@ We can take a look at which observations were measured at time "00:01".
 > filter(ozone, Time.Local == "13:14") %>% 
 +         select(State.Name, County.Name, Date.Local, 
 +                Time.Local, Sample.Measurement)
-# A tibble: 2 × 5
+# A tibble: 2 x 5
   State.Name County.Name Date.Local Time.Local
-       <chr>       <chr>      <chr>      <chr>
-1   New York    Franklin 2014-09-30      13:14
-2   New York    Franklin 2014-09-30      13:14
-# ... with 1 more variables:
+  <chr>      <chr>       <chr>      <chr>     
+1 New York   Franklin    2014-09-30 13:14     
+2 New York   Franklin    2014-09-30 13:14     
+# … with 1 more variable:
 #   Sample.Measurement <dbl>
 ```
 
@@ -455,19 +455,19 @@ Then we will split the data by month to look at the average hourly levels.
 +         mutate(month = factor(months(Date.Local), levels = month.name)) %>%
 +         group_by(month) %>%
 +         summarize(ozone = mean(Sample.Measurement))
-# A tibble: 10 × 2
-       month      ozone
-      <fctr>      <dbl>
-1    January 0.04081929
-2   February 0.03884305
-3      March 0.04548374
-4      April 0.04976124
-5        May 0.05047637
-6       June 0.05639331
-7       July 0.05224286
-8     August 0.05541681
-9  September 0.05117737
-10   October 0.04693361
+# A tibble: 10 x 2
+   month      ozone
+ * <fct>      <dbl>
+ 1 January   0.0408
+ 2 February  0.0388
+ 3 March     0.0455
+ 4 April     0.0498
+ 5 May       0.0505
+ 6 June      0.0564
+ 7 July      0.0522
+ 8 August    0.0554
+ 9 September 0.0512
+10 October   0.0469
 ```
 
 A few things stand out here. First, ozone appears to be higher in the summer months and lower in the winter months. Second, there are two months missing (November and December) from the data. It's not immediately clear why that is, but it's probably worth investigating a bit later on. 
@@ -488,18 +488,18 @@ Here we see that there are perhaps fewer observations than we would expect for a
 +         mutate(month = factor(months(Date.Local), levels = month.name)) %>%
 +         group_by(month) %>%
 +         summarize(ozone = mean(Sample.Measurement))
-# A tibble: 9 × 2
-      month       ozone
-     <fctr>       <dbl>
-1   January 0.018732719
-2  February 0.002060543
-3     March 0.002000000
-4     April 0.023208955
-5       May 0.024182927
-6      June 0.020195936
-7      July 0.019112745
-8    August 0.020869376
-9 September 0.002000000
+# A tibble: 9 x 2
+  month       ozone
+* <fct>       <dbl>
+1 January   0.0187 
+2 February  0.00206
+3 March     0.002  
+4 April     0.0232 
+5 May       0.0242 
+6 June      0.0202 
+7 July      0.0191 
+8 August    0.0209 
+9 September 0.002  
 ```
 
 Here we can see that the levels of ozone are much lower in this county and that also three months are missing (October, November, and December). Given the seasonal nature of ozone, it's possible that the levels of ozone are so low in those months that it's not even worth measuring. In fact some of the monthly averages are below the typical method detection limit of the measurement technology, meaning that those values are highly uncertain and likely not distinguishable from zero.
@@ -545,22 +545,22 @@ We can then compare the top 10 counties from our original ranking and the top 10
 3     Wyoming      Albany 0.04834274    Wyoming
 4     Arizona     Yavapai 0.04746346    Arizona
 5     Arizona        Gila 0.04722276    Arizona
-6  California        Inyo 0.04659648 California
-7        Utah    San Juan 0.04654895       Utah
-8     Arizona    Coconino 0.04605669 California
-9  California   El Dorado 0.04595514    Arizona
+6  California        Inyo 0.04659648       Utah
+7        Utah    San Juan 0.04654895 California
+8     Arizona    Coconino 0.04605669    Arizona
+9  California   El Dorado 0.04595514 California
 10     Nevada  White Pine 0.04465562     Nevada
    County.Name      ozone
-1     Mariposa 0.04975053
-2       Nevada 0.04875887
-3       Albany 0.04818458
-4      Yavapai 0.04734300
-5         Gila 0.04713265
-6         Inyo 0.04666913
-7     San Juan 0.04658873
-8    El Dorado 0.04618268
-9     Coconino 0.04601939
-10  White Pine 0.04469161
+1     Mariposa 0.04983094
+2       Nevada 0.04869841
+3       Albany 0.04830520
+4      Yavapai 0.04748795
+5         Gila 0.04728284
+6     San Juan 0.04665711
+7         Inyo 0.04652602
+8     Coconino 0.04616988
+9    El Dorado 0.04611164
+10  White Pine 0.04466106
 ```
 
 We can see that the rankings based on the resampled data (columns 4--6 on the right) are very close to the original, with the first 7 being identical. Numbers 8 and 9 get flipped in the resampled rankings but that's about it. This might suggest that the original rankings are somewhat stable.
@@ -583,16 +583,16 @@ We can also look at the bottom of the list to see if there were any major change
 789 Puerto Rico              Bayamon 0.010693529
 790 Puerto Rico               Catano 0.004685369
      State.Name          County.Name       ozone
-781   Louisiana     West Baton Rouge 0.020718069
-782      Hawaii             Honolulu 0.019891068
-783  Washington              Whatcom 0.019728567
-784   Tennessee                 Knox 0.019200000
-785  California               Merced 0.016519393
-786      Alaska Fairbanks North Star 0.014925359
-787    Oklahoma                Caddo 0.014764086
-788 Puerto Rico               Juncos 0.013535870
-789 Puerto Rico              Bayamon 0.010889964
-790 Puerto Rico               Catano 0.004602808
+781      Alaska    Matanuska Susitna 0.020806642
+782  Washington              Whatcom 0.020043750
+783      Hawaii             Honolulu 0.019821603
+784   Tennessee                 Knox 0.018814913
+785  California               Merced 0.016917933
+786      Alaska Fairbanks North Star 0.014933125
+787    Oklahoma                Caddo 0.014662867
+788 Puerto Rico               Juncos 0.013858010
+789 Puerto Rico              Bayamon 0.010578880
+790 Puerto Rico               Catano 0.004775807
 ```
 
 Here we can see that the bottom 7 counties are identical in both rankings, but after that things shuffle a bit. We're less concerned with the counties at the bottom of the list, but this suggests there is also reasonable stability.
