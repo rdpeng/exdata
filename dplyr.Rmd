@@ -70,7 +70,7 @@ install.packages("dplyr")
 To install from GitHub you can run
 
 ```{r,eval=FALSE}
-install_github("hadley/dplyr")
+remotes::install_github("tidyverse/dplyr")
 ```
 
 After installing the package it is important that you load it into your R session with the `library()` function.
