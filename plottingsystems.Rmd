@@ -2,7 +2,7 @@
 
 [Watch a video of this chapter](https://youtu.be/a4mvbyNGdBA).
 
-There are three different plotting systems in R and they each have different characteristics and modes of operation. They three systems are the base plotting system, the lattice system, and the ggplot2 system. This chapter (and this book) will focus primarily on the base plotting system.
+There are three different plotting systems in R and they each have different characteristics and modes of operation. The three systems are the base plotting system, the lattice system, and the ggplot2 system. This chapter (and this book) will focus primarily on the base plotting system.
 
 ```{r,echo=FALSE}
 knitr::opts_chunk$set(comment = NA, fig.path = "images/plottingsystems-", prompt = TRUE, collapse = TRUE)
