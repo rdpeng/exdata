@@ -19,7 +19,7 @@ A graphics device is something where you can make a plot appear. Examples includ
 
 When you make a plot in R, it has to be "sent" to a specific graphics device. The most common place for a plot to be "sent" is the *screen device*. On a Mac the screen device is launched with the `quartz()` function, on Windows the screen device is launched with `windows()` function, and on Unix/Linux the screen device is launched with `x11()` function. 
 
-When making a plot, you need to consider how the plot will be used to determine what device the plot should be sent to. The list of devices supported by your installation of R is found in `?Devices`. There are also graphics devices that have been created by users and these are aviailable through packages on CRAN.
+When making a plot, you need to consider how the plot will be used to determine what device the plot should be sent to. The list of devices supported by your installation of R is found in `?Devices`. There are also graphics devices that have been created by users and these are available through packages on CRAN.
 
 For quick visualizations and exploratory analysis, usually you want to use the screen device. Functions like `plot` in base, `xyplot` in lattice, or `qplot` in ggplot2 will default to sending a plot to the screen device. On a given platform, such as Mac, Windows, or Unix/Linux, there is only one screen device.
 
