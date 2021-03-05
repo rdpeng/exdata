@@ -326,7 +326,33 @@ This nesting is not a natural way to think about a sequence of operations. The `
 first(x) %>% second %>% third
 ```
 
-Take the example that we just did in the last section where we computed the mean of `o3` and `no2` within quintiles of `pm25`. There we had to 
+In simple words the `%>%` operator is like a train. The cars are connected to each other, so are the `dplyr` functions connected to each other.
+![train](http://clipart-library.com/images/yikKab5BT.png)
+
+Recall the code from the previous section, where we
+1) created a new data frame, 
+2) viewed the head of this new data frame.
+  
+```{r}
+subset <- select(chicago, city:dptp)
+head(subset)
+```
+
+We can get the same results using the `%>%` operator:
+
+```{r}
+chicago %>% select(city:dptp) %>% head
+```
+
+In this case order of the function doesn't matter, we will get the same results if `head()` is before `select()`
+
+```{r}
+chicago %>% head %>% select(city:dptp) 
+```
+
+However the data frame (chicago) needs to be specified as first. Like a train needs a locomotive in the front, so the pipeline needs the data frame.
+
+Take another example that we just did in the last section where we computed the mean of `o3` and `no2` within quintiles of `pm25`. There we had to 
 
 1. create a new variable `pm25.quint`
 2. split the data frame by that new variable
