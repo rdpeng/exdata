@@ -346,7 +346,7 @@ Here we can see that the bottom 7 counties are identical in both rankings, but a
 
 In this chapter I've presented some simple steps to take when starting off on an exploratory analysis. The example analysis conducted in this chapter was far from perfect, but it got us thinking about the data and the question of interest. It also gave us a number of things to follow up on in case we continue to be interested in this question.
 
-At this point it's useful to consider a few followup questions.
+At this point it's useful to consider a few follow up questions.
 
 1. **Do you have the right data?** Sometimes at the conclusion of an exploratory data analysis, the conclusion is that the dataset is not really appropriate for this question. In this case, the dataset seemed perfectly fine for answering the question of which counties had the highest levels of ozone.
 
