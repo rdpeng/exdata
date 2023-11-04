@@ -48,7 +48,7 @@ For this chapter, we will focus on the following question:
 
 > Which counties in the United States have the highest levels of ambient ozone pollution?
 
-As a side note, one of the most important questions you can answer with an exploratory data analysis is "Do I have the right data to answer this question?" Often this question is difficult ot answer at first, but can become more clear as we sort through and look at the data.
+As a side note, one of the most important questions you can answer with an exploratory data analysis is "Do I have the right data to answer this question?" Often this question is difficult to answer at first, but can become more clear as we sort through and look at the data.
 
 ## Read in your data
 
