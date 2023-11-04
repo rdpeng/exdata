@@ -23,7 +23,7 @@ The outline of the algorithm is
 
 3. Assign points to their closest centroid; cluster membership corresponds to the centroid assignment
 
-4. Reclaculate centroid positions and repeat.
+4. Recalculate centroid positions and repeat
 
 
 This approach, like most clustering methods requires a defined distance metric, a fixed number of clusters, and an initial guess as to the cluster centriods. There's no set approach to determining the initial configuration of centroids, but many algorithms simply randomly select data points from your dataset as the initial centroids.
