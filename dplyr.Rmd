@@ -266,7 +266,7 @@ The `group_by()` function is used to generate summary statistics from the data f
 
 The general operation here is a combination of splitting a data frame into separate pieces defined by a variable or group of variables (`group_by()`), and then applying a summary function across those subsets (`summarize()`).
 
-First, we can create a `year` varible using `as.POSIXlt()`.
+First, we can create a `year` variable using `as.POSIXlt()`.
 
 ```{r}
 chicago <- mutate(chicago, year = as.POSIXlt(date)$year + 1900)
