@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>13 Dimension Reduction | Exploratory Data Analysis with R</title>
+  <meta name="description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="13 Dimension Reduction | Exploratory Data Analysis with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/rdpeng/exdata/" />
+  <meta property="og:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+  <meta property="og:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="github-repo" content="rdpeng/exdata" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="13 Dimension Reduction | Exploratory Data Analysis with R" />
+  
+  <meta name="twitter:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="twitter:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+
+<meta name="author" content="Roger D. Peng" />
+
+
+<meta name="date" content="2020-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="k-means-clustering.html"/>
+<link rel="next" href="the-ggplot2-plotting-system-part-1.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Exploratory Data Analysis with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#stay-in-touch"><i class="fa fa-check"></i>Stay in Touch!</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>2</b> Getting Started with R</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-started-with-the-r-interface"><i class="fa fa-check"></i><b>2.2</b> Getting started with the R interface</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html"><i class="fa fa-check"></i><b>3</b> Managing Data Frames with the <code>dplyr</code> package</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#data-frames"><i class="fa fa-check"></i><b>3.1</b> Data Frames</a></li>
+<li class="chapter" data-level="3.2" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#the-dplyr-package"><i class="fa fa-check"></i><b>3.2</b> The <code>dplyr</code> Package</a></li>
+<li class="chapter" data-level="3.3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#dplyr-grammar"><i class="fa fa-check"></i><b>3.3</b> <code>dplyr</code> Grammar</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#common-dplyr-function-properties"><i class="fa fa-check"></i><b>3.3.1</b> Common <code>dplyr</code> Function Properties</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#installing-the-dplyr-package"><i class="fa fa-check"></i><b>3.4</b> Installing the <code>dplyr</code> package</a></li>
+<li class="chapter" data-level="3.5" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>3.5</b> <code>select()</code></a></li>
+<li class="chapter" data-level="3.6" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>3.6</b> <code>filter()</code></a></li>
+<li class="chapter" data-level="3.7" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#arrange"><i class="fa fa-check"></i><b>3.7</b> <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.8" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#rename"><i class="fa fa-check"></i><b>3.8</b> <code>rename()</code></a></li>
+<li class="chapter" data-level="3.9" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>3.9</b> <code>mutate()</code></a></li>
+<li class="chapter" data-level="3.10" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#group_by"><i class="fa fa-check"></i><b>3.10</b> <code>group_by()</code></a></li>
+<li class="chapter" data-level="3.11" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#section"><i class="fa fa-check"></i><b>3.11</b> <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="3.12" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#summary"><i class="fa fa-check"></i><b>3.12</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis Checklist</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#formulate-your-question"><i class="fa fa-check"></i><b>4.1</b> Formulate your question</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#read-in-your-data"><i class="fa fa-check"></i><b>4.2</b> Read in your data</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-the-packaging"><i class="fa fa-check"></i><b>4.3</b> Check the packaging</a></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#run-str"><i class="fa fa-check"></i><b>4.4</b> Run <code>str()</code></a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#look-at-the-top-and-the-bottom-of-your-data"><i class="fa fa-check"></i><b>4.5</b> Look at the top and the bottom of your data</a></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-your-ns"><i class="fa fa-check"></i><b>4.6</b> Check your “n”s</a></li>
+<li class="chapter" data-level="4.7" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#validate-with-at-least-one-external-data-source"><i class="fa fa-check"></i><b>4.7</b> Validate with at least one external data source</a></li>
+<li class="chapter" data-level="4.8" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#try-the-easy-solution-first"><i class="fa fa-check"></i><b>4.8</b> Try the easy solution first</a></li>
+<li class="chapter" data-level="4.9" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#challenge-your-solution"><i class="fa fa-check"></i><b>4.9</b> Challenge your solution</a></li>
+<li class="chapter" data-level="4.10" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#follow-up-questions"><i class="fa fa-check"></i><b>4.10</b> Follow up questions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html"><i class="fa fa-check"></i><b>5</b> Principles of Analytic Graphics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-comparisons"><i class="fa fa-check"></i><b>5.1</b> Show comparisons</a></li>
+<li class="chapter" data-level="5.2" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-causality-mechanism-explanation-systematic-structure"><i class="fa fa-check"></i><b>5.2</b> Show causality, mechanism, explanation, systematic structure</a></li>
+<li class="chapter" data-level="5.3" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-multivariate-data"><i class="fa fa-check"></i><b>5.3</b> Show multivariate data</a></li>
+<li class="chapter" data-level="5.4" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#integrate-evidence"><i class="fa fa-check"></i><b>5.4</b> Integrate evidence</a></li>
+<li class="chapter" data-level="5.5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#describe-and-document-the-evidence"><i class="fa fa-check"></i><b>5.5</b> Describe and document the evidence</a></li>
+<li class="chapter" data-level="5.6" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#content-content-content"><i class="fa fa-check"></i><b>5.6</b> Content, Content, Content</a></li>
+<li class="chapter" data-level="5.7" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html"><i class="fa fa-check"></i><b>6</b> Exploratory Graphs</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#characteristics-of-exploratory-graphs"><i class="fa fa-check"></i><b>6.1</b> Characteristics of exploratory graphs</a></li>
+<li class="chapter" data-level="6.2" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#air-pollution-in-the-united-states"><i class="fa fa-check"></i><b>6.2</b> Air Pollution in the United States</a></li>
+<li class="chapter" data-level="6.3" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#getting-the-data"><i class="fa fa-check"></i><b>6.3</b> Getting the Data</a></li>
+<li class="chapter" data-level="6.4" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-one-dimension"><i class="fa fa-check"></i><b>6.4</b> Simple Summaries: One Dimension</a></li>
+<li class="chapter" data-level="6.5" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#five-number-summary"><i class="fa fa-check"></i><b>6.5</b> Five Number Summary</a></li>
+<li class="chapter" data-level="6.6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#boxplot"><i class="fa fa-check"></i><b>6.6</b> Boxplot</a></li>
+<li class="chapter" data-level="6.7" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#histogram"><i class="fa fa-check"></i><b>6.7</b> Histogram</a></li>
+<li class="chapter" data-level="6.8" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#overlaying-features"><i class="fa fa-check"></i><b>6.8</b> Overlaying Features</a></li>
+<li class="chapter" data-level="6.9" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#barplot"><i class="fa fa-check"></i><b>6.9</b> Barplot</a></li>
+<li class="chapter" data-level="6.10" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-two-dimensions-and-beyond"><i class="fa fa-check"></i><b>6.10</b> Simple Summaries: Two Dimensions and Beyond</a></li>
+<li class="chapter" data-level="6.11" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-boxplots"><i class="fa fa-check"></i><b>6.11</b> Multiple Boxplots</a></li>
+<li class="chapter" data-level="6.12" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-histograms"><i class="fa fa-check"></i><b>6.12</b> Multiple Histograms</a></li>
+<li class="chapter" data-level="6.13" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplots"><i class="fa fa-check"></i><b>6.13</b> Scatterplots</a></li>
+<li class="chapter" data-level="6.14" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplot---using-color"><i class="fa fa-check"></i><b>6.14</b> Scatterplot - Using Color</a></li>
+<li class="chapter" data-level="6.15" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-scatterplots"><i class="fa fa-check"></i><b>6.15</b> Multiple Scatterplots</a></li>
+<li class="chapter" data-level="6.16" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#summary-1"><i class="fa fa-check"></i><b>6.16</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="plotting-systems.html"><a href="plotting-systems.html"><i class="fa fa-check"></i><b>7</b> Plotting Systems</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="plotting-systems.html"><a href="plotting-systems.html#the-base-plotting-system"><i class="fa fa-check"></i><b>7.1</b> The Base Plotting System</a></li>
+<li class="chapter" data-level="7.2" data-path="plotting-systems.html"><a href="plotting-systems.html#the-lattice-system"><i class="fa fa-check"></i><b>7.2</b> The Lattice System</a></li>
+<li class="chapter" data-level="7.3" data-path="plotting-systems.html"><a href="plotting-systems.html#the-ggplot2-system"><i class="fa fa-check"></i><b>7.3</b> The ggplot2 System</a></li>
+<li class="chapter" data-level="7.4" data-path="plotting-systems.html"><a href="plotting-systems.html#references-1"><i class="fa fa-check"></i><b>7.4</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="graphics-devices.html"><a href="graphics-devices.html"><i class="fa fa-check"></i><b>8</b> Graphics Devices</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="graphics-devices.html"><a href="graphics-devices.html#the-process-of-making-a-plot"><i class="fa fa-check"></i><b>8.1</b> The Process of Making a Plot</a></li>
+<li class="chapter" data-level="8.2" data-path="graphics-devices.html"><a href="graphics-devices.html#how-does-a-plot-get-created"><i class="fa fa-check"></i><b>8.2</b> How Does a Plot Get Created?</a></li>
+<li class="chapter" data-level="8.3" data-path="graphics-devices.html"><a href="graphics-devices.html#graphics-file-devices"><i class="fa fa-check"></i><b>8.3</b> Graphics File Devices</a></li>
+<li class="chapter" data-level="8.4" data-path="graphics-devices.html"><a href="graphics-devices.html#multiple-open-graphics-devices"><i class="fa fa-check"></i><b>8.4</b> Multiple Open Graphics Devices</a></li>
+<li class="chapter" data-level="8.5" data-path="graphics-devices.html"><a href="graphics-devices.html#copying-plots"><i class="fa fa-check"></i><b>8.5</b> Copying Plots</a></li>
+<li class="chapter" data-level="8.6" data-path="graphics-devices.html"><a href="graphics-devices.html#summary-2"><i class="fa fa-check"></i><b>8.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html"><i class="fa fa-check"></i><b>9</b> The Base Plotting System</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-graphics"><i class="fa fa-check"></i><b>9.1</b> Base Graphics</a></li>
+<li class="chapter" data-level="9.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#simple-base-graphics"><i class="fa fa-check"></i><b>9.2</b> Simple Base Graphics</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#histogram-1"><i class="fa fa-check"></i><b>9.2.1</b> Histogram</a></li>
+<li class="chapter" data-level="9.2.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#boxplot-1"><i class="fa fa-check"></i><b>9.2.2</b> Boxplot</a></li>
+<li class="chapter" data-level="9.2.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#scatterplot"><i class="fa fa-check"></i><b>9.2.3</b> Scatterplot</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#some-important-base-graphics-parameters"><i class="fa fa-check"></i><b>9.3</b> Some Important Base Graphics Parameters</a></li>
+<li class="chapter" data-level="9.4" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plotting-functions"><i class="fa fa-check"></i><b>9.4</b> Base Plotting Functions</a></li>
+<li class="chapter" data-level="9.5" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plot-with-regression-line"><i class="fa fa-check"></i><b>9.5</b> Base Plot with Regression Line</a></li>
+<li class="chapter" data-level="9.6" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#multiple-base-plots"><i class="fa fa-check"></i><b>9.6</b> Multiple Base Plots</a></li>
+<li class="chapter" data-level="9.7" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#summary-3"><i class="fa fa-check"></i><b>9.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html"><i class="fa fa-check"></i><b>10</b> Plotting and Color in R</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colors-1-2-and-3"><i class="fa fa-check"></i><b>10.1</b> Colors 1, 2, and 3</a></li>
+<li class="chapter" data-level="10.2" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#connecting-colors-with-data"><i class="fa fa-check"></i><b>10.2</b> Connecting colors with data</a></li>
+<li class="chapter" data-level="10.3" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#color-utilities-in-r"><i class="fa fa-check"></i><b>10.3</b> Color Utilities in R</a></li>
+<li class="chapter" data-level="10.4" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramp"><i class="fa fa-check"></i><b>10.4</b> <code>colorRamp()</code></a></li>
+<li class="chapter" data-level="10.5" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramppalette"><i class="fa fa-check"></i><b>10.5</b> <code>colorRampPalette()</code></a></li>
+<li class="chapter" data-level="10.6" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#rcolorbrewer-package"><i class="fa fa-check"></i><b>10.6</b> RColorBrewer Package</a></li>
+<li class="chapter" data-level="10.7" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#using-the-rcolorbrewer-palettes"><i class="fa fa-check"></i><b>10.7</b> Using the RColorBrewer palettes</a></li>
+<li class="chapter" data-level="10.8" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#the-smoothscatter-function"><i class="fa fa-check"></i><b>10.8</b> The <code>smoothScatter()</code> function</a></li>
+<li class="chapter" data-level="10.9" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#adding-transparency"><i class="fa fa-check"></i><b>10.9</b> Adding transparency</a></li>
+<li class="chapter" data-level="10.10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#summary-4"><i class="fa fa-check"></i><b>10.10</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html"><i class="fa fa-check"></i><b>11</b> Hierarchical Clustering</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#hierarchical-clustering-1"><i class="fa fa-check"></i><b>11.1</b> Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.2" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#how-do-we-define-close"><i class="fa fa-check"></i><b>11.2</b> How do we define close?</a></li>
+<li class="chapter" data-level="11.3" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-euclidean-distance"><i class="fa fa-check"></i><b>11.3</b> Example: Euclidean distance</a></li>
+<li class="chapter" data-level="11.4" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-manhattan-distance"><i class="fa fa-check"></i><b>11.4</b> Example: Manhattan distance</a></li>
+<li class="chapter" data-level="11.5" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-hierarchical-clustering"><i class="fa fa-check"></i><b>11.5</b> Example: Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.6" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#prettier-dendrograms"><i class="fa fa-check"></i><b>11.6</b> Prettier dendrograms</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-complete"><i class="fa fa-check"></i><b>11.7</b> Merging points: Complete</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-average"><i class="fa fa-check"></i><b>11.8</b> Merging points: Average</a></li>
+<li class="chapter" data-level="11.9" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#using-the-heatmap-function"><i class="fa fa-check"></i><b>11.9</b> Using the <code>heatmap()</code> function</a></li>
+<li class="chapter" data-level="11.10" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#notes-and-further-resources"><i class="fa fa-check"></i><b>11.10</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="k-means-clustering.html"><a href="k-means-clustering.html"><i class="fa fa-check"></i><b>12</b> K-Means Clustering</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-means-clustering.html"><a href="k-means-clustering.html#illustrating-the-k-means-algorithm"><i class="fa fa-check"></i><b>12.1</b> Illustrating the K-means algorithm</a></li>
+<li class="chapter" data-level="12.2" data-path="k-means-clustering.html"><a href="k-means-clustering.html#stopping-the-algorithm"><i class="fa fa-check"></i><b>12.2</b> Stopping the algorithm</a></li>
+<li class="chapter" data-level="12.3" data-path="k-means-clustering.html"><a href="k-means-clustering.html#using-the-kmeans-function"><i class="fa fa-check"></i><b>12.3</b> Using the <code>kmeans()</code> function</a></li>
+<li class="chapter" data-level="12.4" data-path="k-means-clustering.html"><a href="k-means-clustering.html#building-heatmaps-from-k-means-solutions"><i class="fa fa-check"></i><b>12.4</b> Building heatmaps from K-means solutions</a></li>
+<li class="chapter" data-level="12.5" data-path="k-means-clustering.html"><a href="k-means-clustering.html#notes-and-further-resources-1"><i class="fa fa-check"></i><b>12.5</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="dimension-reduction.html"><a href="dimension-reduction.html"><i class="fa fa-check"></i><b>13</b> Dimension Reduction</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="dimension-reduction.html"><a href="dimension-reduction.html#matrix-data"><i class="fa fa-check"></i><b>13.1</b> Matrix data</a></li>
+<li class="chapter" data-level="13.2" data-path="dimension-reduction.html"><a href="dimension-reduction.html#patterns-in-rows-and-columns"><i class="fa fa-check"></i><b>13.2</b> Patterns in rows and columns</a></li>
+<li class="chapter" data-level="13.3" data-path="dimension-reduction.html"><a href="dimension-reduction.html#related-problem"><i class="fa fa-check"></i><b>13.3</b> Related problem</a></li>
+<li class="chapter" data-level="13.4" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-and-pca"><i class="fa fa-check"></i><b>13.4</b> SVD and PCA</a></li>
+<li class="chapter" data-level="13.5" data-path="dimension-reduction.html"><a href="dimension-reduction.html#unpacking-the-svd-u-and-v"><i class="fa fa-check"></i><b>13.5</b> Unpacking the SVD: <em>u</em> and <em>v</em></a></li>
+<li class="chapter" data-level="13.6" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-for-data-compression"><i class="fa fa-check"></i><b>13.6</b> SVD for data compression</a></li>
+<li class="chapter" data-level="13.7" data-path="dimension-reduction.html"><a href="dimension-reduction.html#components-of-the-svd---variance-explained"><i class="fa fa-check"></i><b>13.7</b> Components of the SVD - Variance explained</a></li>
+<li class="chapter" data-level="13.8" data-path="dimension-reduction.html"><a href="dimension-reduction.html#relationship-to-principal-components"><i class="fa fa-check"></i><b>13.8</b> Relationship to principal components</a></li>
+<li class="chapter" data-level="13.9" data-path="dimension-reduction.html"><a href="dimension-reduction.html#what-if-we-add-a-second-pattern"><i class="fa fa-check"></i><b>13.9</b> What if we add a second pattern?</a></li>
+<li class="chapter" data-level="13.10" data-path="dimension-reduction.html"><a href="dimension-reduction.html#dealing-with-missing-values"><i class="fa fa-check"></i><b>13.10</b> Dealing with missing values</a></li>
+<li class="chapter" data-level="13.11" data-path="dimension-reduction.html"><a href="dimension-reduction.html#example-face-data"><i class="fa fa-check"></i><b>13.11</b> Example: Face data</a></li>
+<li class="chapter" data-level="13.12" data-path="dimension-reduction.html"><a href="dimension-reduction.html#notes-and-further-resources-2"><i class="fa fa-check"></i><b>13.12</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html"><i class="fa fa-check"></i><b>14</b> The ggplot2 Plotting System: Part 1</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#the-basics-qplot"><i class="fa fa-check"></i><b>14.1</b> The Basics: <code>qplot()</code></a></li>
+<li class="chapter" data-level="14.2" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#before-you-start-label-your-data"><i class="fa fa-check"></i><b>14.2</b> Before You Start: Label Your Data</a></li>
+<li class="chapter" data-level="14.3" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#ggplot2-hello-world"><i class="fa fa-check"></i><b>14.3</b> ggplot2 “Hello, world!”</a></li>
+<li class="chapter" data-level="14.4" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#modifying-aesthetics"><i class="fa fa-check"></i><b>14.4</b> Modifying aesthetics</a></li>
+<li class="chapter" data-level="14.5" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#adding-a-geom"><i class="fa fa-check"></i><b>14.5</b> Adding a geom</a></li>
+<li class="chapter" data-level="14.6" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#histograms"><i class="fa fa-check"></i><b>14.6</b> Histograms</a></li>
+<li class="chapter" data-level="14.7" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#facets"><i class="fa fa-check"></i><b>14.7</b> Facets</a></li>
+<li class="chapter" data-level="14.8" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#case-study-maacs-cohort"><i class="fa fa-check"></i><b>14.8</b> Case Study: MAACS Cohort</a></li>
+<li class="chapter" data-level="14.9" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#summary-of-qplot"><i class="fa fa-check"></i><b>14.9</b> Summary of qplot()</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html"><i class="fa fa-check"></i><b>15</b> The ggplot2 Plotting System: Part 2</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#basic-components-of-a-ggplot2-plot"><i class="fa fa-check"></i><b>15.1</b> Basic Components of a ggplot2 Plot</a></li>
+<li class="chapter" data-level="15.2" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#example-bmi-pm2.5-asthma"><i class="fa fa-check"></i><b>15.2</b> Example: BMI, PM2.5, Asthma</a></li>
+<li class="chapter" data-level="15.3" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#building-up-in-layers"><i class="fa fa-check"></i><b>15.3</b> Building Up in Layers</a></li>
+<li class="chapter" data-level="15.4" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#first-plot-with-point-layer"><i class="fa fa-check"></i><b>15.4</b> First Plot with Point Layer</a></li>
+<li class="chapter" data-level="15.5" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-smooth"><i class="fa fa-check"></i><b>15.5</b> Adding More Layers: Smooth</a></li>
+<li class="chapter" data-level="15.6" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-facets"><i class="fa fa-check"></i><b>15.6</b> Adding More Layers: Facets</a></li>
+<li class="chapter" data-level="15.7" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-geom-properties"><i class="fa fa-check"></i><b>15.7</b> Modifying Geom Properties</a></li>
+<li class="chapter" data-level="15.8" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-labels"><i class="fa fa-check"></i><b>15.8</b> Modifying Labels</a></li>
+<li class="chapter" data-level="15.9" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#customizing-the-smooth"><i class="fa fa-check"></i><b>15.9</b> Customizing the Smooth</a></li>
+<li class="chapter" data-level="15.10" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#changing-the-theme"><i class="fa fa-check"></i><b>15.10</b> Changing the Theme</a></li>
+<li class="chapter" data-level="15.11" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#more-complex-example"><i class="fa fa-check"></i><b>15.11</b> More Complex Example</a></li>
+<li class="chapter" data-level="15.12" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#a-quick-aside-about-axis-limits"><i class="fa fa-check"></i><b>15.12</b> A Quick Aside about Axis Limits</a></li>
+<li class="chapter" data-level="15.13" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#resources"><i class="fa fa-check"></i><b>15.13</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><i class="fa fa-check"></i><b>16</b> Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S.</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#synopsis"><i class="fa fa-check"></i><b>16.1</b> Synopsis</a></li>
+<li class="chapter" data-level="16.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#loading-and-processing-the-raw-data"><i class="fa fa-check"></i><b>16.2</b> Loading and Processing the Raw Data</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-1999-data"><i class="fa fa-check"></i><b>16.2.1</b> Reading in the 1999 data</a></li>
+<li class="chapter" data-level="16.2.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-2012-data"><i class="fa fa-check"></i><b>16.2.2</b> Reading in the 2012 data</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#results"><i class="fa fa-check"></i><b>16.3</b> Results</a>
+<ul>
+<li class="chapter" data-level="16.3.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#entire-u.s.-analysis"><i class="fa fa-check"></i><b>16.3.1</b> Entire U.S. analysis</a></li>
+<li class="chapter" data-level="16.3.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-pm-levels-at-an-individual-monitor"><i class="fa fa-check"></i><b>16.3.2</b> Changes in PM levels at an individual monitor</a></li>
+<li class="chapter" data-level="16.3.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-state-wide-pm-levels"><i class="fa fa-check"></i><b>16.3.3</b> Changes in state-wide PM levels</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i><b>17</b> About the Author</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Exploratory Data Analysis with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="dimension-reduction" class="section level1" number="13">
+<h1><span class="header-section-number">13</span> Dimension Reduction</h1>
+<p>Watch a video of this chapter: <a href="https://youtu.be/ts6UQnE6E1U">Part 1</a> <a href="https://youtu.be/BSfw0rpyC2g">Part 2</a> <a href="https://youtu.be/drNwEvEx3LY">Part 3</a></p>
+<div id="matrix-data" class="section level2" number="13.1">
+<h2><span class="header-section-number">13.1</span> Matrix data</h2>
+<p>The key aspect of matrix data is that every element of the matrix is the same type and represents the same kind of measurement. This is in contrast to a data frame, where every column of a data frame can potentially be of a different class.</p>
+<p>Matrix data have some special statistical methods that can be applied to them. One category of statistical dimension reduction techniques is commonly called <em>principal components analysis</em> (PCA) or the <em>singular value decomposition</em> (SVD). These techniques generally are applied in situations where the rows of a matrix represent observations of some sort and the columns of the matrix represent features or variables (but this is by no means a requirement).</p>
+<p>In an abstract sense, the SVD or PCA can be thought of as a way to approximate a high-dimensional matrix (i.e. a large number of columns) with a a few low-dimensional matrices. So there’s a bit of data compression angle to it. We’ll take a look at what’s going on in this chapter.</p>
+<p>First, we can simulate some matrix data. Here, we simulate some random Normal data in a matrix that has 40 rows and 10 columns.</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="dimension-reduction.html#cb133-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">12345</span>)</span>
+<span id="cb133-2"><a href="dimension-reduction.html#cb133-2"></a><span class="op">&gt;</span><span class="st"> </span>dataMatrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">400</span>), <span class="dt">nrow =</span> <span class="dv">40</span>)</span>
+<span id="cb133-3"><a href="dimension-reduction.html#cb133-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">40</span>, <span class="kw">t</span>(dataMatrix)[, <span class="kw">nrow</span>(dataMatrix)<span class="op">:</span><span class="dv">1</span>])</span></code></pre></div>
+<p><img src="images/dr-randomData-1.png" width="384" /></p>
+<p>When confronted with matrix data a quick and easy thing to organize the data a bit is to apply an hierarchical clustering algorithm to it. Such a clustering can be visualized with the <code>heatmap()</code> function.</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="dimension-reduction.html#cb134-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">heatmap</span>(dataMatrix)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<img src="images/dr-unnamed-chunk-2-1.png" alt="Heatmap of matrix data" width="672" />
+<p class="caption">
+Figure 5.1: Heatmap of matrix data
+</p>
+</div>
+<p>Not surprisingly, there aren’t really any interesting patterns given that we just simulated random noise. At least it’s good to know that the clustering algorithm won’t pick up something when there’s nothing there!</p>
+<p>But now what if there were a pattern in the data? How would we discover it?</p>
+<p>Let’s first simulate some data that indeed does have a pattern. In the code below, we cycle through all the rows of the matrix and randomly add 3 to the last 5 columns of the matrix.</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="dimension-reduction.html#cb135-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">678910</span>)</span>
+<span id="cb135-2"><a href="dimension-reduction.html#cb135-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">40</span>) {</span>
+<span id="cb135-3"><a href="dimension-reduction.html#cb135-3"></a><span class="op">+</span><span class="st">     </span>coinFlip &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> <span class="fl">0.5</span>)</span>
+<span id="cb135-4"><a href="dimension-reduction.html#cb135-4"></a><span class="op">+</span><span class="st">     </span></span>
+<span id="cb135-5"><a href="dimension-reduction.html#cb135-5"></a><span class="op">+</span><span class="st">     </span><span class="co">## If coin is heads add a common pattern to that row</span></span>
+<span id="cb135-6"><a href="dimension-reduction.html#cb135-6"></a><span class="op">+</span><span class="st">     </span><span class="cf">if</span> (coinFlip) {</span>
+<span id="cb135-7"><a href="dimension-reduction.html#cb135-7"></a><span class="op">+</span><span class="st">         </span>dataMatrix[i, ] &lt;-<span class="st"> </span>dataMatrix[i, ] <span class="op">+</span><span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">3</span>), <span class="dt">each =</span> <span class="dv">5</span>)</span>
+<span id="cb135-8"><a href="dimension-reduction.html#cb135-8"></a><span class="op">+</span><span class="st">     </span>}</span>
+<span id="cb135-9"><a href="dimension-reduction.html#cb135-9"></a><span class="op">+</span><span class="st"> </span>}</span></code></pre></div>
+<p>Here’s what the new data look like.</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="dimension-reduction.html#cb136-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">40</span>, <span class="kw">t</span>(dataMatrix)[, <span class="kw">nrow</span>(dataMatrix)<span class="op">:</span><span class="dv">1</span>])</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-4"></span>
+<img src="images/dr-unnamed-chunk-4-1.png" alt="Matrix data with a pattern" width="672" />
+<p class="caption">
+Figure 5.3: Matrix data with a pattern
+</p>
+</div>
+<p>You can see that some of the rows on the right side of the matrix have higher values than on the left side.</p>
+<p>Now what happens if we cluster the data?</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="dimension-reduction.html#cb137-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">heatmap</span>(dataMatrix)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-5"></span>
+<img src="images/dr-unnamed-chunk-5-1.png" alt="Clustered data with pattern" width="672" />
+<p class="caption">
+Figure 5.4: Clustered data with pattern
+</p>
+</div>
+<p>We can see from the dendrogram on top of the matrix (for the columns) that the columns pretty clearly split into two clusters, which is what we’d expect.</p>
+</div>
+<div id="patterns-in-rows-and-columns" class="section level2" number="13.2">
+<h2><span class="header-section-number">13.2</span> Patterns in rows and columns</h2>
+<p>In general, with matrix data, there may be patterns that occur accross the rows and columns of the matrix. In the example above, we shifted the mean of some of the observations in columns 5 through 10. We can display this a bit more explicitly by looking at the row and column means of the data.</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="dimension-reduction.html#cb138-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</span>
+<span id="cb138-2"><a href="dimension-reduction.html#cb138-2"></a><span class="op">&gt;</span><span class="st"> </span>hh &lt;-<span class="st"> </span><span class="kw">dist</span>(dataMatrix) <span class="op">%&gt;%</span><span class="st"> </span>hclust</span>
+<span id="cb138-3"><a href="dimension-reduction.html#cb138-3"></a><span class="op">&gt;</span><span class="st"> </span>dataMatrixOrdered &lt;-<span class="st"> </span>dataMatrix[hh<span class="op">$</span>order, ]</span>
+<span id="cb138-4"><a href="dimension-reduction.html#cb138-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb138-5"><a href="dimension-reduction.html#cb138-5"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb138-6"><a href="dimension-reduction.html#cb138-6"></a><span class="er">&gt;</span><span class="st"> </span><span class="co">## Complete data</span></span>
+<span id="cb138-7"><a href="dimension-reduction.html#cb138-7"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrixOrdered)[, <span class="kw">nrow</span>(dataMatrixOrdered)<span class="op">:</span><span class="dv">1</span>])</span>
+<span id="cb138-8"><a href="dimension-reduction.html#cb138-8"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb138-9"><a href="dimension-reduction.html#cb138-9"></a><span class="er">&gt;</span><span class="st"> </span><span class="co">## Show the row means</span></span>
+<span id="cb138-10"><a href="dimension-reduction.html#cb138-10"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">plot</span>(<span class="kw">rowMeans</span>(dataMatrixOrdered), <span class="dv">40</span><span class="op">:</span><span class="dv">1</span>, , <span class="dt">xlab =</span> <span class="st">&quot;Row Mean&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Row&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb138-11"><a href="dimension-reduction.html#cb138-11"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb138-12"><a href="dimension-reduction.html#cb138-12"></a><span class="er">&gt;</span><span class="st"> </span><span class="co">## Show the column means</span></span>
+<span id="cb138-13"><a href="dimension-reduction.html#cb138-13"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">plot</span>(<span class="kw">colMeans</span>(dataMatrixOrdered), <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Column Mean&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-6"></span>
+<img src="images/dr-unnamed-chunk-6-1.png" alt="Pattern in rows and columns" width="1152" />
+<p class="caption">
+Figure 5.5: Pattern in rows and columns
+</p>
+</div>
+<p>However, there may be other patterns beyond a simple mean shift and so more sophisticated methods will be needed. Futhermore, there may be multiple patterns layered on top of each other so we need a method that can distangle these patterns.</p>
+</div>
+<div id="related-problem" class="section level2" number="13.3">
+<h2><span class="header-section-number">13.3</span> Related problem</h2>
+<p>Here’s another way to formulate the problem that matrix data present. Suppose you have multivariate observations</p>
+<p><span class="math display">\[
+X_1,\ldots,X_n
+\]</span></p>
+<p>so that each of the <em>n</em> observations has <em>m</em> features,</p>
+<p><span class="math display">\[
+X_1 = (X_{11},\ldots,X_{1m})
+\]</span></p>
+<p>Given this setup, the goal is to find a new set of variables/features that are uncorrelated and explain as much variance in the data as possible. Put another way, if you were to put all these multivariate observations together in one matrix, find the <em>best</em> matrix created with fewer variables (lower rank) that explains the original data.</p>
+<p>The first goal is <em>statistical</em> in nature and the second goal is perhaps better characterized as <em>lossy data compression</em>.</p>
+</div>
+<div id="svd-and-pca" class="section level2" number="13.4">
+<h2><span class="header-section-number">13.4</span> SVD and PCA</h2>
+<p>If <em>X</em> is a matrix with each variable in a column and each observation in a row then the SVD is a matrix decomposition that represents <em>X</em> as a matrix product of three matrices:</p>
+<p><span class="math display">\[
+X = UDV^\prime
+\]</span></p>
+<p>where the columns of <em>U</em> (left singular vectors) are orthogonal, the columns of <span class="math inline">\(V\)</span> (right singular vectors) are orthogonal and <span class="math inline">\(D\)</span> is a diagonal matrix of singular values.</p>
+<p>Principal components analysis (PCA) is simply an application of the SVD. The <em>principal components</em> are equal to the right singular values if you first scale the data by subtracting the column mean and dividing each column by its standard deviation (that can be done with the <code>scale()</code> function).</p>
+</div>
+<div id="unpacking-the-svd-u-and-v" class="section level2" number="13.5">
+<h2><span class="header-section-number">13.5</span> Unpacking the SVD: <em>u</em> and <em>v</em></h2>
+<p>The SVD can be computed in R using the <code>svd()</code> function. Here, we scale our original matrix data with the pattern in it and apply the svd.</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="dimension-reduction.html#cb139-1"></a><span class="op">&gt;</span><span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))</span></code></pre></div>
+<p>The <code>svd()</code> function returns a list containing three components named <code>u</code>, <code>d</code>, and <code>v</code>. The <code>u</code> and <code>v</code> components correspond to the matrices of left and right singular vectors, respectively, while the <code>d</code> component is a vector of singular values, corresponding to the diagonal of the matrix <em>D</em> described above.</p>
+<p>Below we plot the first left and right singular vectors along with the original data.</p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="dimension-reduction.html#cb140-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb140-2"><a href="dimension-reduction.html#cb140-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrixOrdered)[, <span class="kw">nrow</span>(dataMatrixOrdered)<span class="op">:</span><span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Original Data&quot;</span>)</span>
+<span id="cb140-3"><a href="dimension-reduction.html#cb140-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd1<span class="op">$</span>u[, <span class="dv">1</span>], <span class="dv">40</span><span class="op">:</span><span class="dv">1</span>, , <span class="dt">ylab =</span> <span class="st">&quot;Row&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;First left singular vector&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb140-4"><a href="dimension-reduction.html#cb140-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd1<span class="op">$</span>v[, <span class="dv">1</span>], <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;First right singular vector&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-8"></span>
+<img src="images/dr-unnamed-chunk-8-1.png" alt="Components of SVD" width="1152" />
+<p class="caption">
+Figure 5.7: Components of SVD
+</p>
+</div>
+<p>You can see how the first left and right singular vectors pick up the mean shift in both the rows and columns of the matrix.</p>
+</div>
+<div id="svd-for-data-compression" class="section level2" number="13.6">
+<h2><span class="header-section-number">13.6</span> SVD for data compression</h2>
+<p>If we believed that the first left and right singular vectors, call them u1 and v1, captured all of the variation in the data, then we could approximate the original data matrix with</p>
+<p><span class="math display">\[
+X \approx u_1 v_1^\prime
+\]</span></p>
+<p>Thus, we would reduce 400 numbers in the original matrix to 40 + 10 = 50 numbers in the compressed matrix, a nearly 90% reduction in information. Here’s what the original data and the approximation would look like.</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="dimension-reduction.html#cb141-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="co">## Approximate original data with outer product of first singular vectors</span></span>
+<span id="cb141-2"><a href="dimension-reduction.html#cb141-2"></a><span class="er">&gt;</span><span class="st"> </span>approx &lt;-<span class="st"> </span><span class="kw">with</span>(svd1, <span class="kw">outer</span>(u[, <span class="dv">1</span>], v[, <span class="dv">1</span>]))</span>
+<span id="cb141-3"><a href="dimension-reduction.html#cb141-3"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb141-4"><a href="dimension-reduction.html#cb141-4"></a><span class="er">&gt;</span><span class="st"> </span><span class="co">## Plot original data and approximated data</span></span>
+<span id="cb141-5"><a href="dimension-reduction.html#cb141-5"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb141-6"><a href="dimension-reduction.html#cb141-6"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrixOrdered)[, <span class="kw">nrow</span>(dataMatrixOrdered)<span class="op">:</span><span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Original Matrix&quot;</span>)</span>
+<span id="cb141-7"><a href="dimension-reduction.html#cb141-7"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(approx)[, <span class="kw">nrow</span>(approx)<span class="op">:</span><span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Approximated Matrix&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-9"></span>
+<img src="images/dr-unnamed-chunk-9-1.png" alt="Approximating a matrix" width="768" />
+<p class="caption">
+Figure 5.8: Approximating a matrix
+</p>
+</div>
+<p>Obviously, the two matrices are not identical, but the approximation seems reasonable in this case. This is not surprising given that there was only one real feature in the original data.</p>
+</div>
+<div id="components-of-the-svd---variance-explained" class="section level2" number="13.7">
+<h2><span class="header-section-number">13.7</span> Components of the SVD - Variance explained</h2>
+<p>The statistical interpretation of singular values is in the form of variance in the data explained by the various components. The singular values produced by the <code>svd()</code> are in order from largest to smallest and when squared are proportional the amount of variance explained by a given singular vector.</p>
+<p>To show how this works, here’s a very simple example. First, we’ll simulate a “dataset” that just takes two values, 0 and 1.</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="dimension-reduction.html#cb142-1"></a><span class="op">&gt;</span><span class="st"> </span>constantMatrix &lt;-<span class="st"> </span>dataMatrixOrdered <span class="op">*</span><span class="st"> </span><span class="dv">0</span></span>
+<span id="cb142-2"><a href="dimension-reduction.html#cb142-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(dataMatrixOrdered)[<span class="dv">1</span>]) {</span>
+<span id="cb142-3"><a href="dimension-reduction.html#cb142-3"></a><span class="op">+</span><span class="st">     </span>constantMatrix[i, ] &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">each =</span> <span class="dv">5</span>)</span>
+<span id="cb142-4"><a href="dimension-reduction.html#cb142-4"></a><span class="op">+</span><span class="st"> </span>}</span></code></pre></div>
+<p>Then we can take the SVD of this matrix and show the singular values as well as the proportion of variance explained.</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="dimension-reduction.html#cb143-1"></a><span class="op">&gt;</span><span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(constantMatrix)</span>
+<span id="cb143-2"><a href="dimension-reduction.html#cb143-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb143-3"><a href="dimension-reduction.html#cb143-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(constantMatrix)[, <span class="kw">nrow</span>(constantMatrix)<span class="op">:</span><span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Original Data&quot;</span>)</span>
+<span id="cb143-4"><a href="dimension-reduction.html#cb143-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd1<span class="op">$</span>d, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Singular value&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb143-5"><a href="dimension-reduction.html#cb143-5"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd1<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="kw">sum</span>(svd1<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span>), <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Prop. of variance explained&quot;</span>, </span>
+<span id="cb143-6"><a href="dimension-reduction.html#cb143-6"></a><span class="op">+</span><span class="st">     </span><span class="dt">pch =</span> <span class="dv">19</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-11"></span>
+<img src="images/dr-unnamed-chunk-11-1.png" alt="Variance explained" width="1152" />
+<p class="caption">
+Figure 6.1: Variance explained
+</p>
+</div>
+<p>As we can see from the right-most plot, 100% of the variation in this “dataset” can be explained by the first singular value. Or, all of the variation in this dataset occurs in a single dimension. This is clear because all of the variation in the data occurs as you go from left to right across the columns. Otherwise, the values of the data are constant.</p>
+<p>In the plot below, we plot the singular values (left) and the proportion of variance explained for the slightly more complex dataset that we’d been using previously.</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="dimension-reduction.html#cb144-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb144-2"><a href="dimension-reduction.html#cb144-2"></a><span class="op">&gt;</span><span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))</span>
+<span id="cb144-3"><a href="dimension-reduction.html#cb144-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd1<span class="op">$</span>d, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Singular value&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb144-4"><a href="dimension-reduction.html#cb144-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd1<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="kw">sum</span>(svd1<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span>), <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Prop. of variance explained&quot;</span>, </span>
+<span id="cb144-5"><a href="dimension-reduction.html#cb144-5"></a><span class="op">+</span><span class="st">     </span><span class="dt">pch =</span> <span class="dv">19</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-12"></span>
+<img src="images/dr-unnamed-chunk-12-1.png" alt="Variance explained by singular vectors" width="768" />
+<p class="caption">
+Figure 6.2: Variance explained by singular vectors
+</p>
+</div>
+<p>We can see that the first component explains about 40% of all the variation in the data. In other words, even though there are 10 dimensions in the data, 40% of the variation in the data can be explained by a single dimension. That suggests that the data could be simplified quite a bit, a phenomenon we observed in the last section where it appeared the data could be reasonably approximated by the first left and right singular vectors.</p>
+</div>
+<div id="relationship-to-principal-components" class="section level2" number="13.8">
+<h2><span class="header-section-number">13.8</span> Relationship to principal components</h2>
+<p>As we mentioned above, the SVD has a close connection to principal components analysis (PCA). PCA can be applied to the data by calling the <code>prcomp()</code> function in R. Here, we show that the first right singular vector from the SVD is equal to the first principal component vector returned by PCA.</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="dimension-reduction.html#cb145-1"></a><span class="op">&gt;</span><span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))</span>
+<span id="cb145-2"><a href="dimension-reduction.html#cb145-2"></a><span class="op">&gt;</span><span class="st"> </span>pca1 &lt;-<span class="st"> </span><span class="kw">prcomp</span>(dataMatrixOrdered, <span class="dt">scale =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb145-3"><a href="dimension-reduction.html#cb145-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(pca1<span class="op">$</span>rotation[, <span class="dv">1</span>], svd1<span class="op">$</span>v[, <span class="dv">1</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Principal Component 1&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Right Singular Vector 1&quot;</span>)</span>
+<span id="cb145-4"><a href="dimension-reduction.html#cb145-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">abline</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-13"></span>
+<img src="images/dr-unnamed-chunk-13-1.png" alt="Singular vectors and principal components" width="672" />
+<p class="caption">
+Figure 6.3: Singular vectors and principal components
+</p>
+</div>
+<p>Whether you call this procedure SVD or PCA really just depends on who you talk to. Statisticians and people with that kind of background will typically call it PCA while engineers and mathematicians will tend to call it SVD.</p>
+</div>
+<div id="what-if-we-add-a-second-pattern" class="section level2" number="13.9">
+<h2><span class="header-section-number">13.9</span> What if we add a second pattern?</h2>
+<p>Tracking a single patter in a matrix is relatively straightforward, but typically there will be multiple layered patterns in a matrix of data. Here we add two patterns to a simulated dataset. One pattern simple adds a constant to the last 5 columns of data, while the other pattern adds an alternating pattern (every other column).</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="dimension-reduction.html#cb146-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">678910</span>)</span>
+<span id="cb146-2"><a href="dimension-reduction.html#cb146-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">40</span>) {</span>
+<span id="cb146-3"><a href="dimension-reduction.html#cb146-3"></a><span class="op">+</span><span class="st">     </span>coinFlip1 &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> <span class="fl">0.5</span>)</span>
+<span id="cb146-4"><a href="dimension-reduction.html#cb146-4"></a><span class="op">+</span><span class="st">     </span>coinFlip2 &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> <span class="fl">0.5</span>)</span>
+<span id="cb146-5"><a href="dimension-reduction.html#cb146-5"></a><span class="op">+</span><span class="st">     </span><span class="cf">if</span> (coinFlip1) {</span>
+<span id="cb146-6"><a href="dimension-reduction.html#cb146-6"></a><span class="op">+</span><span class="st">         </span><span class="co">## Pattern 1</span></span>
+<span id="cb146-7"><a href="dimension-reduction.html#cb146-7"></a><span class="op">+</span><span class="st">         </span>dataMatrix[i, ] &lt;-<span class="st"> </span>dataMatrix[i, ] <span class="op">+</span><span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="dt">each =</span> <span class="dv">5</span>)</span>
+<span id="cb146-8"><a href="dimension-reduction.html#cb146-8"></a><span class="op">+</span><span class="st">     </span>}</span>
+<span id="cb146-9"><a href="dimension-reduction.html#cb146-9"></a><span class="op">+</span><span class="st">     </span><span class="cf">if</span> (coinFlip2) {</span>
+<span id="cb146-10"><a href="dimension-reduction.html#cb146-10"></a><span class="op">+</span><span class="st">         </span><span class="co">## Pattern 2</span></span>
+<span id="cb146-11"><a href="dimension-reduction.html#cb146-11"></a><span class="op">+</span><span class="st">         </span>dataMatrix[i, ] &lt;-<span class="st"> </span>dataMatrix[i, ] <span class="op">+</span><span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="dv">5</span>)</span>
+<span id="cb146-12"><a href="dimension-reduction.html#cb146-12"></a><span class="op">+</span><span class="st">     </span>}</span>
+<span id="cb146-13"><a href="dimension-reduction.html#cb146-13"></a><span class="op">+</span><span class="st"> </span>}</span>
+<span id="cb146-14"><a href="dimension-reduction.html#cb146-14"></a><span class="op">&gt;</span><span class="st"> </span>hh &lt;-<span class="st"> </span><span class="kw">hclust</span>(<span class="kw">dist</span>(dataMatrix))</span>
+<span id="cb146-15"><a href="dimension-reduction.html#cb146-15"></a><span class="op">&gt;</span><span class="st"> </span>dataMatrixOrdered &lt;-<span class="st"> </span>dataMatrix[hh<span class="op">$</span>order, ]</span></code></pre></div>
+<p>Here is a plot of this new dataset along with the two different patterns.</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="dimension-reduction.html#cb147-1"></a><span class="op">&gt;</span><span class="st"> </span>svd2 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))</span>
+<span id="cb147-2"><a href="dimension-reduction.html#cb147-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb147-3"><a href="dimension-reduction.html#cb147-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrixOrdered)[, <span class="kw">nrow</span>(dataMatrixOrdered)<span class="op">:</span><span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Data&quot;</span>)</span>
+<span id="cb147-4"><a href="dimension-reduction.html#cb147-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">each =</span> <span class="dv">5</span>), <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Pattern 1&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Block pattern&quot;</span>)</span>
+<span id="cb147-5"><a href="dimension-reduction.html#cb147-5"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dv">5</span>), <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Pattern 2&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Alternating pattern&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-15"></span>
+<img src="images/dr-unnamed-chunk-15-1.png" alt="Dataset with two patterns" width="1152" />
+<p class="caption">
+Figure 6.4: Dataset with two patterns
+</p>
+</div>
+<p>Now, of course the plot above shows the truth, which in general we will not know.</p>
+<p>We can apply the SVD/PCA to this matrix and see how well the patterns are picked up.</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="dimension-reduction.html#cb148-1"></a><span class="op">&gt;</span><span class="st"> </span>svd2 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))</span>
+<span id="cb148-2"><a href="dimension-reduction.html#cb148-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb148-3"><a href="dimension-reduction.html#cb148-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(dataMatrixOrdered)[, <span class="kw">nrow</span>(dataMatrixOrdered)<span class="op">:</span><span class="dv">1</span>])</span>
+<span id="cb148-4"><a href="dimension-reduction.html#cb148-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd2<span class="op">$</span>v[, <span class="dv">1</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;First right singular vector&quot;</span>)</span>
+<span id="cb148-5"><a href="dimension-reduction.html#cb148-5"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd2<span class="op">$</span>v[, <span class="dv">2</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Second right singular vector&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-16"></span>
+<img src="images/dr-unnamed-chunk-16-1.png" alt="SVD with two patterns" width="1152" />
+<p class="caption">
+Figure 6.5: SVD with two patterns
+</p>
+</div>
+<p>We can see that the first right singular vector seems to pick up both the alternating pattern as well as the block/step pattern in the data. The second right singular vector seems to pick up a similar pattern.</p>
+<p>When we look at the variance explained, we can see that the first singular vector picks up a little more than 50% of the variation in the data.</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="dimension-reduction.html#cb149-1"></a><span class="op">&gt;</span><span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))</span>
+<span id="cb149-2"><a href="dimension-reduction.html#cb149-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb149-3"><a href="dimension-reduction.html#cb149-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd1<span class="op">$</span>d, <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Singular value&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb149-4"><a href="dimension-reduction.html#cb149-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd1<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="kw">sum</span>(svd1<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span>), <span class="dt">xlab =</span> <span class="st">&quot;Column&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Percent of variance explained&quot;</span>, </span>
+<span id="cb149-5"><a href="dimension-reduction.html#cb149-5"></a><span class="op">+</span><span class="st">     </span><span class="dt">pch =</span> <span class="dv">19</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-17"></span>
+<img src="images/dr-unnamed-chunk-17-1.png" alt="Variation explained by singular vectors" width="768" />
+<p class="caption">
+Figure 6.6: Variation explained by singular vectors
+</p>
+</div>
+</div>
+<div id="dealing-with-missing-values" class="section level2" number="13.10">
+<h2><span class="header-section-number">13.10</span> Dealing with missing values</h2>
+<p>Missing values are a problem that plagues any data analysis and the analysis of matrix data is no exception. Most SVD and PCA routines simply cannot be applied if there are missing values in the dataset. In the event of missing data, there are typically a series of questions that should be asked:</p>
+<ul>
+<li><p>Determine the reason for the missing data; what is the <em>process</em> that lead to the data being missing?</p></li>
+<li><p>Is the proportion of missing values so high as to invalidate any sort of analysis?</p></li>
+<li><p>Is there information in the dataset that would allow you to predict/infer the values of the missing data?</p></li>
+</ul>
+<p>In the example below, we take our dataset and randomly insert some missing data.</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="dimension-reduction.html#cb150-1"></a><span class="op">&gt;</span><span class="st"> </span>dataMatrix2 &lt;-<span class="st"> </span>dataMatrixOrdered</span>
+<span id="cb150-2"><a href="dimension-reduction.html#cb150-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="co">## Randomly insert some missing data</span></span>
+<span id="cb150-3"><a href="dimension-reduction.html#cb150-3"></a><span class="er">&gt;</span><span class="st"> </span>dataMatrix2[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">size =</span> <span class="dv">40</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)] &lt;-<span class="st"> </span><span class="ot">NA</span></span></code></pre></div>
+<p>If we try to apply the SVD on this matrix it won’t work.</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="dimension-reduction.html#cb151-1"></a><span class="op">&gt;</span><span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrix2))</span>
+<span id="cb151-2"><a href="dimension-reduction.html#cb151-2"></a>Error <span class="cf">in</span> <span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrix2))<span class="op">:</span><span class="st"> </span>infinite or missing values <span class="cf">in</span> <span class="st">&#39;x&#39;</span></span></code></pre></div>
+<p>Since in this case we know that the missing data appeared completely randomly in the data, it would make sense to try to impute the values so that we can run the SVD. Here, we use the <code>impute</code> package to do a k-nearest-neighbors imputation of the missing data. The <code>impute</code> package is available from the <a href="http://bioconductor.org">Bioconductor project</a>.</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="dimension-reduction.html#cb152-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(impute)</span>
+<span id="cb152-2"><a href="dimension-reduction.html#cb152-2"></a><span class="op">&gt;</span><span class="st"> </span>dataMatrix2 &lt;-<span class="st"> </span><span class="kw">impute.knn</span>(dataMatrix2)<span class="op">$</span>data</span></code></pre></div>
+<p>Now we can compare how the SVD performs on the original dataset (no missing data) and the imputed dataset. Here, we plot the first right singular vector.</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="dimension-reduction.html#cb153-1"></a><span class="op">&gt;</span><span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrixOrdered))</span>
+<span id="cb153-2"><a href="dimension-reduction.html#cb153-2"></a><span class="op">&gt;</span><span class="st"> </span>svd2 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(dataMatrix2))</span>
+<span id="cb153-3"><a href="dimension-reduction.html#cb153-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb153-4"><a href="dimension-reduction.html#cb153-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd1<span class="op">$</span>v[, <span class="dv">1</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">main =</span> <span class="st">&quot;Original dataset&quot;</span>)</span>
+<span id="cb153-5"><a href="dimension-reduction.html#cb153-5"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd2<span class="op">$</span>v[, <span class="dv">1</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">main =</span> <span class="st">&quot;Imputed dataset&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-21"></span>
+<img src="images/dr-unnamed-chunk-21-1.png" alt="SVD on original and imputed data" width="768" />
+<p class="caption">
+Figure 13.1: SVD on original and imputed data
+</p>
+</div>
+<p>We can see that the results are not identical but they are pretty close. Obviously, the missing data process was pretty simple in this case and is likely to be more complex in other situations.</p>
+</div>
+<div id="example-face-data" class="section level2" number="13.11">
+<h2><span class="header-section-number">13.11</span> Example: Face data</h2>
+<!-- ## source("http://dl.dropbox.com/u/7710864/courseraPublic/myplclust.R") -->
+<p>In this example, we use some data that make up an image of a face and show how the SVD can be used to produce varying approximations to this “dataset”. Here is the original data.</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="dimension-reduction.html#cb154-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">load</span>(<span class="st">&quot;data/face.rda&quot;</span>)</span>
+<span id="cb154-2"><a href="dimension-reduction.html#cb154-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(faceData)[, <span class="kw">nrow</span>(faceData)<span class="op">:</span><span class="dv">1</span>])</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-22"></span>
+<img src="images/dr-unnamed-chunk-22-1.png" alt="Face data" width="672" />
+<p class="caption">
+Figure 13.2: Face data
+</p>
+</div>
+<p>If we take the SVD and plot the squared and normalized singular values, we can see that the data can be explained by just a few singular vectors, maybe 4 or 5.</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="dimension-reduction.html#cb155-1"></a><span class="op">&gt;</span><span class="st"> </span>svd1 &lt;-<span class="st"> </span><span class="kw">svd</span>(<span class="kw">scale</span>(faceData))</span>
+<span id="cb155-2"><a href="dimension-reduction.html#cb155-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(svd1<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="kw">sum</span>(svd1<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span>), <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Singular vector&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Variance explained&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-23"></span>
+<img src="images/dr-unnamed-chunk-23-1.png" alt="Proportion of variance explained" width="672" />
+<p class="caption">
+Figure 13.3: Proportion of variance explained
+</p>
+</div>
+<p>Now we can start constructing approximations to the data using the left and right singular vectors. Here we create one using just the first left and right singular vectors.</p>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="dimension-reduction.html#cb156-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="co">## Note that %*% is matrix multiplication Here svd1$d[1] is a constant</span></span>
+<span id="cb156-2"><a href="dimension-reduction.html#cb156-2"></a><span class="er">&gt;</span><span class="st"> </span>approx1 &lt;-<span class="st"> </span>svd1<span class="op">$</span>u[, <span class="dv">1</span>] <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(svd1<span class="op">$</span>v[, <span class="dv">1</span>]) <span class="op">*</span><span class="st"> </span>svd1<span class="op">$</span>d[<span class="dv">1</span>]</span></code></pre></div>
+<p>We can also create ones using 5 and 10 singular vectors, which presumably would be better approximations.</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="dimension-reduction.html#cb157-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="co"># In these examples we need to make the diagonal matrix out of d</span></span>
+<span id="cb157-2"><a href="dimension-reduction.html#cb157-2"></a><span class="er">&gt;</span><span class="st"> </span>approx5 &lt;-<span class="st"> </span>svd1<span class="op">$</span>u[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>] <span class="op">%*%</span><span class="st"> </span><span class="kw">diag</span>(svd1<span class="op">$</span>d[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(svd1<span class="op">$</span>v[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</span>
+<span id="cb157-3"><a href="dimension-reduction.html#cb157-3"></a><span class="op">&gt;</span><span class="st"> </span>approx10 &lt;-<span class="st"> </span>svd1<span class="op">$</span>u[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>] <span class="op">%*%</span><span class="st"> </span><span class="kw">diag</span>(svd1<span class="op">$</span>d[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(svd1<span class="op">$</span>v[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>])</span></code></pre></div>
+<p>Now we can plot each one of these approximations along with the original data.</p>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="dimension-reduction.html#cb158-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">4</span>))</span>
+<span id="cb158-2"><a href="dimension-reduction.html#cb158-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(approx1)[, <span class="kw">nrow</span>(approx1)<span class="op">:</span><span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;1 vector&quot;</span>)</span>
+<span id="cb158-3"><a href="dimension-reduction.html#cb158-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(approx5)[, <span class="kw">nrow</span>(approx5)<span class="op">:</span><span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;5 vectors&quot;</span>)</span>
+<span id="cb158-4"><a href="dimension-reduction.html#cb158-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(approx10)[, <span class="kw">nrow</span>(approx10)<span class="op">:</span><span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;10 vectors&quot;</span>)</span>
+<span id="cb158-5"><a href="dimension-reduction.html#cb158-5"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">image</span>(<span class="kw">t</span>(faceData)[, <span class="kw">nrow</span>(faceData)<span class="op">:</span><span class="dv">1</span>], <span class="dt">main =</span> <span class="st">&quot;Original data&quot;</span>)</span></code></pre></div>
+<p><img src="images/dr-unnamed-chunk-26-1.png" width="1344" /></p>
+<p>Here, the approximation using 1 singular vector is pretty poor, but using 5 gets us pretty close to the truth. Using 10 vectors doesn’t seem to add much to the features, maybe just a few highlights. So 5 singular vectors is a reasonable approximation in this case.</p>
+</div>
+<div id="notes-and-further-resources-2" class="section level2" number="13.12">
+<h2><span class="header-section-number">13.12</span> Notes and further resources</h2>
+<ul>
+<li><p>For PCA/SVD, the scale/units of the data matters</p></li>
+<li><p>PC’s/SV’s may mix real patterns, as we saw in the example with two overlayed patterns</p></li>
+<li><p>SVD can be computationally intensive for very large matrices</p></li>
+<li><p><a href="http://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/ADAfaEPoV.pdf">Advanced data analysis from an elementary point of view</a></p></li>
+<li><p><a href="http://www-stat.stanford.edu/~tibs/ElemStatLearn/">Elements of statistical learning</a></p></li>
+<li><p>Alternatives and variations</p>
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Factor_analysis">Factor analysis</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Independent_component_analysis">Independent components analysis</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Latent_semantic_analysis">Latent semantic analysis</a></li>
+</ul></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="k-means-clustering.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="the-ggplot2-plotting-system-part-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rdpeng/exdata/edit/bookdown/dimensionreduction.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

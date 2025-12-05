@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>11 Hierarchical Clustering | Exploratory Data Analysis with R</title>
+  <meta name="description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="11 Hierarchical Clustering | Exploratory Data Analysis with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/rdpeng/exdata/" />
+  <meta property="og:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+  <meta property="og:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="github-repo" content="rdpeng/exdata" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="11 Hierarchical Clustering | Exploratory Data Analysis with R" />
+  
+  <meta name="twitter:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="twitter:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+
+<meta name="author" content="Roger D. Peng" />
+
+
+<meta name="date" content="2020-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="plotting-and-color-in-r.html"/>
+<link rel="next" href="k-means-clustering.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Exploratory Data Analysis with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#stay-in-touch"><i class="fa fa-check"></i>Stay in Touch!</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>2</b> Getting Started with R</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-started-with-the-r-interface"><i class="fa fa-check"></i><b>2.2</b> Getting started with the R interface</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html"><i class="fa fa-check"></i><b>3</b> Managing Data Frames with the <code>dplyr</code> package</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#data-frames"><i class="fa fa-check"></i><b>3.1</b> Data Frames</a></li>
+<li class="chapter" data-level="3.2" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#the-dplyr-package"><i class="fa fa-check"></i><b>3.2</b> The <code>dplyr</code> Package</a></li>
+<li class="chapter" data-level="3.3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#dplyr-grammar"><i class="fa fa-check"></i><b>3.3</b> <code>dplyr</code> Grammar</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#common-dplyr-function-properties"><i class="fa fa-check"></i><b>3.3.1</b> Common <code>dplyr</code> Function Properties</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#installing-the-dplyr-package"><i class="fa fa-check"></i><b>3.4</b> Installing the <code>dplyr</code> package</a></li>
+<li class="chapter" data-level="3.5" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>3.5</b> <code>select()</code></a></li>
+<li class="chapter" data-level="3.6" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>3.6</b> <code>filter()</code></a></li>
+<li class="chapter" data-level="3.7" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#arrange"><i class="fa fa-check"></i><b>3.7</b> <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.8" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#rename"><i class="fa fa-check"></i><b>3.8</b> <code>rename()</code></a></li>
+<li class="chapter" data-level="3.9" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>3.9</b> <code>mutate()</code></a></li>
+<li class="chapter" data-level="3.10" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#group_by"><i class="fa fa-check"></i><b>3.10</b> <code>group_by()</code></a></li>
+<li class="chapter" data-level="3.11" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#section"><i class="fa fa-check"></i><b>3.11</b> <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="3.12" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#summary"><i class="fa fa-check"></i><b>3.12</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis Checklist</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#formulate-your-question"><i class="fa fa-check"></i><b>4.1</b> Formulate your question</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#read-in-your-data"><i class="fa fa-check"></i><b>4.2</b> Read in your data</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-the-packaging"><i class="fa fa-check"></i><b>4.3</b> Check the packaging</a></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#run-str"><i class="fa fa-check"></i><b>4.4</b> Run <code>str()</code></a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#look-at-the-top-and-the-bottom-of-your-data"><i class="fa fa-check"></i><b>4.5</b> Look at the top and the bottom of your data</a></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-your-ns"><i class="fa fa-check"></i><b>4.6</b> Check your “n”s</a></li>
+<li class="chapter" data-level="4.7" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#validate-with-at-least-one-external-data-source"><i class="fa fa-check"></i><b>4.7</b> Validate with at least one external data source</a></li>
+<li class="chapter" data-level="4.8" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#try-the-easy-solution-first"><i class="fa fa-check"></i><b>4.8</b> Try the easy solution first</a></li>
+<li class="chapter" data-level="4.9" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#challenge-your-solution"><i class="fa fa-check"></i><b>4.9</b> Challenge your solution</a></li>
+<li class="chapter" data-level="4.10" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#follow-up-questions"><i class="fa fa-check"></i><b>4.10</b> Follow up questions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html"><i class="fa fa-check"></i><b>5</b> Principles of Analytic Graphics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-comparisons"><i class="fa fa-check"></i><b>5.1</b> Show comparisons</a></li>
+<li class="chapter" data-level="5.2" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-causality-mechanism-explanation-systematic-structure"><i class="fa fa-check"></i><b>5.2</b> Show causality, mechanism, explanation, systematic structure</a></li>
+<li class="chapter" data-level="5.3" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-multivariate-data"><i class="fa fa-check"></i><b>5.3</b> Show multivariate data</a></li>
+<li class="chapter" data-level="5.4" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#integrate-evidence"><i class="fa fa-check"></i><b>5.4</b> Integrate evidence</a></li>
+<li class="chapter" data-level="5.5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#describe-and-document-the-evidence"><i class="fa fa-check"></i><b>5.5</b> Describe and document the evidence</a></li>
+<li class="chapter" data-level="5.6" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#content-content-content"><i class="fa fa-check"></i><b>5.6</b> Content, Content, Content</a></li>
+<li class="chapter" data-level="5.7" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html"><i class="fa fa-check"></i><b>6</b> Exploratory Graphs</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#characteristics-of-exploratory-graphs"><i class="fa fa-check"></i><b>6.1</b> Characteristics of exploratory graphs</a></li>
+<li class="chapter" data-level="6.2" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#air-pollution-in-the-united-states"><i class="fa fa-check"></i><b>6.2</b> Air Pollution in the United States</a></li>
+<li class="chapter" data-level="6.3" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#getting-the-data"><i class="fa fa-check"></i><b>6.3</b> Getting the Data</a></li>
+<li class="chapter" data-level="6.4" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-one-dimension"><i class="fa fa-check"></i><b>6.4</b> Simple Summaries: One Dimension</a></li>
+<li class="chapter" data-level="6.5" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#five-number-summary"><i class="fa fa-check"></i><b>6.5</b> Five Number Summary</a></li>
+<li class="chapter" data-level="6.6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#boxplot"><i class="fa fa-check"></i><b>6.6</b> Boxplot</a></li>
+<li class="chapter" data-level="6.7" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#histogram"><i class="fa fa-check"></i><b>6.7</b> Histogram</a></li>
+<li class="chapter" data-level="6.8" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#overlaying-features"><i class="fa fa-check"></i><b>6.8</b> Overlaying Features</a></li>
+<li class="chapter" data-level="6.9" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#barplot"><i class="fa fa-check"></i><b>6.9</b> Barplot</a></li>
+<li class="chapter" data-level="6.10" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-two-dimensions-and-beyond"><i class="fa fa-check"></i><b>6.10</b> Simple Summaries: Two Dimensions and Beyond</a></li>
+<li class="chapter" data-level="6.11" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-boxplots"><i class="fa fa-check"></i><b>6.11</b> Multiple Boxplots</a></li>
+<li class="chapter" data-level="6.12" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-histograms"><i class="fa fa-check"></i><b>6.12</b> Multiple Histograms</a></li>
+<li class="chapter" data-level="6.13" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplots"><i class="fa fa-check"></i><b>6.13</b> Scatterplots</a></li>
+<li class="chapter" data-level="6.14" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplot---using-color"><i class="fa fa-check"></i><b>6.14</b> Scatterplot - Using Color</a></li>
+<li class="chapter" data-level="6.15" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-scatterplots"><i class="fa fa-check"></i><b>6.15</b> Multiple Scatterplots</a></li>
+<li class="chapter" data-level="6.16" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#summary-1"><i class="fa fa-check"></i><b>6.16</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="plotting-systems.html"><a href="plotting-systems.html"><i class="fa fa-check"></i><b>7</b> Plotting Systems</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="plotting-systems.html"><a href="plotting-systems.html#the-base-plotting-system"><i class="fa fa-check"></i><b>7.1</b> The Base Plotting System</a></li>
+<li class="chapter" data-level="7.2" data-path="plotting-systems.html"><a href="plotting-systems.html#the-lattice-system"><i class="fa fa-check"></i><b>7.2</b> The Lattice System</a></li>
+<li class="chapter" data-level="7.3" data-path="plotting-systems.html"><a href="plotting-systems.html#the-ggplot2-system"><i class="fa fa-check"></i><b>7.3</b> The ggplot2 System</a></li>
+<li class="chapter" data-level="7.4" data-path="plotting-systems.html"><a href="plotting-systems.html#references-1"><i class="fa fa-check"></i><b>7.4</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="graphics-devices.html"><a href="graphics-devices.html"><i class="fa fa-check"></i><b>8</b> Graphics Devices</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="graphics-devices.html"><a href="graphics-devices.html#the-process-of-making-a-plot"><i class="fa fa-check"></i><b>8.1</b> The Process of Making a Plot</a></li>
+<li class="chapter" data-level="8.2" data-path="graphics-devices.html"><a href="graphics-devices.html#how-does-a-plot-get-created"><i class="fa fa-check"></i><b>8.2</b> How Does a Plot Get Created?</a></li>
+<li class="chapter" data-level="8.3" data-path="graphics-devices.html"><a href="graphics-devices.html#graphics-file-devices"><i class="fa fa-check"></i><b>8.3</b> Graphics File Devices</a></li>
+<li class="chapter" data-level="8.4" data-path="graphics-devices.html"><a href="graphics-devices.html#multiple-open-graphics-devices"><i class="fa fa-check"></i><b>8.4</b> Multiple Open Graphics Devices</a></li>
+<li class="chapter" data-level="8.5" data-path="graphics-devices.html"><a href="graphics-devices.html#copying-plots"><i class="fa fa-check"></i><b>8.5</b> Copying Plots</a></li>
+<li class="chapter" data-level="8.6" data-path="graphics-devices.html"><a href="graphics-devices.html#summary-2"><i class="fa fa-check"></i><b>8.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html"><i class="fa fa-check"></i><b>9</b> The Base Plotting System</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-graphics"><i class="fa fa-check"></i><b>9.1</b> Base Graphics</a></li>
+<li class="chapter" data-level="9.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#simple-base-graphics"><i class="fa fa-check"></i><b>9.2</b> Simple Base Graphics</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#histogram-1"><i class="fa fa-check"></i><b>9.2.1</b> Histogram</a></li>
+<li class="chapter" data-level="9.2.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#boxplot-1"><i class="fa fa-check"></i><b>9.2.2</b> Boxplot</a></li>
+<li class="chapter" data-level="9.2.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#scatterplot"><i class="fa fa-check"></i><b>9.2.3</b> Scatterplot</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#some-important-base-graphics-parameters"><i class="fa fa-check"></i><b>9.3</b> Some Important Base Graphics Parameters</a></li>
+<li class="chapter" data-level="9.4" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plotting-functions"><i class="fa fa-check"></i><b>9.4</b> Base Plotting Functions</a></li>
+<li class="chapter" data-level="9.5" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plot-with-regression-line"><i class="fa fa-check"></i><b>9.5</b> Base Plot with Regression Line</a></li>
+<li class="chapter" data-level="9.6" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#multiple-base-plots"><i class="fa fa-check"></i><b>9.6</b> Multiple Base Plots</a></li>
+<li class="chapter" data-level="9.7" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#summary-3"><i class="fa fa-check"></i><b>9.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html"><i class="fa fa-check"></i><b>10</b> Plotting and Color in R</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colors-1-2-and-3"><i class="fa fa-check"></i><b>10.1</b> Colors 1, 2, and 3</a></li>
+<li class="chapter" data-level="10.2" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#connecting-colors-with-data"><i class="fa fa-check"></i><b>10.2</b> Connecting colors with data</a></li>
+<li class="chapter" data-level="10.3" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#color-utilities-in-r"><i class="fa fa-check"></i><b>10.3</b> Color Utilities in R</a></li>
+<li class="chapter" data-level="10.4" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramp"><i class="fa fa-check"></i><b>10.4</b> <code>colorRamp()</code></a></li>
+<li class="chapter" data-level="10.5" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramppalette"><i class="fa fa-check"></i><b>10.5</b> <code>colorRampPalette()</code></a></li>
+<li class="chapter" data-level="10.6" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#rcolorbrewer-package"><i class="fa fa-check"></i><b>10.6</b> RColorBrewer Package</a></li>
+<li class="chapter" data-level="10.7" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#using-the-rcolorbrewer-palettes"><i class="fa fa-check"></i><b>10.7</b> Using the RColorBrewer palettes</a></li>
+<li class="chapter" data-level="10.8" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#the-smoothscatter-function"><i class="fa fa-check"></i><b>10.8</b> The <code>smoothScatter()</code> function</a></li>
+<li class="chapter" data-level="10.9" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#adding-transparency"><i class="fa fa-check"></i><b>10.9</b> Adding transparency</a></li>
+<li class="chapter" data-level="10.10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#summary-4"><i class="fa fa-check"></i><b>10.10</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html"><i class="fa fa-check"></i><b>11</b> Hierarchical Clustering</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#hierarchical-clustering-1"><i class="fa fa-check"></i><b>11.1</b> Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.2" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#how-do-we-define-close"><i class="fa fa-check"></i><b>11.2</b> How do we define close?</a></li>
+<li class="chapter" data-level="11.3" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-euclidean-distance"><i class="fa fa-check"></i><b>11.3</b> Example: Euclidean distance</a></li>
+<li class="chapter" data-level="11.4" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-manhattan-distance"><i class="fa fa-check"></i><b>11.4</b> Example: Manhattan distance</a></li>
+<li class="chapter" data-level="11.5" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-hierarchical-clustering"><i class="fa fa-check"></i><b>11.5</b> Example: Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.6" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#prettier-dendrograms"><i class="fa fa-check"></i><b>11.6</b> Prettier dendrograms</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-complete"><i class="fa fa-check"></i><b>11.7</b> Merging points: Complete</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-average"><i class="fa fa-check"></i><b>11.8</b> Merging points: Average</a></li>
+<li class="chapter" data-level="11.9" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#using-the-heatmap-function"><i class="fa fa-check"></i><b>11.9</b> Using the <code>heatmap()</code> function</a></li>
+<li class="chapter" data-level="11.10" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#notes-and-further-resources"><i class="fa fa-check"></i><b>11.10</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="k-means-clustering.html"><a href="k-means-clustering.html"><i class="fa fa-check"></i><b>12</b> K-Means Clustering</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-means-clustering.html"><a href="k-means-clustering.html#illustrating-the-k-means-algorithm"><i class="fa fa-check"></i><b>12.1</b> Illustrating the K-means algorithm</a></li>
+<li class="chapter" data-level="12.2" data-path="k-means-clustering.html"><a href="k-means-clustering.html#stopping-the-algorithm"><i class="fa fa-check"></i><b>12.2</b> Stopping the algorithm</a></li>
+<li class="chapter" data-level="12.3" data-path="k-means-clustering.html"><a href="k-means-clustering.html#using-the-kmeans-function"><i class="fa fa-check"></i><b>12.3</b> Using the <code>kmeans()</code> function</a></li>
+<li class="chapter" data-level="12.4" data-path="k-means-clustering.html"><a href="k-means-clustering.html#building-heatmaps-from-k-means-solutions"><i class="fa fa-check"></i><b>12.4</b> Building heatmaps from K-means solutions</a></li>
+<li class="chapter" data-level="12.5" data-path="k-means-clustering.html"><a href="k-means-clustering.html#notes-and-further-resources-1"><i class="fa fa-check"></i><b>12.5</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="dimension-reduction.html"><a href="dimension-reduction.html"><i class="fa fa-check"></i><b>13</b> Dimension Reduction</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="dimension-reduction.html"><a href="dimension-reduction.html#matrix-data"><i class="fa fa-check"></i><b>13.1</b> Matrix data</a></li>
+<li class="chapter" data-level="13.2" data-path="dimension-reduction.html"><a href="dimension-reduction.html#patterns-in-rows-and-columns"><i class="fa fa-check"></i><b>13.2</b> Patterns in rows and columns</a></li>
+<li class="chapter" data-level="13.3" data-path="dimension-reduction.html"><a href="dimension-reduction.html#related-problem"><i class="fa fa-check"></i><b>13.3</b> Related problem</a></li>
+<li class="chapter" data-level="13.4" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-and-pca"><i class="fa fa-check"></i><b>13.4</b> SVD and PCA</a></li>
+<li class="chapter" data-level="13.5" data-path="dimension-reduction.html"><a href="dimension-reduction.html#unpacking-the-svd-u-and-v"><i class="fa fa-check"></i><b>13.5</b> Unpacking the SVD: <em>u</em> and <em>v</em></a></li>
+<li class="chapter" data-level="13.6" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-for-data-compression"><i class="fa fa-check"></i><b>13.6</b> SVD for data compression</a></li>
+<li class="chapter" data-level="13.7" data-path="dimension-reduction.html"><a href="dimension-reduction.html#components-of-the-svd---variance-explained"><i class="fa fa-check"></i><b>13.7</b> Components of the SVD - Variance explained</a></li>
+<li class="chapter" data-level="13.8" data-path="dimension-reduction.html"><a href="dimension-reduction.html#relationship-to-principal-components"><i class="fa fa-check"></i><b>13.8</b> Relationship to principal components</a></li>
+<li class="chapter" data-level="13.9" data-path="dimension-reduction.html"><a href="dimension-reduction.html#what-if-we-add-a-second-pattern"><i class="fa fa-check"></i><b>13.9</b> What if we add a second pattern?</a></li>
+<li class="chapter" data-level="13.10" data-path="dimension-reduction.html"><a href="dimension-reduction.html#dealing-with-missing-values"><i class="fa fa-check"></i><b>13.10</b> Dealing with missing values</a></li>
+<li class="chapter" data-level="13.11" data-path="dimension-reduction.html"><a href="dimension-reduction.html#example-face-data"><i class="fa fa-check"></i><b>13.11</b> Example: Face data</a></li>
+<li class="chapter" data-level="13.12" data-path="dimension-reduction.html"><a href="dimension-reduction.html#notes-and-further-resources-2"><i class="fa fa-check"></i><b>13.12</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html"><i class="fa fa-check"></i><b>14</b> The ggplot2 Plotting System: Part 1</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#the-basics-qplot"><i class="fa fa-check"></i><b>14.1</b> The Basics: <code>qplot()</code></a></li>
+<li class="chapter" data-level="14.2" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#before-you-start-label-your-data"><i class="fa fa-check"></i><b>14.2</b> Before You Start: Label Your Data</a></li>
+<li class="chapter" data-level="14.3" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#ggplot2-hello-world"><i class="fa fa-check"></i><b>14.3</b> ggplot2 “Hello, world!”</a></li>
+<li class="chapter" data-level="14.4" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#modifying-aesthetics"><i class="fa fa-check"></i><b>14.4</b> Modifying aesthetics</a></li>
+<li class="chapter" data-level="14.5" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#adding-a-geom"><i class="fa fa-check"></i><b>14.5</b> Adding a geom</a></li>
+<li class="chapter" data-level="14.6" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#histograms"><i class="fa fa-check"></i><b>14.6</b> Histograms</a></li>
+<li class="chapter" data-level="14.7" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#facets"><i class="fa fa-check"></i><b>14.7</b> Facets</a></li>
+<li class="chapter" data-level="14.8" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#case-study-maacs-cohort"><i class="fa fa-check"></i><b>14.8</b> Case Study: MAACS Cohort</a></li>
+<li class="chapter" data-level="14.9" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#summary-of-qplot"><i class="fa fa-check"></i><b>14.9</b> Summary of qplot()</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html"><i class="fa fa-check"></i><b>15</b> The ggplot2 Plotting System: Part 2</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#basic-components-of-a-ggplot2-plot"><i class="fa fa-check"></i><b>15.1</b> Basic Components of a ggplot2 Plot</a></li>
+<li class="chapter" data-level="15.2" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#example-bmi-pm2.5-asthma"><i class="fa fa-check"></i><b>15.2</b> Example: BMI, PM2.5, Asthma</a></li>
+<li class="chapter" data-level="15.3" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#building-up-in-layers"><i class="fa fa-check"></i><b>15.3</b> Building Up in Layers</a></li>
+<li class="chapter" data-level="15.4" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#first-plot-with-point-layer"><i class="fa fa-check"></i><b>15.4</b> First Plot with Point Layer</a></li>
+<li class="chapter" data-level="15.5" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-smooth"><i class="fa fa-check"></i><b>15.5</b> Adding More Layers: Smooth</a></li>
+<li class="chapter" data-level="15.6" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-facets"><i class="fa fa-check"></i><b>15.6</b> Adding More Layers: Facets</a></li>
+<li class="chapter" data-level="15.7" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-geom-properties"><i class="fa fa-check"></i><b>15.7</b> Modifying Geom Properties</a></li>
+<li class="chapter" data-level="15.8" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-labels"><i class="fa fa-check"></i><b>15.8</b> Modifying Labels</a></li>
+<li class="chapter" data-level="15.9" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#customizing-the-smooth"><i class="fa fa-check"></i><b>15.9</b> Customizing the Smooth</a></li>
+<li class="chapter" data-level="15.10" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#changing-the-theme"><i class="fa fa-check"></i><b>15.10</b> Changing the Theme</a></li>
+<li class="chapter" data-level="15.11" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#more-complex-example"><i class="fa fa-check"></i><b>15.11</b> More Complex Example</a></li>
+<li class="chapter" data-level="15.12" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#a-quick-aside-about-axis-limits"><i class="fa fa-check"></i><b>15.12</b> A Quick Aside about Axis Limits</a></li>
+<li class="chapter" data-level="15.13" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#resources"><i class="fa fa-check"></i><b>15.13</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><i class="fa fa-check"></i><b>16</b> Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S.</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#synopsis"><i class="fa fa-check"></i><b>16.1</b> Synopsis</a></li>
+<li class="chapter" data-level="16.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#loading-and-processing-the-raw-data"><i class="fa fa-check"></i><b>16.2</b> Loading and Processing the Raw Data</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-1999-data"><i class="fa fa-check"></i><b>16.2.1</b> Reading in the 1999 data</a></li>
+<li class="chapter" data-level="16.2.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-2012-data"><i class="fa fa-check"></i><b>16.2.2</b> Reading in the 2012 data</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#results"><i class="fa fa-check"></i><b>16.3</b> Results</a>
+<ul>
+<li class="chapter" data-level="16.3.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#entire-u.s.-analysis"><i class="fa fa-check"></i><b>16.3.1</b> Entire U.S. analysis</a></li>
+<li class="chapter" data-level="16.3.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-pm-levels-at-an-individual-monitor"><i class="fa fa-check"></i><b>16.3.2</b> Changes in PM levels at an individual monitor</a></li>
+<li class="chapter" data-level="16.3.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-state-wide-pm-levels"><i class="fa fa-check"></i><b>16.3.3</b> Changes in state-wide PM levels</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i><b>17</b> About the Author</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Exploratory Data Analysis with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="hierarchical-clustering" class="section level1" number="11">
+<h1><span class="header-section-number">11</span> Hierarchical Clustering</h1>
+<p><strong>Watch a video of this chapter</strong>: <a href="https://youtu.be/BKoChxguelA">Part 1</a> <a href="https://youtu.be/ZQYLGS7ptWM">Part 2</a> <a href="https://youtu.be/lmSMEZAjE-4">Part 3</a></p>
+<p>Clustering or cluster analysis is a bread and butter technique for visualizing high dimensional or multidimensional data. It’s very simple to use, the ideas are fairly intuitive, and it can serve as a really quick way to get a sense of what’s going on in a very high dimensional data set.</p>
+<p>Cluster analysis is a really important and widely used technique. If you just type “cluster analysis” into Google, there are many millions of results that come back.</p>
+<div class="figure">
+<img src="images/cluster_analysis_google.png" alt="" />
+<p class="caption">Google search results for “cluster analysis”</p>
+</div>
+<p>And it’s a widely applied method in many different areas of science, business, and other applications. So it’s useful to know how these techniques work.</p>
+<p>The point of clustering is to organize things or observations that are <strong>close</strong> together and separate them into groups. Of course, this simple definition raises some immediate questions:</p>
+<ul>
+<li><p>How do we define close?</p></li>
+<li><p>How do we group things?</p></li>
+<li><p>How do we visualize the grouping?</p></li>
+<li><p>How do we interpret the grouping?</p></li>
+</ul>
+<p>All clustering techniques confront a basic issue, which is how do we define when things are close
+together and when things are far apart? Essentially, the wide variety of clustering techniques out there that you can apply to data differ in the ways that they answer these questions.</p>
+<div id="hierarchical-clustering-1" class="section level2" number="11.1">
+<h2><span class="header-section-number">11.1</span> Hierarchical clustering</h2>
+<p>Hierarchical clustering, as is denoted by the name, involves organizing your data into a kind of hierarchy. The common approach is what’s called an agglomerative approach. This is a kind of bottom up approach, where you start by thinking of the data as individual data points. Then you start lumping them together into clusters little by little until eventually your entire data set is just one big cluster.</p>
+<p>Imagine there’s all these little particles floating around (your data points), and you start kind of grouping them together into little balls. And then the balls get grouped up into bigger balls, and the bigger balls get grouped together into one big massive cluster. That’s the agglomerative
+approach to clustering, and that’s what we’re going to talk about here.</p>
+<p>The algorithm is recursive and goes as follows:</p>
+<ol style="list-style-type: decimal">
+<li><p>Find closest two things points in your dataset</p></li>
+<li><p>Put them together and call them a “point”</p></li>
+<li><p>Use your new “dataset” with this new point and repeat</p></li>
+</ol>
+<p>This methodology requires that you have a way to measure the <em>distance</em> between two points and that you have an approach to <em>merging</em> two points to create a new “point”. A benefit of this clustering methodology is that you can produce a tree showing how close things are to each other, which is simply a by product of running the algorithm.</p>
+</div>
+<div id="how-do-we-define-close" class="section level2" number="11.2">
+<h2><span class="header-section-number">11.2</span> How do we define close?</h2>
+<p>Defining closeness is a key aspect of defining a clustering method. Ultimately, the old rule of “garbage in, garbage out” applies. If you don’t use a distance metric that makes sense for your data, then you won’t get any useful information out of the clustering.</p>
+<p>There are a number of commonly used metrics for characterizing distance or its inverse, similarity:</p>
+<ul>
+<li><p>Euclidean distance: A continuous metric which can be thought of in geometric terms as the “straight-line” distance between two points.</p></li>
+<li><p>Correlation similarity: Similar in nature to Euclidean distance</p></li>
+<li><p>“Manhattan” distance: on a grid or lattice, how many “city blocks” would you have to travel to get from point A to point B?</p></li>
+</ul>
+<p>The important thing is to always pick a distance or similarity metric that makes sense for your problem.</p>
+</div>
+<div id="example-euclidean-distance" class="section level2" number="11.3">
+<h2><span class="header-section-number">11.3</span> Example: Euclidean distance</h2>
+<div class="figure">
+<img src="images/distance.png" alt="" />
+<p class="caption">Euclidean distance</p>
+</div>
+<p><a href="http://rafalab.jhsph.edu/688/lec/lecture5-clustering.pdf">source</a></p>
+<p>For example, take two cities, say, Baltimore and Washington D.C., and put them on a map. If you imagine that the center of each city has an X and a Y coordinate (say, longitude and latitude), and you want to map the distance between the centers of the two cities, then you can draw a straight diagonal line between the two cities. The distance can be calculated in the usual way, which is going to be a function of the difference in the x coordinates and the difference in
+the y coordinates. In the two-dimensional plane, you take the distance in the x coordinates, square it, take the difference in the y coordinates, square that, and then add the two squares together and take the square root of the whole thing. In other words,</p>
+<p><span class="math display">\[
+Distance = [(X_1 - X_2)^2 + (Y_1 - Y_2)^2]^{1/2}
+\]</span></p>
+<p>That’s the classical definition of Euclidian distance. You can imagine if a bird were to fly from Washington, D.C. to Baltimore, it would just fly straight from one city to another. This is possible because a bird isn’t impeded by things like roads or mountains, or whatever. Whether that makes sense for you depends on, among other things, whether you’re a bird or not. And so you have to think about the properties of this distance metric in the context of your problem.</p>
+<p>One nice feature of Euclidean distance is that it’s easily generalizable to higher dimensions. If instead of two dimensions you have 100 dimensions, you can easily take the differences between each of the 100 dimensions, square them, sum them together and then take the square root. So the Euclidean distance metric extends very naturally to very high dimensions problems.</p>
+<p>In general the formula for Euclidean distance between point</p>
+<p><span class="math display">\[
+A = (A_1, A_2, \dots, A_n)
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+B = (B_1, B_2, \dots, B_n)
+\]</span></p>
+<p>is</p>
+<p><span class="math display">\[
+Distance = ((A_1-B_1)^2 + (A_2-B_2)^2 + \cdots + (A_n-B_n)^2)^{(1/2)}
+\]</span></p>
+</div>
+<div id="example-manhattan-distance" class="section level2" number="11.4">
+<h2><span class="header-section-number">11.4</span> Example: Manhattan distance</h2>
+<p>The Manhattan distance gets its name from the idea that you can look at points as being on a grid or lattice, not unlike the grid making up the streets of Manhattan in New York City.</p>
+<div class="figure">
+<img src="images/manhattan.png" alt="" />
+<p class="caption">Manhattan distance</p>
+</div>
+<p>In a city, if you want to go from point A to point B, you usually cannot take the direct route there because there will be buildings in the way. So instead, you have to follow the streets, or the grid layout, of the city to navigate around. That’s the idea behind Manhattan distance</p>
+<p>In the figure above, the red, blue, and yellow lines show various way of getting between the two black circles using the grid layout, while the green line shows the Euclidean distance. The Manhattan distance between the points is simply the sum of the right-left moves plus the sum of all the up-down moves on the grid.</p>
+<p>In general:</p>
+<p><span class="math display">\[
+Distance = |A_1-B_1| + |A_2-B_2| + \cdots + |A_n-B_n|
+\]</span></p>
+<p>Check out Wikipedia’s page on <a href="http://en.wikipedia.org/wiki/Taxicab_geometry">taxicab geometry</a> for a fun diversion.</p>
+</div>
+<div id="example-hierarchical-clustering" class="section level2" number="11.5">
+<h2><span class="header-section-number">11.5</span> Example: Hierarchical clustering</h2>
+<p>Here is a simple example demonstrating how hierarchical clustering works. First we’ll simulate some data in three separate clusters.</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="hierarchical-clustering.html#cb118-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb118-2"><a href="hierarchical-clustering.html#cb118-2"></a><span class="op">&gt;</span><span class="st"> </span>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">12</span>, <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">each =</span> <span class="dv">4</span>), <span class="fl">0.2</span>)</span>
+<span id="cb118-3"><a href="hierarchical-clustering.html#cb118-3"></a><span class="op">&gt;</span><span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">12</span>, <span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">each =</span> <span class="dv">4</span>), <span class="fl">0.2</span>)</span>
+<span id="cb118-4"><a href="hierarchical-clustering.html#cb118-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>)</span>
+<span id="cb118-5"><a href="hierarchical-clustering.html#cb118-5"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">text</span>(x <span class="op">+</span><span class="st"> </span><span class="fl">0.05</span>, y <span class="op">+</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dt">labels =</span> <span class="kw">as.character</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>))</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<img src="images/hclust-unnamed-chunk-2-1.png" alt="Simulated clustered data" width="672" />
+<p class="caption">
+Figure 5.1: Simulated clustered data
+</p>
+</div>
+<p>The first step in the basic clustering approach is to calculate the distance between every point with every other point. The result is a <em>distance matrix</em>, which can be computed with the <code>dist()</code> function in R.</p>
+<p>Here is just a piece of the distance matrix associated with the figure above.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="hierarchical-clustering.html#cb119-1"></a><span class="op">&gt;</span><span class="st"> </span>dataFrame &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)</span>
+<span id="cb119-2"><a href="hierarchical-clustering.html#cb119-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">dist</span>(dataFrame)</span>
+<span id="cb119-3"><a href="hierarchical-clustering.html#cb119-3"></a>            <span class="dv">1</span>          <span class="dv">2</span>          <span class="dv">3</span>          <span class="dv">4</span>          <span class="dv">5</span>          <span class="dv">6</span>          <span class="dv">7</span></span>
+<span id="cb119-4"><a href="hierarchical-clustering.html#cb119-4"></a><span class="dv">2</span>  <span class="fl">0.34120511</span>                                                                  </span>
+<span id="cb119-5"><a href="hierarchical-clustering.html#cb119-5"></a><span class="dv">3</span>  <span class="fl">0.57493739</span> <span class="fl">0.24102750</span>                                                       </span>
+<span id="cb119-6"><a href="hierarchical-clustering.html#cb119-6"></a><span class="dv">4</span>  <span class="fl">0.26381786</span> <span class="fl">0.52578819</span> <span class="fl">0.71861759</span>                                            </span>
+<span id="cb119-7"><a href="hierarchical-clustering.html#cb119-7"></a><span class="dv">5</span>  <span class="fl">1.69424700</span> <span class="fl">1.35818182</span> <span class="fl">1.11952883</span> <span class="fl">1.80666768</span>                                 </span>
+<span id="cb119-8"><a href="hierarchical-clustering.html#cb119-8"></a><span class="dv">6</span>  <span class="fl">1.65812902</span> <span class="fl">1.31960442</span> <span class="fl">1.08338841</span> <span class="fl">1.78081321</span> <span class="fl">0.08150268</span>                      </span>
+<span id="cb119-9"><a href="hierarchical-clustering.html#cb119-9"></a><span class="dv">7</span>  <span class="fl">1.49823399</span> <span class="fl">1.16620981</span> <span class="fl">0.92568723</span> <span class="fl">1.60131659</span> <span class="fl">0.21110433</span> <span class="fl">0.21666557</span>           </span>
+<span id="cb119-10"><a href="hierarchical-clustering.html#cb119-10"></a><span class="dv">8</span>  <span class="fl">1.99149025</span> <span class="fl">1.69093111</span> <span class="fl">1.45648906</span> <span class="fl">2.02849490</span> <span class="fl">0.61704200</span> <span class="fl">0.69791931</span> <span class="fl">0.65062566</span></span>
+<span id="cb119-11"><a href="hierarchical-clustering.html#cb119-11"></a><span class="dv">9</span>  <span class="fl">2.13629539</span> <span class="fl">1.83167669</span> <span class="fl">1.67835968</span> <span class="fl">2.35675598</span> <span class="fl">1.18349654</span> <span class="fl">1.11500116</span> <span class="fl">1.28582631</span></span>
+<span id="cb119-12"><a href="hierarchical-clustering.html#cb119-12"></a><span class="dv">10</span> <span class="fl">2.06419586</span> <span class="fl">1.76999236</span> <span class="fl">1.63109790</span> <span class="fl">2.29239480</span> <span class="fl">1.23847877</span> <span class="fl">1.16550201</span> <span class="fl">1.32063059</span></span>
+<span id="cb119-13"><a href="hierarchical-clustering.html#cb119-13"></a><span class="dv">11</span> <span class="fl">2.14702468</span> <span class="fl">1.85183204</span> <span class="fl">1.71074417</span> <span class="fl">2.37461984</span> <span class="fl">1.28153948</span> <span class="fl">1.21077373</span> <span class="fl">1.37369662</span></span>
+<span id="cb119-14"><a href="hierarchical-clustering.html#cb119-14"></a><span class="dv">12</span> <span class="fl">2.05664233</span> <span class="fl">1.74662555</span> <span class="fl">1.58658782</span> <span class="fl">2.27232243</span> <span class="fl">1.07700974</span> <span class="fl">1.00777231</span> <span class="fl">1.17740375</span></span>
+<span id="cb119-15"><a href="hierarchical-clustering.html#cb119-15"></a>            <span class="dv">8</span>          <span class="dv">9</span>         <span class="dv">10</span>         <span class="dv">11</span></span>
+<span id="cb119-16"><a href="hierarchical-clustering.html#cb119-16"></a><span class="dv">2</span>                                             </span>
+<span id="cb119-17"><a href="hierarchical-clustering.html#cb119-17"></a><span class="dv">3</span>                                             </span>
+<span id="cb119-18"><a href="hierarchical-clustering.html#cb119-18"></a><span class="dv">4</span>                                             </span>
+<span id="cb119-19"><a href="hierarchical-clustering.html#cb119-19"></a><span class="dv">5</span>                                             </span>
+<span id="cb119-20"><a href="hierarchical-clustering.html#cb119-20"></a><span class="dv">6</span>                                             </span>
+<span id="cb119-21"><a href="hierarchical-clustering.html#cb119-21"></a><span class="dv">7</span>                                             </span>
+<span id="cb119-22"><a href="hierarchical-clustering.html#cb119-22"></a><span class="dv">8</span>                                             </span>
+<span id="cb119-23"><a href="hierarchical-clustering.html#cb119-23"></a><span class="dv">9</span>  <span class="fl">1.76460709</span>                                 </span>
+<span id="cb119-24"><a href="hierarchical-clustering.html#cb119-24"></a><span class="dv">10</span> <span class="fl">1.83517785</span> <span class="fl">0.14090406</span>                      </span>
+<span id="cb119-25"><a href="hierarchical-clustering.html#cb119-25"></a><span class="dv">11</span> <span class="fl">1.86999431</span> <span class="fl">0.11624471</span> <span class="fl">0.08317570</span>           </span>
+<span id="cb119-26"><a href="hierarchical-clustering.html#cb119-26"></a><span class="dv">12</span> <span class="fl">1.66223814</span> <span class="fl">0.10848966</span> <span class="fl">0.19128645</span> <span class="fl">0.20802789</span></span></code></pre></div>
+<p>The default distance metric used by the <code>dist()</code> function is Euclidean distance.</p>
+<p>Note that usually you will <em>not</em> have to explicitly compute the distance matrix (unless you are inventing your own clustering method). Here I just print it out to show what’s going on internally.</p>
+<p>First an agglomerative clustering approach attempts to find the two points that are closest together. In other words, we want to find the smallest non-zero entry in the distance matrix.</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="hierarchical-clustering.html#cb120-1"></a><span class="op">&gt;</span><span class="st"> </span>rdistxy &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">dist</span>(dataFrame))</span>
+<span id="cb120-2"><a href="hierarchical-clustering.html#cb120-2"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb120-3"><a href="hierarchical-clustering.html#cb120-3"></a><span class="er">&gt;</span><span class="st"> </span><span class="co">## Remove the diagonal from consideration</span></span>
+<span id="cb120-4"><a href="hierarchical-clustering.html#cb120-4"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">diag</span>(rdistxy) &lt;-<span class="st"> </span><span class="kw">diag</span>(rdistxy) <span class="op">+</span><span class="st"> </span><span class="dv">100000</span></span>
+<span id="cb120-5"><a href="hierarchical-clustering.html#cb120-5"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb120-6"><a href="hierarchical-clustering.html#cb120-6"></a><span class="er">&gt;</span><span class="st"> </span><span class="co"># Find the index of the points with minimum distance</span></span>
+<span id="cb120-7"><a href="hierarchical-clustering.html#cb120-7"></a><span class="er">&gt;</span><span class="st"> </span>ind &lt;-<span class="st"> </span><span class="kw">which</span>(rdistxy <span class="op">==</span><span class="st"> </span><span class="kw">min</span>(rdistxy), <span class="dt">arr.ind =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb120-8"><a href="hierarchical-clustering.html#cb120-8"></a><span class="op">&gt;</span><span class="st"> </span>ind</span>
+<span id="cb120-9"><a href="hierarchical-clustering.html#cb120-9"></a>  row col</span>
+<span id="cb120-10"><a href="hierarchical-clustering.html#cb120-10"></a><span class="dv">6</span>   <span class="dv">6</span>   <span class="dv">5</span></span>
+<span id="cb120-11"><a href="hierarchical-clustering.html#cb120-11"></a><span class="dv">5</span>   <span class="dv">5</span>   <span class="dv">6</span></span></code></pre></div>
+<p>Now we can plot the points and show which two points are closest together according to our distance metric.</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="hierarchical-clustering.html#cb121-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>)</span>
+<span id="cb121-2"><a href="hierarchical-clustering.html#cb121-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">text</span>(x <span class="op">+</span><span class="st"> </span><span class="fl">0.05</span>, y <span class="op">+</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dt">labels =</span> <span class="kw">as.character</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>))</span>
+<span id="cb121-3"><a href="hierarchical-clustering.html#cb121-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">points</span>(x[ind[<span class="dv">1</span>, ]], y[ind[<span class="dv">1</span>, ]], <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-5"></span>
+<img src="images/hclust-unnamed-chunk-5-1.png" alt="Two closest points" width="672" />
+<p class="caption">
+Figure 5.4: Two closest points
+</p>
+</div>
+<p>The next step for the algorithm is to start drawing the tree, the first step of which would be to “merge” these two points together.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="hierarchical-clustering.html#cb122-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb122-2"><a href="hierarchical-clustering.html#cb122-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(x, y, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>, <span class="dt">main =</span> <span class="st">&quot;Data&quot;</span>)</span>
+<span id="cb122-3"><a href="hierarchical-clustering.html#cb122-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">text</span>(x <span class="op">+</span><span class="st"> </span><span class="fl">0.05</span>, y <span class="op">+</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dt">labels =</span> <span class="kw">as.character</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>))</span>
+<span id="cb122-4"><a href="hierarchical-clustering.html#cb122-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">points</span>(x[ind[<span class="dv">1</span>, ]], y[ind[<span class="dv">1</span>, ]], <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>)</span>
+<span id="cb122-5"><a href="hierarchical-clustering.html#cb122-5"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb122-6"><a href="hierarchical-clustering.html#cb122-6"></a><span class="er">&gt;</span><span class="st"> </span><span class="co"># Make a cluster and cut it at the right height</span></span>
+<span id="cb122-7"><a href="hierarchical-clustering.html#cb122-7"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</span>
+<span id="cb122-8"><a href="hierarchical-clustering.html#cb122-8"></a><span class="op">&gt;</span><span class="st"> </span>hcluster &lt;-<span class="st"> </span><span class="kw">dist</span>(dataFrame) <span class="op">%&gt;%</span><span class="st"> </span>hclust</span>
+<span id="cb122-9"><a href="hierarchical-clustering.html#cb122-9"></a><span class="op">&gt;</span><span class="st"> </span>dendro &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hcluster)</span>
+<span id="cb122-10"><a href="hierarchical-clustering.html#cb122-10"></a><span class="op">&gt;</span><span class="st"> </span>cutDendro &lt;-<span class="st"> </span><span class="kw">cut</span>(dendro, <span class="dt">h =</span> (hcluster<span class="op">$</span>height[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="fl">0.00001</span>))</span>
+<span id="cb122-11"><a href="hierarchical-clustering.html#cb122-11"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(cutDendro<span class="op">$</span>lower[[<span class="dv">11</span>]], <span class="dt">yaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Begin building tree&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-6"></span>
+<img src="images/hclust-unnamed-chunk-6-1.png" alt="Merging of first two points" width="1152" />
+<p class="caption">
+Figure 5.5: Merging of first two points
+</p>
+</div>
+<p>Now that we’ve merged the first two “leaves” of this tree, we can turn the algorithm crank and continue to build the tree. Now, the two points we identified in the previous iteration will get “merged” into a single point, as depicted below.</p>
+<div class="figure"><span id="fig:unnamed-chunk-7"></span>
+<img src="images/hclust-unnamed-chunk-7-1.png" alt="First set of merged points/cluster" width="672" />
+<p class="caption">
+Figure 5.6: First set of merged points/cluster
+</p>
+</div>
+<p>We need to search the distance matrix for the <em>next</em> two closest points, ignoring the first two that we already merged.</p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="hierarchical-clustering.html#cb123-1"></a><span class="op">&gt;</span><span class="st"> </span>nextmin &lt;-<span class="st"> </span>rdistxy[<span class="kw">order</span>(rdistxy)][<span class="dv">3</span>]</span>
+<span id="cb123-2"><a href="hierarchical-clustering.html#cb123-2"></a><span class="op">&gt;</span><span class="st"> </span>ind &lt;-<span class="st"> </span><span class="kw">which</span>(rdistxy <span class="op">==</span><span class="st"> </span>nextmin,<span class="dt">arr.ind=</span><span class="ot">TRUE</span>)</span>
+<span id="cb123-3"><a href="hierarchical-clustering.html#cb123-3"></a><span class="op">&gt;</span><span class="st"> </span>ind</span>
+<span id="cb123-4"><a href="hierarchical-clustering.html#cb123-4"></a>   row col</span>
+<span id="cb123-5"><a href="hierarchical-clustering.html#cb123-5"></a><span class="dv">11</span>  <span class="dv">11</span>  <span class="dv">10</span></span>
+<span id="cb123-6"><a href="hierarchical-clustering.html#cb123-6"></a><span class="dv">10</span>  <span class="dv">10</span>  <span class="dv">11</span></span></code></pre></div>
+<p>Now we can plot the data with this next pair of points and the merged tree leaves.</p>
+<div class="figure"><span id="fig:unnamed-chunk-9"></span>
+<img src="images/hclust-unnamed-chunk-9-1.png" alt="Second set of merged points" width="1344" />
+<p class="caption">
+Figure 5.8: Second set of merged points
+</p>
+</div>
+<p>And on and on in this manner. If we were to continue in this fashion–identifying the two closest points and merging them, we’d end up with a <em>dendrogram</em> that looks like this one. Here, we call the <code>hclust()</code> do run the clustering algorithm.</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="hierarchical-clustering.html#cb124-1"></a><span class="op">&gt;</span><span class="st"> </span>hClustering &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y) <span class="op">%&gt;%</span><span class="st"> </span>dist <span class="op">%&gt;%</span><span class="st"> </span>hclust</span>
+<span id="cb124-2"><a href="hierarchical-clustering.html#cb124-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">plot</span>(hClustering)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-10"></span>
+<img src="images/hclust-unnamed-chunk-10-1.png" alt="Full hierarchical clustering dendrogram" width="672" />
+<p class="caption">
+Figure 5.9: Full hierarchical clustering dendrogram
+</p>
+</div>
+<p>From the tree/dendrogram it’s clear that there are three clusters each with four points.</p>
+</div>
+<div id="prettier-dendrograms" class="section level2" number="11.6">
+<h2><span class="header-section-number">11.6</span> Prettier dendrograms</h2>
+<p>It’s possible to make slightly prettier dendrograms with some modification to the usual plotting method for the output of <code>hclust()</code>. Here’s a function that takes the output of <code>hclust()</code> and color codes each of the cluster members by their cluster membership.</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="hierarchical-clustering.html#cb125-1"></a><span class="op">&gt;</span><span class="st"> </span>myplclust &lt;-<span class="st"> </span><span class="cf">function</span>(hclust, <span class="dt">lab =</span> hclust<span class="op">$</span>labels, <span class="dt">lab.col =</span> <span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">length</span>(hclust<span class="op">$</span>labels)), </span>
+<span id="cb125-2"><a href="hierarchical-clustering.html#cb125-2"></a><span class="op">+</span><span class="st">     </span><span class="dt">hang =</span> <span class="fl">0.1</span>, ...) {</span>
+<span id="cb125-3"><a href="hierarchical-clustering.html#cb125-3"></a><span class="op">+</span><span class="st">     </span><span class="co">## modifiction of plclust for plotting hclust objects *in colour*!  Copyright Eva</span></span>
+<span id="cb125-4"><a href="hierarchical-clustering.html#cb125-4"></a><span class="op">+</span><span class="st">     </span><span class="co">## KF Chan 2009 Arguments: hclust: hclust object lab: a character vector of labels</span></span>
+<span id="cb125-5"><a href="hierarchical-clustering.html#cb125-5"></a><span class="op">+</span><span class="st">     </span><span class="co">## of the leaves of the tree lab.col: colour for the labels; NA=default device</span></span>
+<span id="cb125-6"><a href="hierarchical-clustering.html#cb125-6"></a><span class="op">+</span><span class="st">     </span><span class="co">## foreground colour hang: as in hclust &amp; plclust Side effect: A display of</span></span>
+<span id="cb125-7"><a href="hierarchical-clustering.html#cb125-7"></a><span class="op">+</span><span class="st">     </span><span class="co">## hierarchical cluster with coloured leaf labels.</span></span>
+<span id="cb125-8"><a href="hierarchical-clustering.html#cb125-8"></a><span class="op">+</span><span class="st">     </span>y &lt;-<span class="st"> </span><span class="kw">rep</span>(hclust<span class="op">$</span>height, <span class="dv">2</span>)</span>
+<span id="cb125-9"><a href="hierarchical-clustering.html#cb125-9"></a><span class="op">+</span><span class="st">     </span>x &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(hclust<span class="op">$</span>merge)</span>
+<span id="cb125-10"><a href="hierarchical-clustering.html#cb125-10"></a><span class="op">+</span><span class="st">     </span>y &lt;-<span class="st"> </span>y[<span class="kw">which</span>(x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)]</span>
+<span id="cb125-11"><a href="hierarchical-clustering.html#cb125-11"></a><span class="op">+</span><span class="st">     </span>x &lt;-<span class="st"> </span>x[<span class="kw">which</span>(x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)]</span>
+<span id="cb125-12"><a href="hierarchical-clustering.html#cb125-12"></a><span class="op">+</span><span class="st">     </span>x &lt;-<span class="st"> </span><span class="kw">abs</span>(x)</span>
+<span id="cb125-13"><a href="hierarchical-clustering.html#cb125-13"></a><span class="op">+</span><span class="st">     </span>y &lt;-<span class="st"> </span>y[<span class="kw">order</span>(x)]</span>
+<span id="cb125-14"><a href="hierarchical-clustering.html#cb125-14"></a><span class="op">+</span><span class="st">     </span>x &lt;-<span class="st"> </span>x[<span class="kw">order</span>(x)]</span>
+<span id="cb125-15"><a href="hierarchical-clustering.html#cb125-15"></a><span class="op">+</span><span class="st">     </span><span class="kw">plot</span>(hclust, <span class="dt">labels =</span> <span class="ot">FALSE</span>, <span class="dt">hang =</span> hang, ...)</span>
+<span id="cb125-16"><a href="hierarchical-clustering.html#cb125-16"></a><span class="op">+</span><span class="st">     </span><span class="kw">text</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y[hclust<span class="op">$</span>order] <span class="op">-</span><span class="st"> </span>(<span class="kw">max</span>(hclust<span class="op">$</span>height) <span class="op">*</span><span class="st"> </span>hang), <span class="dt">labels =</span> lab[hclust<span class="op">$</span>order], </span>
+<span id="cb125-17"><a href="hierarchical-clustering.html#cb125-17"></a><span class="op">+</span><span class="st">         </span><span class="dt">col =</span> lab.col[hclust<span class="op">$</span>order], <span class="dt">srt =</span> <span class="dv">90</span>, <span class="dt">adj =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="fl">0.5</span>), <span class="dt">xpd =</span> <span class="ot">NA</span>, ...)</span>
+<span id="cb125-18"><a href="hierarchical-clustering.html#cb125-18"></a><span class="op">+</span><span class="st"> </span>}</span></code></pre></div>
+<p>And here’s the output the function produces.</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="hierarchical-clustering.html#cb126-1"></a><span class="op">&gt;</span><span class="st"> </span>hClustering &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y) <span class="op">%&gt;%</span><span class="st"> </span>dist <span class="op">%&gt;%</span><span class="st"> </span>hclust</span>
+<span id="cb126-2"><a href="hierarchical-clustering.html#cb126-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">myplclust</span>(hClustering, <span class="dt">lab =</span> <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">each =</span> <span class="dv">4</span>), <span class="dt">lab.col =</span> <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">each =</span> <span class="dv">4</span>))</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-11"></span>
+<img src="images/hclust-unnamed-chunk-11-1.png" alt="Prettier dendrogram" width="672" />
+<p class="caption">
+Figure 6.1: Prettier dendrogram
+</p>
+</div>
+</div>
+<div id="merging-points-complete" class="section level2" number="11.7">
+<h2><span class="header-section-number">11.7</span> Merging points: Complete</h2>
+<p>One issue that we haven’t discussed yet is how exactly the merging of clusters works. Recall that once we find the two points that are closest together, we “merge” them and then consider the merged pair as a single “point”. When we compare this merged “point” with other points, how should we measure the distance from one point to this merged cluster of points?</p>
+<p>One method, called “complete” is to measure the distance between two groups of points by the maximun distance between the two groups. That is, take all points in group 1 and all points in group 2 and find the two points that are <em>furthest</em> apart–that’s the distance between the groups.</p>
+<p>Here’s what that would look like with our simulated data.</p>
+<div class="figure"><span id="fig:unnamed-chunk-12"></span>
+<img src="images/hclust-unnamed-chunk-12-1.png" alt="Complete merging" width="672" />
+<p class="caption">
+Figure 6.2: Complete merging
+</p>
+</div>
+<p>Complete merging is the default method in the <code>hclust()</code> function.</p>
+</div>
+<div id="merging-points-average" class="section level2" number="11.8">
+<h2><span class="header-section-number">11.8</span> Merging points: Average</h2>
+<p>Another approach is average merging, which takes the average of the coordinate values in each group and measures the distance between these two averages. That approach is shown below.</p>
+<div class="figure"><span id="fig:unnamed-chunk-13"></span>
+<img src="images/hclust-unnamed-chunk-13-1.png" alt="Average merging" width="672" />
+<p class="caption">
+Figure 6.3: Average merging
+</p>
+</div>
+<p>While there’s not necessarily a correct merging approach for any given application, it’s important to note that the resulting tree/hierarchy that you get can be sensitive to the merging approach that you use.</p>
+</div>
+<div id="using-the-heatmap-function" class="section level2" number="11.9">
+<h2><span class="header-section-number">11.9</span> Using the <code>heatmap()</code> function</h2>
+<p>The <code>heatmap()</code> function is a handy way to visualize matrix data. The basic idea is that <code>heatmap()</code> sorts the rows and columns of a matrix according to the clustering determined by a call to <code>hclust()</code>. Conceptually, <code>heatmap()</code> first treats the rows of a matrix as observations and calls <code>hclust()</code> on them, then it treats the columns of a matrix as observations and calls <code>hclust()</code> on those values. The end result is that you get a dendrogram associated with both the rows and columns of a matrix, which can help you to spot obvious patterns in the data.</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="hierarchical-clustering.html#cb127-1"></a><span class="op">&gt;</span><span class="st"> </span>dataMatrix &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y) <span class="op">%&gt;%</span><span class="st"> </span>data.matrix</span>
+<span id="cb127-2"><a href="hierarchical-clustering.html#cb127-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">heatmap</span>(dataMatrix)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-14"></span>
+<img src="images/hclust-unnamed-chunk-14-1.png" alt="Heatmap with dendrograms on rows and columns" width="672" />
+<p class="caption">
+Figure 10.1: Heatmap with dendrograms on rows and columns
+</p>
+</div>
+</div>
+<div id="notes-and-further-resources" class="section level2" number="11.10">
+<h2><span class="header-section-number">11.10</span> Notes and further resources</h2>
+<p>Hierarchical clustering is a really useful tool because it quickly gives you an idea of the relationships between variables/observations. But caution should be used with clustering as often the picture that you produce can be unstable. In particular, it may be sensitive to</p>
+<ul>
+<li><p>Changing a few points in the dataset</p></li>
+<li><p>Having different missing values in some of the observations</p></li>
+<li><p>Picking a different distance metric (i.e. Euclidean vs. Manhattan)</p></li>
+<li><p>Changing the merging strategy (i.e. complete vs. average)</p></li>
+<li><p>Changing the scale of points for one variable</p></li>
+</ul>
+<p>Another issue is that choosing where to “cut” the tree to determine the number of clusters isn’t always obvious. In light of some of these limitations, hierarchical clustering should be primarily used for exploration of data. Once major patterns have been identified, it’s often best to delve further with other tools and formal modeling.</p>
+<p>Some other resources to check out:</p>
+<ul>
+<li><p><a href="http://www.youtube.com/watch?v=wQhVWUcXM0A">Rafa’s Distances and Clustering Video</a></p></li>
+<li><p><a href="http://www-stat.stanford.edu/~tibs/ElemStatLearn/">Elements of statistical learning</a></p></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="plotting-and-color-in-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="k-means-clustering.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rdpeng/exdata/edit/bookdown/hclust.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

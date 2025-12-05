@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>15 The ggplot2 Plotting System: Part 2 | Exploratory Data Analysis with R</title>
+  <meta name="description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="15 The ggplot2 Plotting System: Part 2 | Exploratory Data Analysis with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/rdpeng/exdata/" />
+  <meta property="og:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+  <meta property="og:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="github-repo" content="rdpeng/exdata" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="15 The ggplot2 Plotting System: Part 2 | Exploratory Data Analysis with R" />
+  
+  <meta name="twitter:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="twitter:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+
+<meta name="author" content="Roger D. Peng" />
+
+
+<meta name="date" content="2020-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="the-ggplot2-plotting-system-part-1.html"/>
+<link rel="next" href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Exploratory Data Analysis with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#stay-in-touch"><i class="fa fa-check"></i>Stay in Touch!</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>2</b> Getting Started with R</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-started-with-the-r-interface"><i class="fa fa-check"></i><b>2.2</b> Getting started with the R interface</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html"><i class="fa fa-check"></i><b>3</b> Managing Data Frames with the <code>dplyr</code> package</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#data-frames"><i class="fa fa-check"></i><b>3.1</b> Data Frames</a></li>
+<li class="chapter" data-level="3.2" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#the-dplyr-package"><i class="fa fa-check"></i><b>3.2</b> The <code>dplyr</code> Package</a></li>
+<li class="chapter" data-level="3.3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#dplyr-grammar"><i class="fa fa-check"></i><b>3.3</b> <code>dplyr</code> Grammar</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#common-dplyr-function-properties"><i class="fa fa-check"></i><b>3.3.1</b> Common <code>dplyr</code> Function Properties</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#installing-the-dplyr-package"><i class="fa fa-check"></i><b>3.4</b> Installing the <code>dplyr</code> package</a></li>
+<li class="chapter" data-level="3.5" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>3.5</b> <code>select()</code></a></li>
+<li class="chapter" data-level="3.6" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>3.6</b> <code>filter()</code></a></li>
+<li class="chapter" data-level="3.7" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#arrange"><i class="fa fa-check"></i><b>3.7</b> <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.8" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#rename"><i class="fa fa-check"></i><b>3.8</b> <code>rename()</code></a></li>
+<li class="chapter" data-level="3.9" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>3.9</b> <code>mutate()</code></a></li>
+<li class="chapter" data-level="3.10" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#group_by"><i class="fa fa-check"></i><b>3.10</b> <code>group_by()</code></a></li>
+<li class="chapter" data-level="3.11" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#section"><i class="fa fa-check"></i><b>3.11</b> <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="3.12" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#summary"><i class="fa fa-check"></i><b>3.12</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis Checklist</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#formulate-your-question"><i class="fa fa-check"></i><b>4.1</b> Formulate your question</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#read-in-your-data"><i class="fa fa-check"></i><b>4.2</b> Read in your data</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-the-packaging"><i class="fa fa-check"></i><b>4.3</b> Check the packaging</a></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#run-str"><i class="fa fa-check"></i><b>4.4</b> Run <code>str()</code></a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#look-at-the-top-and-the-bottom-of-your-data"><i class="fa fa-check"></i><b>4.5</b> Look at the top and the bottom of your data</a></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-your-ns"><i class="fa fa-check"></i><b>4.6</b> Check your “n”s</a></li>
+<li class="chapter" data-level="4.7" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#validate-with-at-least-one-external-data-source"><i class="fa fa-check"></i><b>4.7</b> Validate with at least one external data source</a></li>
+<li class="chapter" data-level="4.8" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#try-the-easy-solution-first"><i class="fa fa-check"></i><b>4.8</b> Try the easy solution first</a></li>
+<li class="chapter" data-level="4.9" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#challenge-your-solution"><i class="fa fa-check"></i><b>4.9</b> Challenge your solution</a></li>
+<li class="chapter" data-level="4.10" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#follow-up-questions"><i class="fa fa-check"></i><b>4.10</b> Follow up questions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html"><i class="fa fa-check"></i><b>5</b> Principles of Analytic Graphics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-comparisons"><i class="fa fa-check"></i><b>5.1</b> Show comparisons</a></li>
+<li class="chapter" data-level="5.2" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-causality-mechanism-explanation-systematic-structure"><i class="fa fa-check"></i><b>5.2</b> Show causality, mechanism, explanation, systematic structure</a></li>
+<li class="chapter" data-level="5.3" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-multivariate-data"><i class="fa fa-check"></i><b>5.3</b> Show multivariate data</a></li>
+<li class="chapter" data-level="5.4" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#integrate-evidence"><i class="fa fa-check"></i><b>5.4</b> Integrate evidence</a></li>
+<li class="chapter" data-level="5.5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#describe-and-document-the-evidence"><i class="fa fa-check"></i><b>5.5</b> Describe and document the evidence</a></li>
+<li class="chapter" data-level="5.6" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#content-content-content"><i class="fa fa-check"></i><b>5.6</b> Content, Content, Content</a></li>
+<li class="chapter" data-level="5.7" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html"><i class="fa fa-check"></i><b>6</b> Exploratory Graphs</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#characteristics-of-exploratory-graphs"><i class="fa fa-check"></i><b>6.1</b> Characteristics of exploratory graphs</a></li>
+<li class="chapter" data-level="6.2" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#air-pollution-in-the-united-states"><i class="fa fa-check"></i><b>6.2</b> Air Pollution in the United States</a></li>
+<li class="chapter" data-level="6.3" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#getting-the-data"><i class="fa fa-check"></i><b>6.3</b> Getting the Data</a></li>
+<li class="chapter" data-level="6.4" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-one-dimension"><i class="fa fa-check"></i><b>6.4</b> Simple Summaries: One Dimension</a></li>
+<li class="chapter" data-level="6.5" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#five-number-summary"><i class="fa fa-check"></i><b>6.5</b> Five Number Summary</a></li>
+<li class="chapter" data-level="6.6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#boxplot"><i class="fa fa-check"></i><b>6.6</b> Boxplot</a></li>
+<li class="chapter" data-level="6.7" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#histogram"><i class="fa fa-check"></i><b>6.7</b> Histogram</a></li>
+<li class="chapter" data-level="6.8" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#overlaying-features"><i class="fa fa-check"></i><b>6.8</b> Overlaying Features</a></li>
+<li class="chapter" data-level="6.9" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#barplot"><i class="fa fa-check"></i><b>6.9</b> Barplot</a></li>
+<li class="chapter" data-level="6.10" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-two-dimensions-and-beyond"><i class="fa fa-check"></i><b>6.10</b> Simple Summaries: Two Dimensions and Beyond</a></li>
+<li class="chapter" data-level="6.11" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-boxplots"><i class="fa fa-check"></i><b>6.11</b> Multiple Boxplots</a></li>
+<li class="chapter" data-level="6.12" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-histograms"><i class="fa fa-check"></i><b>6.12</b> Multiple Histograms</a></li>
+<li class="chapter" data-level="6.13" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplots"><i class="fa fa-check"></i><b>6.13</b> Scatterplots</a></li>
+<li class="chapter" data-level="6.14" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplot---using-color"><i class="fa fa-check"></i><b>6.14</b> Scatterplot - Using Color</a></li>
+<li class="chapter" data-level="6.15" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-scatterplots"><i class="fa fa-check"></i><b>6.15</b> Multiple Scatterplots</a></li>
+<li class="chapter" data-level="6.16" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#summary-1"><i class="fa fa-check"></i><b>6.16</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="plotting-systems.html"><a href="plotting-systems.html"><i class="fa fa-check"></i><b>7</b> Plotting Systems</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="plotting-systems.html"><a href="plotting-systems.html#the-base-plotting-system"><i class="fa fa-check"></i><b>7.1</b> The Base Plotting System</a></li>
+<li class="chapter" data-level="7.2" data-path="plotting-systems.html"><a href="plotting-systems.html#the-lattice-system"><i class="fa fa-check"></i><b>7.2</b> The Lattice System</a></li>
+<li class="chapter" data-level="7.3" data-path="plotting-systems.html"><a href="plotting-systems.html#the-ggplot2-system"><i class="fa fa-check"></i><b>7.3</b> The ggplot2 System</a></li>
+<li class="chapter" data-level="7.4" data-path="plotting-systems.html"><a href="plotting-systems.html#references-1"><i class="fa fa-check"></i><b>7.4</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="graphics-devices.html"><a href="graphics-devices.html"><i class="fa fa-check"></i><b>8</b> Graphics Devices</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="graphics-devices.html"><a href="graphics-devices.html#the-process-of-making-a-plot"><i class="fa fa-check"></i><b>8.1</b> The Process of Making a Plot</a></li>
+<li class="chapter" data-level="8.2" data-path="graphics-devices.html"><a href="graphics-devices.html#how-does-a-plot-get-created"><i class="fa fa-check"></i><b>8.2</b> How Does a Plot Get Created?</a></li>
+<li class="chapter" data-level="8.3" data-path="graphics-devices.html"><a href="graphics-devices.html#graphics-file-devices"><i class="fa fa-check"></i><b>8.3</b> Graphics File Devices</a></li>
+<li class="chapter" data-level="8.4" data-path="graphics-devices.html"><a href="graphics-devices.html#multiple-open-graphics-devices"><i class="fa fa-check"></i><b>8.4</b> Multiple Open Graphics Devices</a></li>
+<li class="chapter" data-level="8.5" data-path="graphics-devices.html"><a href="graphics-devices.html#copying-plots"><i class="fa fa-check"></i><b>8.5</b> Copying Plots</a></li>
+<li class="chapter" data-level="8.6" data-path="graphics-devices.html"><a href="graphics-devices.html#summary-2"><i class="fa fa-check"></i><b>8.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html"><i class="fa fa-check"></i><b>9</b> The Base Plotting System</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-graphics"><i class="fa fa-check"></i><b>9.1</b> Base Graphics</a></li>
+<li class="chapter" data-level="9.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#simple-base-graphics"><i class="fa fa-check"></i><b>9.2</b> Simple Base Graphics</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#histogram-1"><i class="fa fa-check"></i><b>9.2.1</b> Histogram</a></li>
+<li class="chapter" data-level="9.2.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#boxplot-1"><i class="fa fa-check"></i><b>9.2.2</b> Boxplot</a></li>
+<li class="chapter" data-level="9.2.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#scatterplot"><i class="fa fa-check"></i><b>9.2.3</b> Scatterplot</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#some-important-base-graphics-parameters"><i class="fa fa-check"></i><b>9.3</b> Some Important Base Graphics Parameters</a></li>
+<li class="chapter" data-level="9.4" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plotting-functions"><i class="fa fa-check"></i><b>9.4</b> Base Plotting Functions</a></li>
+<li class="chapter" data-level="9.5" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plot-with-regression-line"><i class="fa fa-check"></i><b>9.5</b> Base Plot with Regression Line</a></li>
+<li class="chapter" data-level="9.6" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#multiple-base-plots"><i class="fa fa-check"></i><b>9.6</b> Multiple Base Plots</a></li>
+<li class="chapter" data-level="9.7" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#summary-3"><i class="fa fa-check"></i><b>9.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html"><i class="fa fa-check"></i><b>10</b> Plotting and Color in R</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colors-1-2-and-3"><i class="fa fa-check"></i><b>10.1</b> Colors 1, 2, and 3</a></li>
+<li class="chapter" data-level="10.2" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#connecting-colors-with-data"><i class="fa fa-check"></i><b>10.2</b> Connecting colors with data</a></li>
+<li class="chapter" data-level="10.3" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#color-utilities-in-r"><i class="fa fa-check"></i><b>10.3</b> Color Utilities in R</a></li>
+<li class="chapter" data-level="10.4" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramp"><i class="fa fa-check"></i><b>10.4</b> <code>colorRamp()</code></a></li>
+<li class="chapter" data-level="10.5" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramppalette"><i class="fa fa-check"></i><b>10.5</b> <code>colorRampPalette()</code></a></li>
+<li class="chapter" data-level="10.6" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#rcolorbrewer-package"><i class="fa fa-check"></i><b>10.6</b> RColorBrewer Package</a></li>
+<li class="chapter" data-level="10.7" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#using-the-rcolorbrewer-palettes"><i class="fa fa-check"></i><b>10.7</b> Using the RColorBrewer palettes</a></li>
+<li class="chapter" data-level="10.8" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#the-smoothscatter-function"><i class="fa fa-check"></i><b>10.8</b> The <code>smoothScatter()</code> function</a></li>
+<li class="chapter" data-level="10.9" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#adding-transparency"><i class="fa fa-check"></i><b>10.9</b> Adding transparency</a></li>
+<li class="chapter" data-level="10.10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#summary-4"><i class="fa fa-check"></i><b>10.10</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html"><i class="fa fa-check"></i><b>11</b> Hierarchical Clustering</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#hierarchical-clustering-1"><i class="fa fa-check"></i><b>11.1</b> Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.2" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#how-do-we-define-close"><i class="fa fa-check"></i><b>11.2</b> How do we define close?</a></li>
+<li class="chapter" data-level="11.3" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-euclidean-distance"><i class="fa fa-check"></i><b>11.3</b> Example: Euclidean distance</a></li>
+<li class="chapter" data-level="11.4" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-manhattan-distance"><i class="fa fa-check"></i><b>11.4</b> Example: Manhattan distance</a></li>
+<li class="chapter" data-level="11.5" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-hierarchical-clustering"><i class="fa fa-check"></i><b>11.5</b> Example: Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.6" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#prettier-dendrograms"><i class="fa fa-check"></i><b>11.6</b> Prettier dendrograms</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-complete"><i class="fa fa-check"></i><b>11.7</b> Merging points: Complete</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-average"><i class="fa fa-check"></i><b>11.8</b> Merging points: Average</a></li>
+<li class="chapter" data-level="11.9" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#using-the-heatmap-function"><i class="fa fa-check"></i><b>11.9</b> Using the <code>heatmap()</code> function</a></li>
+<li class="chapter" data-level="11.10" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#notes-and-further-resources"><i class="fa fa-check"></i><b>11.10</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="k-means-clustering.html"><a href="k-means-clustering.html"><i class="fa fa-check"></i><b>12</b> K-Means Clustering</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-means-clustering.html"><a href="k-means-clustering.html#illustrating-the-k-means-algorithm"><i class="fa fa-check"></i><b>12.1</b> Illustrating the K-means algorithm</a></li>
+<li class="chapter" data-level="12.2" data-path="k-means-clustering.html"><a href="k-means-clustering.html#stopping-the-algorithm"><i class="fa fa-check"></i><b>12.2</b> Stopping the algorithm</a></li>
+<li class="chapter" data-level="12.3" data-path="k-means-clustering.html"><a href="k-means-clustering.html#using-the-kmeans-function"><i class="fa fa-check"></i><b>12.3</b> Using the <code>kmeans()</code> function</a></li>
+<li class="chapter" data-level="12.4" data-path="k-means-clustering.html"><a href="k-means-clustering.html#building-heatmaps-from-k-means-solutions"><i class="fa fa-check"></i><b>12.4</b> Building heatmaps from K-means solutions</a></li>
+<li class="chapter" data-level="12.5" data-path="k-means-clustering.html"><a href="k-means-clustering.html#notes-and-further-resources-1"><i class="fa fa-check"></i><b>12.5</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="dimension-reduction.html"><a href="dimension-reduction.html"><i class="fa fa-check"></i><b>13</b> Dimension Reduction</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="dimension-reduction.html"><a href="dimension-reduction.html#matrix-data"><i class="fa fa-check"></i><b>13.1</b> Matrix data</a></li>
+<li class="chapter" data-level="13.2" data-path="dimension-reduction.html"><a href="dimension-reduction.html#patterns-in-rows-and-columns"><i class="fa fa-check"></i><b>13.2</b> Patterns in rows and columns</a></li>
+<li class="chapter" data-level="13.3" data-path="dimension-reduction.html"><a href="dimension-reduction.html#related-problem"><i class="fa fa-check"></i><b>13.3</b> Related problem</a></li>
+<li class="chapter" data-level="13.4" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-and-pca"><i class="fa fa-check"></i><b>13.4</b> SVD and PCA</a></li>
+<li class="chapter" data-level="13.5" data-path="dimension-reduction.html"><a href="dimension-reduction.html#unpacking-the-svd-u-and-v"><i class="fa fa-check"></i><b>13.5</b> Unpacking the SVD: <em>u</em> and <em>v</em></a></li>
+<li class="chapter" data-level="13.6" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-for-data-compression"><i class="fa fa-check"></i><b>13.6</b> SVD for data compression</a></li>
+<li class="chapter" data-level="13.7" data-path="dimension-reduction.html"><a href="dimension-reduction.html#components-of-the-svd---variance-explained"><i class="fa fa-check"></i><b>13.7</b> Components of the SVD - Variance explained</a></li>
+<li class="chapter" data-level="13.8" data-path="dimension-reduction.html"><a href="dimension-reduction.html#relationship-to-principal-components"><i class="fa fa-check"></i><b>13.8</b> Relationship to principal components</a></li>
+<li class="chapter" data-level="13.9" data-path="dimension-reduction.html"><a href="dimension-reduction.html#what-if-we-add-a-second-pattern"><i class="fa fa-check"></i><b>13.9</b> What if we add a second pattern?</a></li>
+<li class="chapter" data-level="13.10" data-path="dimension-reduction.html"><a href="dimension-reduction.html#dealing-with-missing-values"><i class="fa fa-check"></i><b>13.10</b> Dealing with missing values</a></li>
+<li class="chapter" data-level="13.11" data-path="dimension-reduction.html"><a href="dimension-reduction.html#example-face-data"><i class="fa fa-check"></i><b>13.11</b> Example: Face data</a></li>
+<li class="chapter" data-level="13.12" data-path="dimension-reduction.html"><a href="dimension-reduction.html#notes-and-further-resources-2"><i class="fa fa-check"></i><b>13.12</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html"><i class="fa fa-check"></i><b>14</b> The ggplot2 Plotting System: Part 1</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#the-basics-qplot"><i class="fa fa-check"></i><b>14.1</b> The Basics: <code>qplot()</code></a></li>
+<li class="chapter" data-level="14.2" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#before-you-start-label-your-data"><i class="fa fa-check"></i><b>14.2</b> Before You Start: Label Your Data</a></li>
+<li class="chapter" data-level="14.3" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#ggplot2-hello-world"><i class="fa fa-check"></i><b>14.3</b> ggplot2 “Hello, world!”</a></li>
+<li class="chapter" data-level="14.4" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#modifying-aesthetics"><i class="fa fa-check"></i><b>14.4</b> Modifying aesthetics</a></li>
+<li class="chapter" data-level="14.5" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#adding-a-geom"><i class="fa fa-check"></i><b>14.5</b> Adding a geom</a></li>
+<li class="chapter" data-level="14.6" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#histograms"><i class="fa fa-check"></i><b>14.6</b> Histograms</a></li>
+<li class="chapter" data-level="14.7" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#facets"><i class="fa fa-check"></i><b>14.7</b> Facets</a></li>
+<li class="chapter" data-level="14.8" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#case-study-maacs-cohort"><i class="fa fa-check"></i><b>14.8</b> Case Study: MAACS Cohort</a></li>
+<li class="chapter" data-level="14.9" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#summary-of-qplot"><i class="fa fa-check"></i><b>14.9</b> Summary of qplot()</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html"><i class="fa fa-check"></i><b>15</b> The ggplot2 Plotting System: Part 2</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#basic-components-of-a-ggplot2-plot"><i class="fa fa-check"></i><b>15.1</b> Basic Components of a ggplot2 Plot</a></li>
+<li class="chapter" data-level="15.2" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#example-bmi-pm2.5-asthma"><i class="fa fa-check"></i><b>15.2</b> Example: BMI, PM2.5, Asthma</a></li>
+<li class="chapter" data-level="15.3" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#building-up-in-layers"><i class="fa fa-check"></i><b>15.3</b> Building Up in Layers</a></li>
+<li class="chapter" data-level="15.4" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#first-plot-with-point-layer"><i class="fa fa-check"></i><b>15.4</b> First Plot with Point Layer</a></li>
+<li class="chapter" data-level="15.5" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-smooth"><i class="fa fa-check"></i><b>15.5</b> Adding More Layers: Smooth</a></li>
+<li class="chapter" data-level="15.6" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-facets"><i class="fa fa-check"></i><b>15.6</b> Adding More Layers: Facets</a></li>
+<li class="chapter" data-level="15.7" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-geom-properties"><i class="fa fa-check"></i><b>15.7</b> Modifying Geom Properties</a></li>
+<li class="chapter" data-level="15.8" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-labels"><i class="fa fa-check"></i><b>15.8</b> Modifying Labels</a></li>
+<li class="chapter" data-level="15.9" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#customizing-the-smooth"><i class="fa fa-check"></i><b>15.9</b> Customizing the Smooth</a></li>
+<li class="chapter" data-level="15.10" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#changing-the-theme"><i class="fa fa-check"></i><b>15.10</b> Changing the Theme</a></li>
+<li class="chapter" data-level="15.11" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#more-complex-example"><i class="fa fa-check"></i><b>15.11</b> More Complex Example</a></li>
+<li class="chapter" data-level="15.12" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#a-quick-aside-about-axis-limits"><i class="fa fa-check"></i><b>15.12</b> A Quick Aside about Axis Limits</a></li>
+<li class="chapter" data-level="15.13" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#resources"><i class="fa fa-check"></i><b>15.13</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><i class="fa fa-check"></i><b>16</b> Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S.</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#synopsis"><i class="fa fa-check"></i><b>16.1</b> Synopsis</a></li>
+<li class="chapter" data-level="16.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#loading-and-processing-the-raw-data"><i class="fa fa-check"></i><b>16.2</b> Loading and Processing the Raw Data</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-1999-data"><i class="fa fa-check"></i><b>16.2.1</b> Reading in the 1999 data</a></li>
+<li class="chapter" data-level="16.2.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-2012-data"><i class="fa fa-check"></i><b>16.2.2</b> Reading in the 2012 data</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#results"><i class="fa fa-check"></i><b>16.3</b> Results</a>
+<ul>
+<li class="chapter" data-level="16.3.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#entire-u.s.-analysis"><i class="fa fa-check"></i><b>16.3.1</b> Entire U.S. analysis</a></li>
+<li class="chapter" data-level="16.3.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-pm-levels-at-an-individual-monitor"><i class="fa fa-check"></i><b>16.3.2</b> Changes in PM levels at an individual monitor</a></li>
+<li class="chapter" data-level="16.3.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-state-wide-pm-levels"><i class="fa fa-check"></i><b>16.3.3</b> Changes in state-wide PM levels</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i><b>17</b> About the Author</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Exploratory Data Analysis with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="the-ggplot2-plotting-system-part-2" class="section level1" number="15">
+<h1><span class="header-section-number">15</span> The ggplot2 Plotting System: Part 2</h1>
+<p>In this chapter we’ll get into a little more of the nitty gritty of how <code>ggplot2</code> builds plots and how you can customize various aspects of any plot. In the previous chapter we used the <code>qplot()</code> function to quickly put points on a page. The <code>qplot()</code> function’s syntax is very similar to that of the <code>plot()</code> function in base graphics so for those switching over, it makes for an easy transition. But it’s worth knowing the underlying details of how <code>ggplot2</code> works so that you can really exploit its power.</p>
+<div id="basic-components-of-a-ggplot2-plot" class="section level2" number="15.1">
+<h2><span class="header-section-number">15.1</span> Basic Components of a ggplot2 Plot</h2>
+<p>A <code>ggplot2</code> plot consists of a number of key components. Here are a few of the more commonly used ones.</p>
+<ul>
+<li><p>A <em>data frame</em>: stores all of the data that will be displayed on the plot</p></li>
+<li><p><em>aesthetic mappings</em>: describe how data are mapped to color, size, shape, location</p></li>
+<li><p><em>geoms</em>: geometric objects like points, lines, shapes.</p></li>
+<li><p><em>facets</em>: describes how conditional/panel plots should be constructed</p></li>
+<li><p><em>stats</em>: statistical transformations like binning, quantiles, smoothing.</p></li>
+<li><p><em>scales</em>: what scale an aesthetic map uses (example: male = red, female = blue).</p></li>
+<li><p><em>coordinate system</em>: describes the system in which the locations of the geoms will be drawn</p></li>
+</ul>
+<p>It’s essential that you properly organize your data into a data frame before you start with <code>ggplot2</code>. In particular, it’s important that you provide all of the appropriate metadata so that your data frame is self-describing and your plots will be self-documenting.</p>
+<p>When building plots in ggplot2 (rather than using <code>qplot()</code>) the “artist’s palette”" model may be the closest analogy. Essentially, you start with some raw data, and then you gradually add bits and pieces to it to create a plot. Plots are built up in layers, with the typically ordering being</p>
+<ol style="list-style-type: decimal">
+<li><p>Plot the data</p></li>
+<li><p>Overlay a summary</p></li>
+<li><p>Add metadata and annotation</p></li>
+</ol>
+<p>For quick exploratory plots you may not get past step 1.</p>
+</div>
+<div id="example-bmi-pm2.5-asthma" class="section level2" number="15.2">
+<h2><span class="header-section-number">15.2</span> Example: BMI, PM2.5, Asthma</h2>
+<p>To demonstrate the various pieces of <code>ggplot2</code> we will use a running example from the Mouse Allergen and Asthma Cohort Study (MAACS), which was described in the previous chapter. Here, the question we are interested in is</p>
+<blockquote>
+<p>“Are overweight individuals, as measured by body mass index (BMI), more susceptible than normal weight individuals to the harmful effects of PM2.5 on asthma symptoms?”</p>
+</blockquote>
+<p>There is a suggestion that overweight individuals may be more susceptible to the negative effects of inhaling PM2.5. This would suggest that increases in PM2.5 exposure in the home of an overweight child would be more deleterious to his/her asthma symptoms than they would be in the home of a normal weight child. We want to see if we can see that difference in the data from MAACS.</p>
+<p>NOTE: Because the individual-level data for this study are protected by various U.S. privacy laws, we cannot make those data available. For the purposes of this chapter, we have simulated data that share many of the same features of the original data, but do not contain any of the actual measurements or values contained in the original dataset.</p>
+<p>We can look at the data quickly with <code>str()</code>.</p>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="the-ggplot2-plotting-system-part-2.html#cb182-1"></a>maacs &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/bmi_pm25_no2_sim.csv&quot;</span>)</span>
+<span id="cb182-2"><a href="the-ggplot2-plotting-system-part-2.html#cb182-2"></a><span class="kw">str</span>(maacs)</span></code></pre></div>
+<pre><code>&#39;data.frame&#39;:   517 obs. of  4 variables:
+ $ logpm25       : num  1.248 1.122 1.93 1.368 0.775 ...
+ $ logno2_new    : num  1.184 1.552 1.432 1.774 0.765 ...
+ $ bmicat        : chr  &quot;normal weight&quot; &quot;overweight&quot; &quot;normal weight&quot; &quot;overweight&quot; ...
+ $ NocturnalSympt: int  1 0 0 2 0 0 0 0 0 3 ...</code></pre>
+<p>The outcome we will look at here, <code>NocturnalSymp</code>, is the number of days in the past 2 weeks where the child experienced asthma symptoms (e.g. coughing, wheezing) while sleeping.</p>
+</div>
+<div id="building-up-in-layers" class="section level2" number="15.3">
+<h2><span class="header-section-number">15.3</span> Building Up in Layers</h2>
+<p>First we can create a <code>ggplot</code> object that stores the dataset and the basic aesthetics for mapping the x- and y-coordinates for the plot. Here we will eventually be plotting the log of PM2.5 and <code>NocturnalSymp</code> variable.</p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="the-ggplot2-plotting-system-part-2.html#cb184-1"></a><span class="kw">head</span>(maacs)</span></code></pre></div>
+<pre><code>    logpm25 logno2_new        bmicat NocturnalSympt
+1 1.2476997  1.1837987 normal weight              1
+2 1.1216476  1.5515362    overweight              0
+3 1.9300429  1.4323519 normal weight              0
+4 1.3679246  1.7736804    overweight              2
+5 0.7753367  0.7654826 normal weight              0
+6 1.4872785  1.1127378 normal weight              0</code></pre>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="the-ggplot2-plotting-system-part-2.html#cb186-1"></a>g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(maacs, <span class="kw">aes</span>(logpm25, NocturnalSympt))</span>
+<span id="cb186-2"><a href="the-ggplot2-plotting-system-part-2.html#cb186-2"></a><span class="kw">summary</span>(g)</span></code></pre></div>
+<pre><code>data: logpm25, logno2_new, bmicat, NocturnalSympt [517x4]
+mapping:  x = ~logpm25, y = ~NocturnalSympt
+faceting: &lt;ggproto object: Class FacetNull, Facet, gg&gt;
+    compute_layout: function
+    draw_back: function
+    draw_front: function
+    draw_labels: function
+    draw_panels: function
+    finish_data: function
+    init_scales: function
+    map_data: function
+    params: list
+    setup_data: function
+    setup_params: function
+    shrink: TRUE
+    train_scales: function
+    vars: function
+    super:  &lt;ggproto object: Class FacetNull, Facet, gg&gt;</code></pre>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="the-ggplot2-plotting-system-part-2.html#cb188-1"></a><span class="kw">class</span>(g)</span></code></pre></div>
+<pre><code>[1] &quot;gg&quot;     &quot;ggplot&quot;</code></pre>
+<p>You can see above that the object <code>g</code> contains the dataset <code>maacs</code> and the mappings.</p>
+<p>Now, normally if you were to <code>print()</code> a <code>ggplot</code> object a plot would appear on the plot device, however, our object <code>g</code> actually doesn’t contain enough information to make a plot yet.</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="the-ggplot2-plotting-system-part-2.html#cb190-1"></a>g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(maacs, <span class="kw">aes</span>(logpm25, NocturnalSympt))</span>
+<span id="cb190-2"><a href="the-ggplot2-plotting-system-part-2.html#cb190-2"></a><span class="kw">print</span>(g)</span></code></pre></div>
+<p><img src="images/ggplot2-unnamed-chunk-25-1.png" width="672" /></p>
+</div>
+<div id="first-plot-with-point-layer" class="section level2" number="15.4">
+<h2><span class="header-section-number">15.4</span> First Plot with Point Layer</h2>
+<p>To make a scatterplot we need add at least one <em>geom</em>, such as points. Here we add the <code>geom_point()</code> function to create a traditional scatterplot.</p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="the-ggplot2-plotting-system-part-2.html#cb191-1"></a>g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(maacs, <span class="kw">aes</span>(logpm25, NocturnalSympt))</span>
+<span id="cb191-2"><a href="the-ggplot2-plotting-system-part-2.html#cb191-2"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="images/ggplot2-Scatterplot%20of%20PM2.5%20and%20days%20with%20nocturnal%20symptoms-1.png" width="672" /></p>
+</div>
+<div id="adding-more-layers-smooth" class="section level2" number="15.5">
+<h2><span class="header-section-number">15.5</span> Adding More Layers: Smooth</h2>
+<p>Because the data appear rather noisy, it might be better if we added a smoother on top of the points to see if there is a trend in the data with PM2.5.</p>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="the-ggplot2-plotting-system-part-2.html#cb192-1"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>()</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-26"></span>
+<img src="images/ggplot2-unnamed-chunk-26-1.png" alt="Scatterplot with smoother" width="672" />
+<p class="caption">
+Figure 15.1: Scatterplot with smoother
+</p>
+</div>
+<p>The default smoother is a loess smoother, which is flexible and nonparametric but might be too flexible for our purposes. Perhaps we’d prefer a simple linear regression line to highlight any first order trends. We can do this by specifying <code>method = "lm"</code> to <code>geom_smooth()</code>.</p>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="the-ggplot2-plotting-system-part-2.html#cb193-1"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-27"></span>
+<img src="images/ggplot2-unnamed-chunk-27-1.png" alt="Scatterplot with linear regression line" width="672" />
+<p class="caption">
+Figure 15.2: Scatterplot with linear regression line
+</p>
+</div>
+<p>Here, we can see there appears to be a slight increasing trend, suggesting that higher levels of PM2.5 are assocuated with increased days with nocturnal symptoms.</p>
+</div>
+<div id="adding-more-layers-facets" class="section level2" number="15.6">
+<h2><span class="header-section-number">15.6</span> Adding More Layers: Facets</h2>
+<p>Because our primary question involves comparing overweight individuals to normal weight individuals, we can stratify the scatterplot of PM2.5 and nocturnal symptoms by the BMI category (<code>bmicat</code>) variable, which indicates whether an individual is overweight or now. To visualize this we can add a <code>facet_grid()</code>, which takes a formula argument. Here we want one row and two columns, one column for each weight category. So we specify <code>bmicat</code> on the right hand side of the forumla passed to <code>facet_grid()</code>.</p>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="the-ggplot2-plotting-system-part-2.html#cb194-1"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb194-2"><a href="the-ggplot2-plotting-system-part-2.html#cb194-2"></a><span class="st">        </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="op">+</span></span>
+<span id="cb194-3"><a href="the-ggplot2-plotting-system-part-2.html#cb194-3"></a><span class="st">        </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>bmicat) </span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-28"></span>
+<img src="images/ggplot2-unnamed-chunk-28-1.png" alt="Scatterplot of PM2.5 and nocturnal symptoms by BMI category" width="864" />
+<p class="caption">
+Figure 15.3: Scatterplot of PM2.5 and nocturnal symptoms by BMI category
+</p>
+</div>
+<p>Now it seems clear that the relationship between PM2.5 and nocturnal symptoms is relatively flat amongst normal weight individuals, while the relationship is increasing amongst overweight individuals. This plot suggests that overweight individuals may be more susceptible to the effects of PM2.5.</p>
+<p>There are a variety of annotations you can add to a plot, including different kinds of labels. You can use <code>xlab()</code> for x-axis labels, <code>ylab()</code> for y-axis labels, and <code>ggtitle()</code> for specifying plot titles. The <code>labs()</code> function is generic and can be used to modify multiple types of labels at once.</p>
+<p>For things that only make sense globally, use <code>theme()</code>, i.e. <code>theme(legend.position = "none")</code>. Two standard appearance themes are included</p>
+<ul>
+<li><p><code>theme_gray()</code>: The default theme (gray background)</p></li>
+<li><p><code>theme_bw()</code>: More stark/plain</p></li>
+</ul>
+</div>
+<div id="modifying-geom-properties" class="section level2" number="15.7">
+<h2><span class="header-section-number">15.7</span> Modifying Geom Properties</h2>
+<p>You can modify properties of geoms by specifying options to their respective <code>geom_*</code> functions. For example, here we modify the points in the scatterplot to make the color “steelblue”, the size larger , and the alpha transparency greater.</p>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="the-ggplot2-plotting-system-part-2.html#cb195-1"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-29"></span>
+<img src="images/ggplot2-unnamed-chunk-29-1.png" alt="Modifying point color with a constant" width="672" />
+<p class="caption">
+Figure 15.4: Modifying point color with a constant
+</p>
+</div>
+<p>In addition to setting specific geom attributes to constants, we can map aesthetics to variables. So, here, we map the color aesthetic <code>color</code> to the variable <code>bmicat</code>, so the points will be colored according to the levels of <code>bmicat</code>. We use the <code>aes()</code> function to indicate this difference from the plot above.</p>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="the-ggplot2-plotting-system-part-2.html#cb196-1"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat), <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-30"></span>
+<img src="images/ggplot2-unnamed-chunk-30-1.png" alt="Mapping color to a variable" width="672" />
+<p class="caption">
+Figure 15.5: Mapping color to a variable
+</p>
+</div>
+</div>
+<div id="modifying-labels" class="section level2" number="15.8">
+<h2><span class="header-section-number">15.8</span> Modifying Labels</h2>
+<p>Here is an example of modifying the title and the x and y labels to make the plot a bit more informative.</p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="the-ggplot2-plotting-system-part-2.html#cb197-1"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb197-2"><a href="the-ggplot2-plotting-system-part-2.html#cb197-2"></a><span class="st">        </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;MAACS Cohort&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb197-3"><a href="the-ggplot2-plotting-system-part-2.html#cb197-3"></a><span class="st">        </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="kw">expression</span>(<span class="st">&quot;log &quot;</span> <span class="op">*</span><span class="st"> </span>PM[<span class="fl">2.5</span>]), <span class="dt">y =</span> <span class="st">&quot;Nocturnal Symptoms&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-31"></span>
+<img src="images/ggplot2-unnamed-chunk-31-1.png" alt="Modifying plot labels" width="672" />
+<p class="caption">
+Figure 15.6: Modifying plot labels
+</p>
+</div>
+</div>
+<div id="customizing-the-smooth" class="section level2" number="15.9">
+<h2><span class="header-section-number">15.9</span> Customizing the Smooth</h2>
+<p>We can also customize aspects of the smoother that we overlay on the points with <code>geom_smooth()</code>. Here we change the line type and increase the size from the default. We also remove the shaded standard error from the line.</p>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="the-ggplot2-plotting-system-part-2.html#cb198-1"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat), <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb198-2"><a href="the-ggplot2-plotting-system-part-2.html#cb198-2"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">linetype =</span> <span class="dv">3</span>, <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-32"></span>
+<img src="images/ggplot2-unnamed-chunk-32-1.png" alt="Customizing a smoother" width="672" />
+<p class="caption">
+Figure 15.7: Customizing a smoother
+</p>
+</div>
+</div>
+<div id="changing-the-theme" class="section level2" number="15.10">
+<h2><span class="header-section-number">15.10</span> Changing the Theme</h2>
+<p>The default theme for <code>ggplot2</code> uses the gray background with white grid lines. If you don’t find this suitable, you can use the black and white theme by using the <code>theme_bw()</code> function. The <code>theme_bw()</code> function also allows you to set the typeface for the plot, in case you don’t want the default Helvetica. Here we change the typeface to Times.</p>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="the-ggplot2-plotting-system-part-2.html#cb199-1"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> bmicat)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>(<span class="dt">base_family =</span> <span class="st">&quot;Times&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-33"></span>
+<img src="images/ggplot2-unnamed-chunk-33-1.png" alt="Modifying the theme for a plot" width="672" />
+<p class="caption">
+Figure 15.8: Modifying the theme for a plot
+</p>
+</div>
+</div>
+<div id="more-complex-example" class="section level2" number="15.11">
+<h2><span class="header-section-number">15.11</span> More Complex Example</h2>
+<p>Now you get the sense that plots in the <code>ggplot2</code> system are constructed by successively adding components to the plot, starting with the base dataset and maybe a scatterplot. In this section we will show a slightly more complicated example with an additional variable. Now, we will ask the question</p>
+<blockquote>
+<p>How does the relationship between PM2.5 and nocturnal symptoms vary by BMI category and nitrogen dioxide (NO2)?</p>
+</blockquote>
+<p>Unlike our previous BMI variable, NO2 is continuous, and so we need to make NO2 categorical so we can condition on it in the plotting. We can use the <code>cut()</code> function for this purpose. We will divide the NO2 variable into tertiles.</p>
+<p>First we need to calculate the tertiles with the <code>quantile()</code> function.</p>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="the-ggplot2-plotting-system-part-2.html#cb200-1"></a>cutpoints &lt;-<span class="st"> </span><span class="kw">quantile</span>(maacs<span class="op">$</span>logno2_new, <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">length =</span> <span class="dv">4</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p>Then we need to divide the original <code>logno2_new</code> variable into the ranges defined by the cut points computed above.</p>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="the-ggplot2-plotting-system-part-2.html#cb201-1"></a>maacs<span class="op">$</span>no2tert &lt;-<span class="st"> </span><span class="kw">cut</span>(maacs<span class="op">$</span>logno2_new, cutpoints)</span></code></pre></div>
+<p>The <code>not2tert</code> variable is now a categorical factor variable containing 3 levels, indicating the ranges of NO2 (on the log scale).</p>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="the-ggplot2-plotting-system-part-2.html#cb202-1"></a><span class="co">## See the levels of the newly created factor variable</span></span>
+<span id="cb202-2"><a href="the-ggplot2-plotting-system-part-2.html#cb202-2"></a><span class="kw">levels</span>(maacs<span class="op">$</span>no2tert)</span></code></pre></div>
+<pre><code>[1] &quot;(0.342,1.23]&quot; &quot;(1.23,1.47]&quot;  &quot;(1.47,2.17]&quot; </code></pre>
+<p>The final plot shows the relationship between PM2.5 and nocturnal symptoms by BMI category and NO2 tertile.</p>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="the-ggplot2-plotting-system-part-2.html#cb204-1"></a><span class="co">## Setup ggplot with data frame</span></span>
+<span id="cb204-2"><a href="the-ggplot2-plotting-system-part-2.html#cb204-2"></a>g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(maacs, <span class="kw">aes</span>(logpm25, NocturnalSympt))</span>
+<span id="cb204-3"><a href="the-ggplot2-plotting-system-part-2.html#cb204-3"></a></span>
+<span id="cb204-4"><a href="the-ggplot2-plotting-system-part-2.html#cb204-4"></a><span class="co">## Add layers</span></span>
+<span id="cb204-5"><a href="the-ggplot2-plotting-system-part-2.html#cb204-5"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb204-6"><a href="the-ggplot2-plotting-system-part-2.html#cb204-6"></a><span class="st">  </span><span class="kw">facet_wrap</span>(bmicat <span class="op">~</span><span class="st"> </span>no2tert, <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">4</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb204-7"><a href="the-ggplot2-plotting-system-part-2.html#cb204-7"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>, <span class="dt">se=</span><span class="ot">FALSE</span>, <span class="dt">col=</span><span class="st">&quot;steelblue&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb204-8"><a href="the-ggplot2-plotting-system-part-2.html#cb204-8"></a><span class="st">  </span><span class="kw">theme_bw</span>(<span class="dt">base_family =</span> <span class="st">&quot;Avenir&quot;</span>, <span class="dt">base_size =</span> <span class="dv">10</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb204-9"><a href="the-ggplot2-plotting-system-part-2.html#cb204-9"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="kw">expression</span>(<span class="st">&quot;log &quot;</span> <span class="op">*</span><span class="st"> </span>PM[<span class="fl">2.5</span>])) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb204-10"><a href="the-ggplot2-plotting-system-part-2.html#cb204-10"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Nocturnal Symptoms&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb204-11"><a href="the-ggplot2-plotting-system-part-2.html#cb204-11"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;MAACS Cohort&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-37"></span>
+<img src="images/ggplot2-unnamed-chunk-37-1.png" alt="PM2.5 and nocturnal symptoms by BMI category and NO2 tertile" width="864" />
+<p class="caption">
+Figure 15.9: PM2.5 and nocturnal symptoms by BMI category and NO2 tertile
+</p>
+</div>
+</div>
+<div id="a-quick-aside-about-axis-limits" class="section level2" number="15.12">
+<h2><span class="header-section-number">15.12</span> A Quick Aside about Axis Limits</h2>
+<p>One quick quirk about <code>ggplot2</code> that caught me up when I first started using the package can be displayed in the following example. I make a lot of time series plots and I often want to restrict the range of the y-axis while still plotting all the data. In the base graphics system you can do that as follows.</p>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="the-ggplot2-plotting-system-part-2.html#cb205-1"></a>testdat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb205-2"><a href="the-ggplot2-plotting-system-part-2.html#cb205-2"></a>testdat[<span class="dv">50</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">100</span>  <span class="co">## Outlier!</span></span>
+<span id="cb205-3"><a href="the-ggplot2-plotting-system-part-2.html#cb205-3"></a><span class="kw">plot</span>(testdat<span class="op">$</span>x, testdat<span class="op">$</span>y, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>))</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-38"></span>
+<img src="images/ggplot2-unnamed-chunk-38-1.png" alt="Time series plot with base graphics" width="672" />
+<p class="caption">
+Figure 15.10: Time series plot with base graphics
+</p>
+</div>
+<p>Here I’ve restricted the y-axis range to be between -3 and 3, even though there is a clear outlier in the data.</p>
+<p>With <code>ggplot2</code> the default settings will give you this.</p>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="the-ggplot2-plotting-system-part-2.html#cb206-1"></a>g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(testdat, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y))</span>
+<span id="cb206-2"><a href="the-ggplot2-plotting-system-part-2.html#cb206-2"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-39"></span>
+<img src="images/ggplot2-unnamed-chunk-39-1.png" alt="Time series plot with default settings" width="672" />
+<p class="caption">
+Figure 15.11: Time series plot with default settings
+</p>
+</div>
+<p>Modifying the <code>ylim()</code> attribute would seem to give you the same thing as the base plot, but it doesn’t.</p>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="the-ggplot2-plotting-system-part-2.html#cb207-1"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-40"></span>
+<img src="images/ggplot2-unnamed-chunk-40-1.png" alt="Time series plot with modified ylim" width="672" />
+<p class="caption">
+Figure 15.12: Time series plot with modified ylim
+</p>
+</div>
+<p>Effectively, what this does is subset the data so that only observations between -3 and 3 are included, then plot the data.</p>
+<p>To plot the data without subsetting it first and still get the restricted range, you have to do the following.</p>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="the-ggplot2-plotting-system-part-2.html#cb208-1"></a>g <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>))</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-41"></span>
+<img src="images/ggplot2-unnamed-chunk-41-1.png" alt="Time series plot with restricted y-axis range" width="672" />
+<p class="caption">
+Figure 15.13: Time series plot with restricted y-axis range
+</p>
+</div>
+<p>And now you know!</p>
+</div>
+<div id="resources" class="section level2" number="15.13">
+<h2><span class="header-section-number">15.13</span> Resources</h2>
+<ul>
+<li>The <em>ggplot2</em> book by Hadley Wickham</li>
+<li>The <em>R Graphics Cookbook</em> by Winston Chang (examples in base plots and in ggplot2)</li>
+<li>ggplot2 web site (<a href="http://ggplot2.org" class="uri">http://ggplot2.org</a>)</li>
+<li>ggplot2 mailing list (<a href="http://goo.gl/OdW3uB" class="uri">http://goo.gl/OdW3uB</a>), primarily for developers</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="the-ggplot2-plotting-system-part-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rdpeng/exdata/edit/bookdown/ggplot2.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

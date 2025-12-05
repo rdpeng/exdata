@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7 Plotting Systems | Exploratory Data Analysis with R</title>
+  <meta name="description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7 Plotting Systems | Exploratory Data Analysis with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/rdpeng/exdata/" />
+  <meta property="og:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+  <meta property="og:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="github-repo" content="rdpeng/exdata" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7 Plotting Systems | Exploratory Data Analysis with R" />
+  
+  <meta name="twitter:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="twitter:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+
+<meta name="author" content="Roger D. Peng" />
+
+
+<meta name="date" content="2020-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="exploratory-graphs.html"/>
+<link rel="next" href="graphics-devices.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Exploratory Data Analysis with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#stay-in-touch"><i class="fa fa-check"></i>Stay in Touch!</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>2</b> Getting Started with R</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-started-with-the-r-interface"><i class="fa fa-check"></i><b>2.2</b> Getting started with the R interface</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html"><i class="fa fa-check"></i><b>3</b> Managing Data Frames with the <code>dplyr</code> package</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#data-frames"><i class="fa fa-check"></i><b>3.1</b> Data Frames</a></li>
+<li class="chapter" data-level="3.2" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#the-dplyr-package"><i class="fa fa-check"></i><b>3.2</b> The <code>dplyr</code> Package</a></li>
+<li class="chapter" data-level="3.3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#dplyr-grammar"><i class="fa fa-check"></i><b>3.3</b> <code>dplyr</code> Grammar</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#common-dplyr-function-properties"><i class="fa fa-check"></i><b>3.3.1</b> Common <code>dplyr</code> Function Properties</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#installing-the-dplyr-package"><i class="fa fa-check"></i><b>3.4</b> Installing the <code>dplyr</code> package</a></li>
+<li class="chapter" data-level="3.5" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>3.5</b> <code>select()</code></a></li>
+<li class="chapter" data-level="3.6" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>3.6</b> <code>filter()</code></a></li>
+<li class="chapter" data-level="3.7" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#arrange"><i class="fa fa-check"></i><b>3.7</b> <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.8" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#rename"><i class="fa fa-check"></i><b>3.8</b> <code>rename()</code></a></li>
+<li class="chapter" data-level="3.9" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>3.9</b> <code>mutate()</code></a></li>
+<li class="chapter" data-level="3.10" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#group_by"><i class="fa fa-check"></i><b>3.10</b> <code>group_by()</code></a></li>
+<li class="chapter" data-level="3.11" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#section"><i class="fa fa-check"></i><b>3.11</b> <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="3.12" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#summary"><i class="fa fa-check"></i><b>3.12</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis Checklist</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#formulate-your-question"><i class="fa fa-check"></i><b>4.1</b> Formulate your question</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#read-in-your-data"><i class="fa fa-check"></i><b>4.2</b> Read in your data</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-the-packaging"><i class="fa fa-check"></i><b>4.3</b> Check the packaging</a></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#run-str"><i class="fa fa-check"></i><b>4.4</b> Run <code>str()</code></a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#look-at-the-top-and-the-bottom-of-your-data"><i class="fa fa-check"></i><b>4.5</b> Look at the top and the bottom of your data</a></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-your-ns"><i class="fa fa-check"></i><b>4.6</b> Check your “n”s</a></li>
+<li class="chapter" data-level="4.7" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#validate-with-at-least-one-external-data-source"><i class="fa fa-check"></i><b>4.7</b> Validate with at least one external data source</a></li>
+<li class="chapter" data-level="4.8" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#try-the-easy-solution-first"><i class="fa fa-check"></i><b>4.8</b> Try the easy solution first</a></li>
+<li class="chapter" data-level="4.9" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#challenge-your-solution"><i class="fa fa-check"></i><b>4.9</b> Challenge your solution</a></li>
+<li class="chapter" data-level="4.10" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#follow-up-questions"><i class="fa fa-check"></i><b>4.10</b> Follow up questions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html"><i class="fa fa-check"></i><b>5</b> Principles of Analytic Graphics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-comparisons"><i class="fa fa-check"></i><b>5.1</b> Show comparisons</a></li>
+<li class="chapter" data-level="5.2" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-causality-mechanism-explanation-systematic-structure"><i class="fa fa-check"></i><b>5.2</b> Show causality, mechanism, explanation, systematic structure</a></li>
+<li class="chapter" data-level="5.3" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-multivariate-data"><i class="fa fa-check"></i><b>5.3</b> Show multivariate data</a></li>
+<li class="chapter" data-level="5.4" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#integrate-evidence"><i class="fa fa-check"></i><b>5.4</b> Integrate evidence</a></li>
+<li class="chapter" data-level="5.5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#describe-and-document-the-evidence"><i class="fa fa-check"></i><b>5.5</b> Describe and document the evidence</a></li>
+<li class="chapter" data-level="5.6" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#content-content-content"><i class="fa fa-check"></i><b>5.6</b> Content, Content, Content</a></li>
+<li class="chapter" data-level="5.7" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html"><i class="fa fa-check"></i><b>6</b> Exploratory Graphs</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#characteristics-of-exploratory-graphs"><i class="fa fa-check"></i><b>6.1</b> Characteristics of exploratory graphs</a></li>
+<li class="chapter" data-level="6.2" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#air-pollution-in-the-united-states"><i class="fa fa-check"></i><b>6.2</b> Air Pollution in the United States</a></li>
+<li class="chapter" data-level="6.3" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#getting-the-data"><i class="fa fa-check"></i><b>6.3</b> Getting the Data</a></li>
+<li class="chapter" data-level="6.4" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-one-dimension"><i class="fa fa-check"></i><b>6.4</b> Simple Summaries: One Dimension</a></li>
+<li class="chapter" data-level="6.5" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#five-number-summary"><i class="fa fa-check"></i><b>6.5</b> Five Number Summary</a></li>
+<li class="chapter" data-level="6.6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#boxplot"><i class="fa fa-check"></i><b>6.6</b> Boxplot</a></li>
+<li class="chapter" data-level="6.7" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#histogram"><i class="fa fa-check"></i><b>6.7</b> Histogram</a></li>
+<li class="chapter" data-level="6.8" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#overlaying-features"><i class="fa fa-check"></i><b>6.8</b> Overlaying Features</a></li>
+<li class="chapter" data-level="6.9" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#barplot"><i class="fa fa-check"></i><b>6.9</b> Barplot</a></li>
+<li class="chapter" data-level="6.10" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-two-dimensions-and-beyond"><i class="fa fa-check"></i><b>6.10</b> Simple Summaries: Two Dimensions and Beyond</a></li>
+<li class="chapter" data-level="6.11" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-boxplots"><i class="fa fa-check"></i><b>6.11</b> Multiple Boxplots</a></li>
+<li class="chapter" data-level="6.12" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-histograms"><i class="fa fa-check"></i><b>6.12</b> Multiple Histograms</a></li>
+<li class="chapter" data-level="6.13" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplots"><i class="fa fa-check"></i><b>6.13</b> Scatterplots</a></li>
+<li class="chapter" data-level="6.14" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplot---using-color"><i class="fa fa-check"></i><b>6.14</b> Scatterplot - Using Color</a></li>
+<li class="chapter" data-level="6.15" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-scatterplots"><i class="fa fa-check"></i><b>6.15</b> Multiple Scatterplots</a></li>
+<li class="chapter" data-level="6.16" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#summary-1"><i class="fa fa-check"></i><b>6.16</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="plotting-systems.html"><a href="plotting-systems.html"><i class="fa fa-check"></i><b>7</b> Plotting Systems</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="plotting-systems.html"><a href="plotting-systems.html#the-base-plotting-system"><i class="fa fa-check"></i><b>7.1</b> The Base Plotting System</a></li>
+<li class="chapter" data-level="7.2" data-path="plotting-systems.html"><a href="plotting-systems.html#the-lattice-system"><i class="fa fa-check"></i><b>7.2</b> The Lattice System</a></li>
+<li class="chapter" data-level="7.3" data-path="plotting-systems.html"><a href="plotting-systems.html#the-ggplot2-system"><i class="fa fa-check"></i><b>7.3</b> The ggplot2 System</a></li>
+<li class="chapter" data-level="7.4" data-path="plotting-systems.html"><a href="plotting-systems.html#references-1"><i class="fa fa-check"></i><b>7.4</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="graphics-devices.html"><a href="graphics-devices.html"><i class="fa fa-check"></i><b>8</b> Graphics Devices</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="graphics-devices.html"><a href="graphics-devices.html#the-process-of-making-a-plot"><i class="fa fa-check"></i><b>8.1</b> The Process of Making a Plot</a></li>
+<li class="chapter" data-level="8.2" data-path="graphics-devices.html"><a href="graphics-devices.html#how-does-a-plot-get-created"><i class="fa fa-check"></i><b>8.2</b> How Does a Plot Get Created?</a></li>
+<li class="chapter" data-level="8.3" data-path="graphics-devices.html"><a href="graphics-devices.html#graphics-file-devices"><i class="fa fa-check"></i><b>8.3</b> Graphics File Devices</a></li>
+<li class="chapter" data-level="8.4" data-path="graphics-devices.html"><a href="graphics-devices.html#multiple-open-graphics-devices"><i class="fa fa-check"></i><b>8.4</b> Multiple Open Graphics Devices</a></li>
+<li class="chapter" data-level="8.5" data-path="graphics-devices.html"><a href="graphics-devices.html#copying-plots"><i class="fa fa-check"></i><b>8.5</b> Copying Plots</a></li>
+<li class="chapter" data-level="8.6" data-path="graphics-devices.html"><a href="graphics-devices.html#summary-2"><i class="fa fa-check"></i><b>8.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html"><i class="fa fa-check"></i><b>9</b> The Base Plotting System</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-graphics"><i class="fa fa-check"></i><b>9.1</b> Base Graphics</a></li>
+<li class="chapter" data-level="9.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#simple-base-graphics"><i class="fa fa-check"></i><b>9.2</b> Simple Base Graphics</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#histogram-1"><i class="fa fa-check"></i><b>9.2.1</b> Histogram</a></li>
+<li class="chapter" data-level="9.2.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#boxplot-1"><i class="fa fa-check"></i><b>9.2.2</b> Boxplot</a></li>
+<li class="chapter" data-level="9.2.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#scatterplot"><i class="fa fa-check"></i><b>9.2.3</b> Scatterplot</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#some-important-base-graphics-parameters"><i class="fa fa-check"></i><b>9.3</b> Some Important Base Graphics Parameters</a></li>
+<li class="chapter" data-level="9.4" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plotting-functions"><i class="fa fa-check"></i><b>9.4</b> Base Plotting Functions</a></li>
+<li class="chapter" data-level="9.5" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plot-with-regression-line"><i class="fa fa-check"></i><b>9.5</b> Base Plot with Regression Line</a></li>
+<li class="chapter" data-level="9.6" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#multiple-base-plots"><i class="fa fa-check"></i><b>9.6</b> Multiple Base Plots</a></li>
+<li class="chapter" data-level="9.7" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#summary-3"><i class="fa fa-check"></i><b>9.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html"><i class="fa fa-check"></i><b>10</b> Plotting and Color in R</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colors-1-2-and-3"><i class="fa fa-check"></i><b>10.1</b> Colors 1, 2, and 3</a></li>
+<li class="chapter" data-level="10.2" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#connecting-colors-with-data"><i class="fa fa-check"></i><b>10.2</b> Connecting colors with data</a></li>
+<li class="chapter" data-level="10.3" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#color-utilities-in-r"><i class="fa fa-check"></i><b>10.3</b> Color Utilities in R</a></li>
+<li class="chapter" data-level="10.4" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramp"><i class="fa fa-check"></i><b>10.4</b> <code>colorRamp()</code></a></li>
+<li class="chapter" data-level="10.5" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramppalette"><i class="fa fa-check"></i><b>10.5</b> <code>colorRampPalette()</code></a></li>
+<li class="chapter" data-level="10.6" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#rcolorbrewer-package"><i class="fa fa-check"></i><b>10.6</b> RColorBrewer Package</a></li>
+<li class="chapter" data-level="10.7" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#using-the-rcolorbrewer-palettes"><i class="fa fa-check"></i><b>10.7</b> Using the RColorBrewer palettes</a></li>
+<li class="chapter" data-level="10.8" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#the-smoothscatter-function"><i class="fa fa-check"></i><b>10.8</b> The <code>smoothScatter()</code> function</a></li>
+<li class="chapter" data-level="10.9" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#adding-transparency"><i class="fa fa-check"></i><b>10.9</b> Adding transparency</a></li>
+<li class="chapter" data-level="10.10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#summary-4"><i class="fa fa-check"></i><b>10.10</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html"><i class="fa fa-check"></i><b>11</b> Hierarchical Clustering</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#hierarchical-clustering-1"><i class="fa fa-check"></i><b>11.1</b> Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.2" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#how-do-we-define-close"><i class="fa fa-check"></i><b>11.2</b> How do we define close?</a></li>
+<li class="chapter" data-level="11.3" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-euclidean-distance"><i class="fa fa-check"></i><b>11.3</b> Example: Euclidean distance</a></li>
+<li class="chapter" data-level="11.4" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-manhattan-distance"><i class="fa fa-check"></i><b>11.4</b> Example: Manhattan distance</a></li>
+<li class="chapter" data-level="11.5" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-hierarchical-clustering"><i class="fa fa-check"></i><b>11.5</b> Example: Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.6" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#prettier-dendrograms"><i class="fa fa-check"></i><b>11.6</b> Prettier dendrograms</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-complete"><i class="fa fa-check"></i><b>11.7</b> Merging points: Complete</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-average"><i class="fa fa-check"></i><b>11.8</b> Merging points: Average</a></li>
+<li class="chapter" data-level="11.9" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#using-the-heatmap-function"><i class="fa fa-check"></i><b>11.9</b> Using the <code>heatmap()</code> function</a></li>
+<li class="chapter" data-level="11.10" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#notes-and-further-resources"><i class="fa fa-check"></i><b>11.10</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="k-means-clustering.html"><a href="k-means-clustering.html"><i class="fa fa-check"></i><b>12</b> K-Means Clustering</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-means-clustering.html"><a href="k-means-clustering.html#illustrating-the-k-means-algorithm"><i class="fa fa-check"></i><b>12.1</b> Illustrating the K-means algorithm</a></li>
+<li class="chapter" data-level="12.2" data-path="k-means-clustering.html"><a href="k-means-clustering.html#stopping-the-algorithm"><i class="fa fa-check"></i><b>12.2</b> Stopping the algorithm</a></li>
+<li class="chapter" data-level="12.3" data-path="k-means-clustering.html"><a href="k-means-clustering.html#using-the-kmeans-function"><i class="fa fa-check"></i><b>12.3</b> Using the <code>kmeans()</code> function</a></li>
+<li class="chapter" data-level="12.4" data-path="k-means-clustering.html"><a href="k-means-clustering.html#building-heatmaps-from-k-means-solutions"><i class="fa fa-check"></i><b>12.4</b> Building heatmaps from K-means solutions</a></li>
+<li class="chapter" data-level="12.5" data-path="k-means-clustering.html"><a href="k-means-clustering.html#notes-and-further-resources-1"><i class="fa fa-check"></i><b>12.5</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="dimension-reduction.html"><a href="dimension-reduction.html"><i class="fa fa-check"></i><b>13</b> Dimension Reduction</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="dimension-reduction.html"><a href="dimension-reduction.html#matrix-data"><i class="fa fa-check"></i><b>13.1</b> Matrix data</a></li>
+<li class="chapter" data-level="13.2" data-path="dimension-reduction.html"><a href="dimension-reduction.html#patterns-in-rows-and-columns"><i class="fa fa-check"></i><b>13.2</b> Patterns in rows and columns</a></li>
+<li class="chapter" data-level="13.3" data-path="dimension-reduction.html"><a href="dimension-reduction.html#related-problem"><i class="fa fa-check"></i><b>13.3</b> Related problem</a></li>
+<li class="chapter" data-level="13.4" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-and-pca"><i class="fa fa-check"></i><b>13.4</b> SVD and PCA</a></li>
+<li class="chapter" data-level="13.5" data-path="dimension-reduction.html"><a href="dimension-reduction.html#unpacking-the-svd-u-and-v"><i class="fa fa-check"></i><b>13.5</b> Unpacking the SVD: <em>u</em> and <em>v</em></a></li>
+<li class="chapter" data-level="13.6" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-for-data-compression"><i class="fa fa-check"></i><b>13.6</b> SVD for data compression</a></li>
+<li class="chapter" data-level="13.7" data-path="dimension-reduction.html"><a href="dimension-reduction.html#components-of-the-svd---variance-explained"><i class="fa fa-check"></i><b>13.7</b> Components of the SVD - Variance explained</a></li>
+<li class="chapter" data-level="13.8" data-path="dimension-reduction.html"><a href="dimension-reduction.html#relationship-to-principal-components"><i class="fa fa-check"></i><b>13.8</b> Relationship to principal components</a></li>
+<li class="chapter" data-level="13.9" data-path="dimension-reduction.html"><a href="dimension-reduction.html#what-if-we-add-a-second-pattern"><i class="fa fa-check"></i><b>13.9</b> What if we add a second pattern?</a></li>
+<li class="chapter" data-level="13.10" data-path="dimension-reduction.html"><a href="dimension-reduction.html#dealing-with-missing-values"><i class="fa fa-check"></i><b>13.10</b> Dealing with missing values</a></li>
+<li class="chapter" data-level="13.11" data-path="dimension-reduction.html"><a href="dimension-reduction.html#example-face-data"><i class="fa fa-check"></i><b>13.11</b> Example: Face data</a></li>
+<li class="chapter" data-level="13.12" data-path="dimension-reduction.html"><a href="dimension-reduction.html#notes-and-further-resources-2"><i class="fa fa-check"></i><b>13.12</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html"><i class="fa fa-check"></i><b>14</b> The ggplot2 Plotting System: Part 1</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#the-basics-qplot"><i class="fa fa-check"></i><b>14.1</b> The Basics: <code>qplot()</code></a></li>
+<li class="chapter" data-level="14.2" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#before-you-start-label-your-data"><i class="fa fa-check"></i><b>14.2</b> Before You Start: Label Your Data</a></li>
+<li class="chapter" data-level="14.3" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#ggplot2-hello-world"><i class="fa fa-check"></i><b>14.3</b> ggplot2 “Hello, world!”</a></li>
+<li class="chapter" data-level="14.4" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#modifying-aesthetics"><i class="fa fa-check"></i><b>14.4</b> Modifying aesthetics</a></li>
+<li class="chapter" data-level="14.5" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#adding-a-geom"><i class="fa fa-check"></i><b>14.5</b> Adding a geom</a></li>
+<li class="chapter" data-level="14.6" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#histograms"><i class="fa fa-check"></i><b>14.6</b> Histograms</a></li>
+<li class="chapter" data-level="14.7" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#facets"><i class="fa fa-check"></i><b>14.7</b> Facets</a></li>
+<li class="chapter" data-level="14.8" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#case-study-maacs-cohort"><i class="fa fa-check"></i><b>14.8</b> Case Study: MAACS Cohort</a></li>
+<li class="chapter" data-level="14.9" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#summary-of-qplot"><i class="fa fa-check"></i><b>14.9</b> Summary of qplot()</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html"><i class="fa fa-check"></i><b>15</b> The ggplot2 Plotting System: Part 2</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#basic-components-of-a-ggplot2-plot"><i class="fa fa-check"></i><b>15.1</b> Basic Components of a ggplot2 Plot</a></li>
+<li class="chapter" data-level="15.2" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#example-bmi-pm2.5-asthma"><i class="fa fa-check"></i><b>15.2</b> Example: BMI, PM2.5, Asthma</a></li>
+<li class="chapter" data-level="15.3" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#building-up-in-layers"><i class="fa fa-check"></i><b>15.3</b> Building Up in Layers</a></li>
+<li class="chapter" data-level="15.4" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#first-plot-with-point-layer"><i class="fa fa-check"></i><b>15.4</b> First Plot with Point Layer</a></li>
+<li class="chapter" data-level="15.5" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-smooth"><i class="fa fa-check"></i><b>15.5</b> Adding More Layers: Smooth</a></li>
+<li class="chapter" data-level="15.6" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-facets"><i class="fa fa-check"></i><b>15.6</b> Adding More Layers: Facets</a></li>
+<li class="chapter" data-level="15.7" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-geom-properties"><i class="fa fa-check"></i><b>15.7</b> Modifying Geom Properties</a></li>
+<li class="chapter" data-level="15.8" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-labels"><i class="fa fa-check"></i><b>15.8</b> Modifying Labels</a></li>
+<li class="chapter" data-level="15.9" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#customizing-the-smooth"><i class="fa fa-check"></i><b>15.9</b> Customizing the Smooth</a></li>
+<li class="chapter" data-level="15.10" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#changing-the-theme"><i class="fa fa-check"></i><b>15.10</b> Changing the Theme</a></li>
+<li class="chapter" data-level="15.11" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#more-complex-example"><i class="fa fa-check"></i><b>15.11</b> More Complex Example</a></li>
+<li class="chapter" data-level="15.12" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#a-quick-aside-about-axis-limits"><i class="fa fa-check"></i><b>15.12</b> A Quick Aside about Axis Limits</a></li>
+<li class="chapter" data-level="15.13" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#resources"><i class="fa fa-check"></i><b>15.13</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><i class="fa fa-check"></i><b>16</b> Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S.</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#synopsis"><i class="fa fa-check"></i><b>16.1</b> Synopsis</a></li>
+<li class="chapter" data-level="16.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#loading-and-processing-the-raw-data"><i class="fa fa-check"></i><b>16.2</b> Loading and Processing the Raw Data</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-1999-data"><i class="fa fa-check"></i><b>16.2.1</b> Reading in the 1999 data</a></li>
+<li class="chapter" data-level="16.2.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-2012-data"><i class="fa fa-check"></i><b>16.2.2</b> Reading in the 2012 data</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#results"><i class="fa fa-check"></i><b>16.3</b> Results</a>
+<ul>
+<li class="chapter" data-level="16.3.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#entire-u.s.-analysis"><i class="fa fa-check"></i><b>16.3.1</b> Entire U.S. analysis</a></li>
+<li class="chapter" data-level="16.3.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-pm-levels-at-an-individual-monitor"><i class="fa fa-check"></i><b>16.3.2</b> Changes in PM levels at an individual monitor</a></li>
+<li class="chapter" data-level="16.3.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-state-wide-pm-levels"><i class="fa fa-check"></i><b>16.3.3</b> Changes in state-wide PM levels</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i><b>17</b> About the Author</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Exploratory Data Analysis with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="plotting-systems" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Plotting Systems</h1>
+<p><a href="https://youtu.be/a4mvbyNGdBA">Watch a video of this chapter</a>.</p>
+<p>There are three different plotting systems in R and they each have different characteristics and modes of operation. They three systems are the base plotting system, the lattice system, and the ggplot2 system. This chapter (and this book) will focus primarily on the base plotting system.</p>
+<div id="the-base-plotting-system" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> The Base Plotting System</h2>
+<p>The base plotting system is the original plotting system for R. The basic model is sometimes referred to as the “artist’s palette” model. The idea is you start with blank canvas and build up from there.</p>
+<p>In more R-specific terms, you typically start with <code>plot</code> function (or similar plot creating function) to <em>initiate</em> a plot and then <em>annotate</em> the plot with various annotation functions (<code>text</code>, <code>lines</code>, <code>points</code>, <code>axis</code>)</p>
+<p>The base plotting system is often the most convenient plotting system to use because it mirrors how we sometimes think of building plots and analyzing data. If we don’t have a completely well-formed idea of how we want to look at some data, often we’ll start by “throwing some data on the page” and then slowly add more information to it as our thought process evolves.</p>
+<p>For example, we might look at a simple scatterplot and then decide to add a linear regression line or a smoother to it to highlight the trends.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="plotting-systems.html#cb79-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">data</span>(airquality)</span>
+<span id="cb79-2"><a href="plotting-systems.html#cb79-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">with</span>(airquality, {</span>
+<span id="cb79-3"><a href="plotting-systems.html#cb79-3"></a><span class="op">+</span><span class="st">         </span><span class="kw">plot</span>(Temp, Ozone)</span>
+<span id="cb79-4"><a href="plotting-systems.html#cb79-4"></a><span class="op">+</span><span class="st">         </span><span class="kw">lines</span>(<span class="kw">loess.smooth</span>(Temp, Ozone))</span>
+<span id="cb79-5"><a href="plotting-systems.html#cb79-5"></a><span class="op">+</span><span class="st"> </span>})</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<img src="images/plottingsystems-unnamed-chunk-2-1.png" alt="Scatterplot with loess curve" width="480" />
+<p class="caption">
+Figure 5.1: Scatterplot with loess curve
+</p>
+</div>
+<p>In the code above, the <code>plot</code> function creates the initial plot and draws the points (circles) on the canvas. The <code>lines</code> function is used to annotate or add to the plot; in this case it adds a loess smoother to the scatterplot.</p>
+<p>Here we use the <code>plot</code> function to draw the points on the scatterplot and then use the <code>title</code> function to add a main title to the plot.</p>
+<p>One downside with constructing base plots is that you can’t go backwards once the plot has started. So it’s possible that you could start down the road of constructing a plot and realize later (when it’s too late) that you don’t have enough room to add a y-axis label or something like that.</p>
+<p>If you have specific plot in mind, there is then a need to plan in advance to make sure, for example, that you’ve set your margins to be the right size to fit all of the annotations that you may want to include. While the base plotting system is nice in that it gives you the flexibility to specify these kinds of details to painstaking accuracy, sometimes it would be nice if the system could just figure it out for you.</p>
+<p>Another downside of the base plotting system is that it’s difficult to describe or translate a plot to others because there’s no clear graphical language or grammar that can be used to communicate what you’ve done. The only real way to describe what you’ve done in a base plot is to just list the series of commands/functions that you’ve executed, which is not a particularly compact way of communicating things. This is one problem that the <code>ggplot2</code> package attempts to address.</p>
+<p>Another typical base plot is constructed with the following code.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="plotting-systems.html#cb80-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">data</span>(cars)</span>
+<span id="cb80-2"><a href="plotting-systems.html#cb80-2"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb80-3"><a href="plotting-systems.html#cb80-3"></a><span class="er">&gt;</span><span class="st"> </span><span class="co">## Create the plot / draw canvas</span></span>
+<span id="cb80-4"><a href="plotting-systems.html#cb80-4"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">with</span>(cars, <span class="kw">plot</span>(speed, dist))</span>
+<span id="cb80-5"><a href="plotting-systems.html#cb80-5"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb80-6"><a href="plotting-systems.html#cb80-6"></a><span class="er">&gt;</span><span class="st"> </span><span class="co">## Add annotation</span></span>
+<span id="cb80-7"><a href="plotting-systems.html#cb80-7"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">title</span>(<span class="st">&quot;Speed vs. Stopping distance&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-3"></span>
+<img src="images/plottingsystems-unnamed-chunk-3-1.png" alt="Base plot with title" width="480" />
+<p class="caption">
+Figure 5.2: Base plot with title
+</p>
+</div>
+<p>We will go into more detail on what these functions do in later chapters.</p>
+</div>
+<div id="the-lattice-system" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> The Lattice System</h2>
+<p>The lattice plotting system is implemented in the <code>lattice</code> package which comes with every installation of R (although it is not loaded by default). To use the lattice plotting functions you must first load the <code>lattice</code> package with the <code>library</code> function.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="plotting-systems.html#cb81-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(lattice)</span></code></pre></div>
+<p>With the lattice system, plots are created with a single function call, such as <code>xyplot</code> or <code>bwplot</code>. There is no real distinction between functions that create or initiate plots and functions that annotate plots because it all happens at once.</p>
+<p>Lattice plots tend to be most useful for conditioning types of plots, i.e. looking at how y changes with x across levels of z. These types of plots are useful for looking at multi-dimensional data and often allow you to squeeze a lot of information into a single window or page.</p>
+<p>Another aspect of lattice that makes it different from base plotting is that things like margins and spacing are set automatically. This is possible because entire plot is specified at once via a single function call, so all of the available information needed to figure out the spacing and margins is already there.</p>
+<p>Here is an example of a lattice plot that looks at the relationship between life expectancy and income and how that relationship varies by region in the United States.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="plotting-systems.html#cb82-1"></a><span class="op">&gt;</span><span class="st"> </span>state &lt;-<span class="st"> </span><span class="kw">data.frame</span>(state.x77, <span class="dt">region =</span> state.region)</span>
+<span id="cb82-2"><a href="plotting-systems.html#cb82-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">xyplot</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income <span class="op">|</span><span class="st"> </span>region, <span class="dt">data =</span> state, <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">1</span>))</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-5"></span>
+<img src="images/plottingsystems-unnamed-chunk-5-1.png" alt="Lattice plot" width="768" />
+<p class="caption">
+Figure 5.4: Lattice plot
+</p>
+</div>
+<p>You can see that the entire plot was generated by the call to <code>xyplot</code> and all of the data for the plot were stored in the <code>state</code> data frame. The plot itself contains four panels—one for each region—and within each panel is a scatterplot of life expectancy and income. The notion of <em>panels</em> comes up a lot with lattice plots because you typically have many panels in a lattice plot (each panel typically represents a <em>condition</em>, like “region”).</p>
+<p>One downside with the lattice system is that it can sometimes be very awkward to specify an entire plot in a single function call (you end up with functions with many many arguments). Also, annotation in panels in plots is not especially intuitive and can be difficult to explain. In particular, the use of custom panel functions and subscripts can be difficult to wield and requires intense preparation. Finally, once a plot is created, you cannot “add” to the plot (but of course you can just make it again with modifications).</p>
+</div>
+<div id="the-ggplot2-system" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> The ggplot2 System</h2>
+<p>The ggplot2 plottings system attempts to split the difference between base and lattice in a number of ways. Taking cues from lattice, the ggplot2 system automatically deals with spacings, text, titles but also allows you to annotate by “adding” to a plot.</p>
+<p>The ggplot2 system is implemented in the <code>ggplot2</code> package, which is available from CRAN (it does not come with R). You can install it from CRAN via</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="plotting-systems.html#cb83-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
+<p>and then load it into R via the <code>library</code> function.</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="plotting-systems.html#cb84-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)</span></code></pre></div>
+<p>Superficially, the ggplot2 functions are similar to lattice, but the system is generally easier and more intuitive to use. The defaults used in ggplot2 make many choices for you, but you can still customize plots to your heart’s desire.</p>
+<p>A typical plot with the <code>ggplot</code> package looks as follows.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="plotting-systems.html#cb85-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">data</span>(mpg)</span>
+<span id="cb85-2"><a href="plotting-systems.html#cb85-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">qplot</span>(displ, hwy, <span class="dt">data =</span> mpg)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-8"></span>
+<img src="images/plottingsystems-unnamed-chunk-8-1.png" alt="ggplot2 plot" width="576" />
+<p class="caption">
+Figure 5.7: ggplot2 plot
+</p>
+</div>
+<p>The <code>qplot</code> function in <code>ggplot2</code> is what you use to “quickly get some data on the screen”. There are additional functions in <code>ggplot2</code> that allow you to make arbitrarily sophisticated plots.</p>
+</div>
+<div id="references-1" class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> References</h2>
+<p>Paul Murrell (2011). <em>R Graphics</em>, CRC Press.</p>
+<p>Hadley Wickham (2009). <em>ggplot2</em>, Springer.</p>
+<p>Deepayan Sarkar (2008). <em>Lattice: Multivariate Data Visualization with R</em>, Springer.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="exploratory-graphs.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="graphics-devices.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rdpeng/exdata/edit/bookdown/plottingsystems.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

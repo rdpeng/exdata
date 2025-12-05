@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>16 Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S. | Exploratory Data Analysis with R</title>
+  <meta name="description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="16 Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S. | Exploratory Data Analysis with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/rdpeng/exdata/" />
+  <meta property="og:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+  <meta property="og:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="github-repo" content="rdpeng/exdata" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="16 Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S. | Exploratory Data Analysis with R" />
+  
+  <meta name="twitter:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="twitter:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+
+<meta name="author" content="Roger D. Peng" />
+
+
+<meta name="date" content="2020-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="the-ggplot2-plotting-system-part-2.html"/>
+<link rel="next" href="about-the-author.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Exploratory Data Analysis with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#stay-in-touch"><i class="fa fa-check"></i>Stay in Touch!</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>2</b> Getting Started with R</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-started-with-the-r-interface"><i class="fa fa-check"></i><b>2.2</b> Getting started with the R interface</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html"><i class="fa fa-check"></i><b>3</b> Managing Data Frames with the <code>dplyr</code> package</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#data-frames"><i class="fa fa-check"></i><b>3.1</b> Data Frames</a></li>
+<li class="chapter" data-level="3.2" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#the-dplyr-package"><i class="fa fa-check"></i><b>3.2</b> The <code>dplyr</code> Package</a></li>
+<li class="chapter" data-level="3.3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#dplyr-grammar"><i class="fa fa-check"></i><b>3.3</b> <code>dplyr</code> Grammar</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#common-dplyr-function-properties"><i class="fa fa-check"></i><b>3.3.1</b> Common <code>dplyr</code> Function Properties</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#installing-the-dplyr-package"><i class="fa fa-check"></i><b>3.4</b> Installing the <code>dplyr</code> package</a></li>
+<li class="chapter" data-level="3.5" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>3.5</b> <code>select()</code></a></li>
+<li class="chapter" data-level="3.6" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>3.6</b> <code>filter()</code></a></li>
+<li class="chapter" data-level="3.7" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#arrange"><i class="fa fa-check"></i><b>3.7</b> <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.8" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#rename"><i class="fa fa-check"></i><b>3.8</b> <code>rename()</code></a></li>
+<li class="chapter" data-level="3.9" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>3.9</b> <code>mutate()</code></a></li>
+<li class="chapter" data-level="3.10" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#group_by"><i class="fa fa-check"></i><b>3.10</b> <code>group_by()</code></a></li>
+<li class="chapter" data-level="3.11" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#section"><i class="fa fa-check"></i><b>3.11</b> <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="3.12" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#summary"><i class="fa fa-check"></i><b>3.12</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis Checklist</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#formulate-your-question"><i class="fa fa-check"></i><b>4.1</b> Formulate your question</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#read-in-your-data"><i class="fa fa-check"></i><b>4.2</b> Read in your data</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-the-packaging"><i class="fa fa-check"></i><b>4.3</b> Check the packaging</a></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#run-str"><i class="fa fa-check"></i><b>4.4</b> Run <code>str()</code></a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#look-at-the-top-and-the-bottom-of-your-data"><i class="fa fa-check"></i><b>4.5</b> Look at the top and the bottom of your data</a></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-your-ns"><i class="fa fa-check"></i><b>4.6</b> Check your “n”s</a></li>
+<li class="chapter" data-level="4.7" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#validate-with-at-least-one-external-data-source"><i class="fa fa-check"></i><b>4.7</b> Validate with at least one external data source</a></li>
+<li class="chapter" data-level="4.8" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#try-the-easy-solution-first"><i class="fa fa-check"></i><b>4.8</b> Try the easy solution first</a></li>
+<li class="chapter" data-level="4.9" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#challenge-your-solution"><i class="fa fa-check"></i><b>4.9</b> Challenge your solution</a></li>
+<li class="chapter" data-level="4.10" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#follow-up-questions"><i class="fa fa-check"></i><b>4.10</b> Follow up questions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html"><i class="fa fa-check"></i><b>5</b> Principles of Analytic Graphics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-comparisons"><i class="fa fa-check"></i><b>5.1</b> Show comparisons</a></li>
+<li class="chapter" data-level="5.2" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-causality-mechanism-explanation-systematic-structure"><i class="fa fa-check"></i><b>5.2</b> Show causality, mechanism, explanation, systematic structure</a></li>
+<li class="chapter" data-level="5.3" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-multivariate-data"><i class="fa fa-check"></i><b>5.3</b> Show multivariate data</a></li>
+<li class="chapter" data-level="5.4" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#integrate-evidence"><i class="fa fa-check"></i><b>5.4</b> Integrate evidence</a></li>
+<li class="chapter" data-level="5.5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#describe-and-document-the-evidence"><i class="fa fa-check"></i><b>5.5</b> Describe and document the evidence</a></li>
+<li class="chapter" data-level="5.6" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#content-content-content"><i class="fa fa-check"></i><b>5.6</b> Content, Content, Content</a></li>
+<li class="chapter" data-level="5.7" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html"><i class="fa fa-check"></i><b>6</b> Exploratory Graphs</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#characteristics-of-exploratory-graphs"><i class="fa fa-check"></i><b>6.1</b> Characteristics of exploratory graphs</a></li>
+<li class="chapter" data-level="6.2" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#air-pollution-in-the-united-states"><i class="fa fa-check"></i><b>6.2</b> Air Pollution in the United States</a></li>
+<li class="chapter" data-level="6.3" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#getting-the-data"><i class="fa fa-check"></i><b>6.3</b> Getting the Data</a></li>
+<li class="chapter" data-level="6.4" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-one-dimension"><i class="fa fa-check"></i><b>6.4</b> Simple Summaries: One Dimension</a></li>
+<li class="chapter" data-level="6.5" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#five-number-summary"><i class="fa fa-check"></i><b>6.5</b> Five Number Summary</a></li>
+<li class="chapter" data-level="6.6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#boxplot"><i class="fa fa-check"></i><b>6.6</b> Boxplot</a></li>
+<li class="chapter" data-level="6.7" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#histogram"><i class="fa fa-check"></i><b>6.7</b> Histogram</a></li>
+<li class="chapter" data-level="6.8" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#overlaying-features"><i class="fa fa-check"></i><b>6.8</b> Overlaying Features</a></li>
+<li class="chapter" data-level="6.9" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#barplot"><i class="fa fa-check"></i><b>6.9</b> Barplot</a></li>
+<li class="chapter" data-level="6.10" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-two-dimensions-and-beyond"><i class="fa fa-check"></i><b>6.10</b> Simple Summaries: Two Dimensions and Beyond</a></li>
+<li class="chapter" data-level="6.11" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-boxplots"><i class="fa fa-check"></i><b>6.11</b> Multiple Boxplots</a></li>
+<li class="chapter" data-level="6.12" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-histograms"><i class="fa fa-check"></i><b>6.12</b> Multiple Histograms</a></li>
+<li class="chapter" data-level="6.13" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplots"><i class="fa fa-check"></i><b>6.13</b> Scatterplots</a></li>
+<li class="chapter" data-level="6.14" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplot---using-color"><i class="fa fa-check"></i><b>6.14</b> Scatterplot - Using Color</a></li>
+<li class="chapter" data-level="6.15" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-scatterplots"><i class="fa fa-check"></i><b>6.15</b> Multiple Scatterplots</a></li>
+<li class="chapter" data-level="6.16" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#summary-1"><i class="fa fa-check"></i><b>6.16</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="plotting-systems.html"><a href="plotting-systems.html"><i class="fa fa-check"></i><b>7</b> Plotting Systems</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="plotting-systems.html"><a href="plotting-systems.html#the-base-plotting-system"><i class="fa fa-check"></i><b>7.1</b> The Base Plotting System</a></li>
+<li class="chapter" data-level="7.2" data-path="plotting-systems.html"><a href="plotting-systems.html#the-lattice-system"><i class="fa fa-check"></i><b>7.2</b> The Lattice System</a></li>
+<li class="chapter" data-level="7.3" data-path="plotting-systems.html"><a href="plotting-systems.html#the-ggplot2-system"><i class="fa fa-check"></i><b>7.3</b> The ggplot2 System</a></li>
+<li class="chapter" data-level="7.4" data-path="plotting-systems.html"><a href="plotting-systems.html#references-1"><i class="fa fa-check"></i><b>7.4</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="graphics-devices.html"><a href="graphics-devices.html"><i class="fa fa-check"></i><b>8</b> Graphics Devices</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="graphics-devices.html"><a href="graphics-devices.html#the-process-of-making-a-plot"><i class="fa fa-check"></i><b>8.1</b> The Process of Making a Plot</a></li>
+<li class="chapter" data-level="8.2" data-path="graphics-devices.html"><a href="graphics-devices.html#how-does-a-plot-get-created"><i class="fa fa-check"></i><b>8.2</b> How Does a Plot Get Created?</a></li>
+<li class="chapter" data-level="8.3" data-path="graphics-devices.html"><a href="graphics-devices.html#graphics-file-devices"><i class="fa fa-check"></i><b>8.3</b> Graphics File Devices</a></li>
+<li class="chapter" data-level="8.4" data-path="graphics-devices.html"><a href="graphics-devices.html#multiple-open-graphics-devices"><i class="fa fa-check"></i><b>8.4</b> Multiple Open Graphics Devices</a></li>
+<li class="chapter" data-level="8.5" data-path="graphics-devices.html"><a href="graphics-devices.html#copying-plots"><i class="fa fa-check"></i><b>8.5</b> Copying Plots</a></li>
+<li class="chapter" data-level="8.6" data-path="graphics-devices.html"><a href="graphics-devices.html#summary-2"><i class="fa fa-check"></i><b>8.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html"><i class="fa fa-check"></i><b>9</b> The Base Plotting System</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-graphics"><i class="fa fa-check"></i><b>9.1</b> Base Graphics</a></li>
+<li class="chapter" data-level="9.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#simple-base-graphics"><i class="fa fa-check"></i><b>9.2</b> Simple Base Graphics</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#histogram-1"><i class="fa fa-check"></i><b>9.2.1</b> Histogram</a></li>
+<li class="chapter" data-level="9.2.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#boxplot-1"><i class="fa fa-check"></i><b>9.2.2</b> Boxplot</a></li>
+<li class="chapter" data-level="9.2.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#scatterplot"><i class="fa fa-check"></i><b>9.2.3</b> Scatterplot</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#some-important-base-graphics-parameters"><i class="fa fa-check"></i><b>9.3</b> Some Important Base Graphics Parameters</a></li>
+<li class="chapter" data-level="9.4" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plotting-functions"><i class="fa fa-check"></i><b>9.4</b> Base Plotting Functions</a></li>
+<li class="chapter" data-level="9.5" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plot-with-regression-line"><i class="fa fa-check"></i><b>9.5</b> Base Plot with Regression Line</a></li>
+<li class="chapter" data-level="9.6" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#multiple-base-plots"><i class="fa fa-check"></i><b>9.6</b> Multiple Base Plots</a></li>
+<li class="chapter" data-level="9.7" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#summary-3"><i class="fa fa-check"></i><b>9.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html"><i class="fa fa-check"></i><b>10</b> Plotting and Color in R</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colors-1-2-and-3"><i class="fa fa-check"></i><b>10.1</b> Colors 1, 2, and 3</a></li>
+<li class="chapter" data-level="10.2" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#connecting-colors-with-data"><i class="fa fa-check"></i><b>10.2</b> Connecting colors with data</a></li>
+<li class="chapter" data-level="10.3" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#color-utilities-in-r"><i class="fa fa-check"></i><b>10.3</b> Color Utilities in R</a></li>
+<li class="chapter" data-level="10.4" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramp"><i class="fa fa-check"></i><b>10.4</b> <code>colorRamp()</code></a></li>
+<li class="chapter" data-level="10.5" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramppalette"><i class="fa fa-check"></i><b>10.5</b> <code>colorRampPalette()</code></a></li>
+<li class="chapter" data-level="10.6" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#rcolorbrewer-package"><i class="fa fa-check"></i><b>10.6</b> RColorBrewer Package</a></li>
+<li class="chapter" data-level="10.7" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#using-the-rcolorbrewer-palettes"><i class="fa fa-check"></i><b>10.7</b> Using the RColorBrewer palettes</a></li>
+<li class="chapter" data-level="10.8" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#the-smoothscatter-function"><i class="fa fa-check"></i><b>10.8</b> The <code>smoothScatter()</code> function</a></li>
+<li class="chapter" data-level="10.9" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#adding-transparency"><i class="fa fa-check"></i><b>10.9</b> Adding transparency</a></li>
+<li class="chapter" data-level="10.10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#summary-4"><i class="fa fa-check"></i><b>10.10</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html"><i class="fa fa-check"></i><b>11</b> Hierarchical Clustering</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#hierarchical-clustering-1"><i class="fa fa-check"></i><b>11.1</b> Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.2" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#how-do-we-define-close"><i class="fa fa-check"></i><b>11.2</b> How do we define close?</a></li>
+<li class="chapter" data-level="11.3" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-euclidean-distance"><i class="fa fa-check"></i><b>11.3</b> Example: Euclidean distance</a></li>
+<li class="chapter" data-level="11.4" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-manhattan-distance"><i class="fa fa-check"></i><b>11.4</b> Example: Manhattan distance</a></li>
+<li class="chapter" data-level="11.5" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-hierarchical-clustering"><i class="fa fa-check"></i><b>11.5</b> Example: Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.6" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#prettier-dendrograms"><i class="fa fa-check"></i><b>11.6</b> Prettier dendrograms</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-complete"><i class="fa fa-check"></i><b>11.7</b> Merging points: Complete</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-average"><i class="fa fa-check"></i><b>11.8</b> Merging points: Average</a></li>
+<li class="chapter" data-level="11.9" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#using-the-heatmap-function"><i class="fa fa-check"></i><b>11.9</b> Using the <code>heatmap()</code> function</a></li>
+<li class="chapter" data-level="11.10" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#notes-and-further-resources"><i class="fa fa-check"></i><b>11.10</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="k-means-clustering.html"><a href="k-means-clustering.html"><i class="fa fa-check"></i><b>12</b> K-Means Clustering</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-means-clustering.html"><a href="k-means-clustering.html#illustrating-the-k-means-algorithm"><i class="fa fa-check"></i><b>12.1</b> Illustrating the K-means algorithm</a></li>
+<li class="chapter" data-level="12.2" data-path="k-means-clustering.html"><a href="k-means-clustering.html#stopping-the-algorithm"><i class="fa fa-check"></i><b>12.2</b> Stopping the algorithm</a></li>
+<li class="chapter" data-level="12.3" data-path="k-means-clustering.html"><a href="k-means-clustering.html#using-the-kmeans-function"><i class="fa fa-check"></i><b>12.3</b> Using the <code>kmeans()</code> function</a></li>
+<li class="chapter" data-level="12.4" data-path="k-means-clustering.html"><a href="k-means-clustering.html#building-heatmaps-from-k-means-solutions"><i class="fa fa-check"></i><b>12.4</b> Building heatmaps from K-means solutions</a></li>
+<li class="chapter" data-level="12.5" data-path="k-means-clustering.html"><a href="k-means-clustering.html#notes-and-further-resources-1"><i class="fa fa-check"></i><b>12.5</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="dimension-reduction.html"><a href="dimension-reduction.html"><i class="fa fa-check"></i><b>13</b> Dimension Reduction</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="dimension-reduction.html"><a href="dimension-reduction.html#matrix-data"><i class="fa fa-check"></i><b>13.1</b> Matrix data</a></li>
+<li class="chapter" data-level="13.2" data-path="dimension-reduction.html"><a href="dimension-reduction.html#patterns-in-rows-and-columns"><i class="fa fa-check"></i><b>13.2</b> Patterns in rows and columns</a></li>
+<li class="chapter" data-level="13.3" data-path="dimension-reduction.html"><a href="dimension-reduction.html#related-problem"><i class="fa fa-check"></i><b>13.3</b> Related problem</a></li>
+<li class="chapter" data-level="13.4" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-and-pca"><i class="fa fa-check"></i><b>13.4</b> SVD and PCA</a></li>
+<li class="chapter" data-level="13.5" data-path="dimension-reduction.html"><a href="dimension-reduction.html#unpacking-the-svd-u-and-v"><i class="fa fa-check"></i><b>13.5</b> Unpacking the SVD: <em>u</em> and <em>v</em></a></li>
+<li class="chapter" data-level="13.6" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-for-data-compression"><i class="fa fa-check"></i><b>13.6</b> SVD for data compression</a></li>
+<li class="chapter" data-level="13.7" data-path="dimension-reduction.html"><a href="dimension-reduction.html#components-of-the-svd---variance-explained"><i class="fa fa-check"></i><b>13.7</b> Components of the SVD - Variance explained</a></li>
+<li class="chapter" data-level="13.8" data-path="dimension-reduction.html"><a href="dimension-reduction.html#relationship-to-principal-components"><i class="fa fa-check"></i><b>13.8</b> Relationship to principal components</a></li>
+<li class="chapter" data-level="13.9" data-path="dimension-reduction.html"><a href="dimension-reduction.html#what-if-we-add-a-second-pattern"><i class="fa fa-check"></i><b>13.9</b> What if we add a second pattern?</a></li>
+<li class="chapter" data-level="13.10" data-path="dimension-reduction.html"><a href="dimension-reduction.html#dealing-with-missing-values"><i class="fa fa-check"></i><b>13.10</b> Dealing with missing values</a></li>
+<li class="chapter" data-level="13.11" data-path="dimension-reduction.html"><a href="dimension-reduction.html#example-face-data"><i class="fa fa-check"></i><b>13.11</b> Example: Face data</a></li>
+<li class="chapter" data-level="13.12" data-path="dimension-reduction.html"><a href="dimension-reduction.html#notes-and-further-resources-2"><i class="fa fa-check"></i><b>13.12</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html"><i class="fa fa-check"></i><b>14</b> The ggplot2 Plotting System: Part 1</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#the-basics-qplot"><i class="fa fa-check"></i><b>14.1</b> The Basics: <code>qplot()</code></a></li>
+<li class="chapter" data-level="14.2" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#before-you-start-label-your-data"><i class="fa fa-check"></i><b>14.2</b> Before You Start: Label Your Data</a></li>
+<li class="chapter" data-level="14.3" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#ggplot2-hello-world"><i class="fa fa-check"></i><b>14.3</b> ggplot2 “Hello, world!”</a></li>
+<li class="chapter" data-level="14.4" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#modifying-aesthetics"><i class="fa fa-check"></i><b>14.4</b> Modifying aesthetics</a></li>
+<li class="chapter" data-level="14.5" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#adding-a-geom"><i class="fa fa-check"></i><b>14.5</b> Adding a geom</a></li>
+<li class="chapter" data-level="14.6" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#histograms"><i class="fa fa-check"></i><b>14.6</b> Histograms</a></li>
+<li class="chapter" data-level="14.7" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#facets"><i class="fa fa-check"></i><b>14.7</b> Facets</a></li>
+<li class="chapter" data-level="14.8" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#case-study-maacs-cohort"><i class="fa fa-check"></i><b>14.8</b> Case Study: MAACS Cohort</a></li>
+<li class="chapter" data-level="14.9" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#summary-of-qplot"><i class="fa fa-check"></i><b>14.9</b> Summary of qplot()</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html"><i class="fa fa-check"></i><b>15</b> The ggplot2 Plotting System: Part 2</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#basic-components-of-a-ggplot2-plot"><i class="fa fa-check"></i><b>15.1</b> Basic Components of a ggplot2 Plot</a></li>
+<li class="chapter" data-level="15.2" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#example-bmi-pm2.5-asthma"><i class="fa fa-check"></i><b>15.2</b> Example: BMI, PM2.5, Asthma</a></li>
+<li class="chapter" data-level="15.3" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#building-up-in-layers"><i class="fa fa-check"></i><b>15.3</b> Building Up in Layers</a></li>
+<li class="chapter" data-level="15.4" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#first-plot-with-point-layer"><i class="fa fa-check"></i><b>15.4</b> First Plot with Point Layer</a></li>
+<li class="chapter" data-level="15.5" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-smooth"><i class="fa fa-check"></i><b>15.5</b> Adding More Layers: Smooth</a></li>
+<li class="chapter" data-level="15.6" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-facets"><i class="fa fa-check"></i><b>15.6</b> Adding More Layers: Facets</a></li>
+<li class="chapter" data-level="15.7" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-geom-properties"><i class="fa fa-check"></i><b>15.7</b> Modifying Geom Properties</a></li>
+<li class="chapter" data-level="15.8" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-labels"><i class="fa fa-check"></i><b>15.8</b> Modifying Labels</a></li>
+<li class="chapter" data-level="15.9" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#customizing-the-smooth"><i class="fa fa-check"></i><b>15.9</b> Customizing the Smooth</a></li>
+<li class="chapter" data-level="15.10" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#changing-the-theme"><i class="fa fa-check"></i><b>15.10</b> Changing the Theme</a></li>
+<li class="chapter" data-level="15.11" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#more-complex-example"><i class="fa fa-check"></i><b>15.11</b> More Complex Example</a></li>
+<li class="chapter" data-level="15.12" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#a-quick-aside-about-axis-limits"><i class="fa fa-check"></i><b>15.12</b> A Quick Aside about Axis Limits</a></li>
+<li class="chapter" data-level="15.13" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#resources"><i class="fa fa-check"></i><b>15.13</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><i class="fa fa-check"></i><b>16</b> Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S.</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#synopsis"><i class="fa fa-check"></i><b>16.1</b> Synopsis</a></li>
+<li class="chapter" data-level="16.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#loading-and-processing-the-raw-data"><i class="fa fa-check"></i><b>16.2</b> Loading and Processing the Raw Data</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-1999-data"><i class="fa fa-check"></i><b>16.2.1</b> Reading in the 1999 data</a></li>
+<li class="chapter" data-level="16.2.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-2012-data"><i class="fa fa-check"></i><b>16.2.2</b> Reading in the 2012 data</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#results"><i class="fa fa-check"></i><b>16.3</b> Results</a>
+<ul>
+<li class="chapter" data-level="16.3.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#entire-u.s.-analysis"><i class="fa fa-check"></i><b>16.3.1</b> Entire U.S. analysis</a></li>
+<li class="chapter" data-level="16.3.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-pm-levels-at-an-individual-monitor"><i class="fa fa-check"></i><b>16.3.2</b> Changes in PM levels at an individual monitor</a></li>
+<li class="chapter" data-level="16.3.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-state-wide-pm-levels"><i class="fa fa-check"></i><b>16.3.3</b> Changes in state-wide PM levels</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i><b>17</b> About the Author</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Exploratory Data Analysis with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u.s." class="section level1" number="16">
+<h1><span class="header-section-number">16</span> Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S.</h1>
+<p>This chapter presents an example data analysis looking at changes in fine particulate matter (PM) air pollution in the United States using the Environmental Protection Agencies freely available national monitoring data. The purpose of the chapter is to just show how the various tools that we have covered in this book can be used to read, manipulate, and summarize data so that you can develop statistical evidence for relevant real-world questions.</p>
+<p><a href="https://youtu.be/VE-6bQvyfTQ">Watch a video of this chapter</a>. Note that this video differs slightly from this chapter in the code that is implemented. In particular, the video version focuses on using base graphics plots. However, the general analysis is the same.</p>
+<div id="synopsis" class="section level2" number="16.1">
+<h2><span class="header-section-number">16.1</span> Synopsis</h2>
+<p>In this chapter we aim to describe the changes in fine particle (PM2.5) outdoor air pollution in the United States between the years 1999 and 2012. Our overall hypothesis is that out door PM2.5 has decreased on average across the U.S. due to nationwide regulatory requirements arising from the Clean Air Act. To investigate this hypothesis, we obtained PM2.5 data from the U.S. Environmental Protection Agency which is collected from monitors sited across the U.S. We specifically obtained data for the years 1999 and 2012 (the most recent complete year available). From these data, we found that, on average across the U.S., levels of PM2.5 have decreased between 1999 and 2012. At one individual monitor, we found that levels have decreased and that the variability of PM2.5 has decreased. Most individual states also experienced decreases in PM2.5, although some states saw increases.</p>
+</div>
+<div id="loading-and-processing-the-raw-data" class="section level2" number="16.2">
+<h2><span class="header-section-number">16.2</span> Loading and Processing the Raw Data</h2>
+<p>From the <a href="http://www.epa.gov/ttn/airs/airsaqs/detaildata/downloadaqsdata.htm">EPA Air Quality System</a> we obtained data on fine particulate matter air pollution (PM2.5) that is monitored across the U.S. as part of the nationwide PM monitoring network. We obtained the files for the years 1999 and 2012.</p>
+<div id="reading-in-the-1999-data" class="section level3" number="16.2.1">
+<h3><span class="header-section-number">16.2.1</span> Reading in the 1999 data</h3>
+<p>We first read in the 1999 data from the raw text file included in the zip archive. The data is a delimited file were fields are delimited with the <code>|</code> character adn missing values are coded as blank fields. We skip some commented lines in the beginning of the file and initially we do not read the header data.</p>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb209-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(readr)</span>
+<span id="cb209-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb209-2"></a><span class="op">&gt;</span><span class="st"> </span>pm0 &lt;-<span class="st"> </span><span class="kw">read_delim</span>(<span class="st">&quot;data/RD_501_88101_1999-0.txt&quot;</span>, </span>
+<span id="cb209-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb209-3"></a><span class="op">+</span><span class="st">                   </span><span class="dt">delim =</span> <span class="st">&quot;|&quot;</span>,</span>
+<span id="cb209-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb209-4"></a><span class="op">+</span><span class="st">                   </span><span class="dt">comment =</span> <span class="st">&quot;#&quot;</span>, </span>
+<span id="cb209-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb209-5"></a><span class="op">+</span><span class="st">                   </span><span class="dt">col_names =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb209-6"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb209-6"></a><span class="op">+</span><span class="st">                   </span><span class="dt">na =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<p>After reading in the 1999 we check the first few rows (there are 117,421) rows in this dataset.</p>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">dim</span>(pm0)</span>
+<span id="cb210-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-2"></a>[<span class="dv">1</span>] <span class="dv">117421</span>     <span class="dv">28</span></span>
+<span id="cb210-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(pm0[, <span class="dv">1</span><span class="op">:</span><span class="dv">13</span>])</span>
+<span id="cb210-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-4"></a><span class="co"># A tibble: 6 x 13</span></span>
+<span id="cb210-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-5"></a>  X1    X2    X3    X4    X5       X6    X7    X8    X9   X10    X11 X12   </span>
+<span id="cb210-6"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-6"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>time<span class="op">&gt;</span></span>
+<span id="cb210-7"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-7"></a><span class="dv">1</span> RD    I     <span class="dv">01</span>    <span class="dv">027</span>   <span class="dv">0001</span>  <span class="dv">88101</span>     <span class="dv">1</span>     <span class="dv">7</span>   <span class="dv">105</span>   <span class="dv">120</span> <span class="fl">2.00e7</span> <span class="dv">00</span><span class="st">&#39;00&quot;</span></span>
+<span id="cb210-8"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-8"></a><span class="st">2 RD    I     01    027   0001  88101     1     7   105   120 2.00e7 00&#39;</span><span class="dv">00</span><span class="st">&quot;</span></span>
+<span id="cb210-9"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-9"></a><span class="st">3 RD    I     01    027   0001  88101     1     7   105   120 2.00e7 00&#39;00&quot;</span></span>
+<span id="cb210-10"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-10"></a><span class="dv">4</span> RD    I     <span class="dv">01</span>    <span class="dv">027</span>   <span class="dv">0001</span>  <span class="dv">88101</span>     <span class="dv">1</span>     <span class="dv">7</span>   <span class="dv">105</span>   <span class="dv">120</span> <span class="fl">2.00e7</span> <span class="dv">00</span><span class="st">&#39;00&quot;</span></span>
+<span id="cb210-11"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-11"></a><span class="st">5 RD    I     01    027   0001  88101     1     7   105   120 2.00e7 00&#39;</span><span class="dv">00</span><span class="st">&quot;</span></span>
+<span id="cb210-12"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-12"></a><span class="st">6 RD    I     01    027   0001  88101     1     7   105   120 2.00e7 00&#39;00&quot;</span></span>
+<span id="cb210-13"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb210-13"></a><span class="co"># … with 1 more variable: X13 &lt;dbl&gt;</span></span></code></pre></div>
+<p>We then attach the column headers to the dataset and make sure that they are properly formated for R data frames.</p>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-1"></a><span class="op">&gt;</span><span class="st"> </span>cnames &lt;-<span class="st"> </span><span class="kw">readLines</span>(<span class="st">&quot;data/RD_501_88101_1999-0.txt&quot;</span>, <span class="dv">1</span>)</span>
+<span id="cb211-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-2"></a><span class="op">&gt;</span><span class="st"> </span>cnames &lt;-<span class="st"> </span><span class="kw">strsplit</span>(cnames, <span class="st">&quot;|&quot;</span>, <span class="dt">fixed =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb211-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="co">## Ensure names are properly formatted</span></span>
+<span id="cb211-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-4"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">names</span>(pm0) &lt;-<span class="st"> </span><span class="kw">make.names</span>(cnames[[<span class="dv">1</span>]])  </span>
+<span id="cb211-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-5"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(pm0[, <span class="dv">1</span><span class="op">:</span><span class="dv">13</span>])</span>
+<span id="cb211-6"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-6"></a><span class="co"># A tibble: 6 x 13</span></span>
+<span id="cb211-7"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-7"></a>  X..RD Action.Code State.Code County.Code Site.ID Parameter   POC</span>
+<span id="cb211-8"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-8"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb211-9"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-9"></a><span class="dv">1</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb211-10"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-10"></a><span class="dv">2</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb211-11"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-11"></a><span class="dv">3</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb211-12"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-12"></a><span class="dv">4</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb211-13"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-13"></a><span class="dv">5</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb211-14"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-14"></a><span class="dv">6</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb211-15"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-15"></a><span class="co"># … with 6 more variables: Sample.Duration &lt;dbl&gt;, Unit &lt;dbl&gt;, Method &lt;dbl&gt;,</span></span>
+<span id="cb211-16"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb211-16"></a><span class="co">#   Date &lt;dbl&gt;, Start.Time &lt;time&gt;, Sample.Value &lt;dbl&gt;</span></span></code></pre></div>
+<p>The column we are interested in is the <code>Sample.Value</code> column which contains the PM2.5 measurements. Here we extract that column and print a brief summary.</p>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb212-1"></a><span class="op">&gt;</span><span class="st"> </span>x0 &lt;-<span class="st"> </span>pm0<span class="op">$</span>Sample.Value</span>
+<span id="cb212-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb212-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(x0)</span>
+<span id="cb212-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb212-3"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA<span class="st">&#39;s </span></span>
+<span id="cb212-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb212-4"></a><span class="st">   0.00    7.20   11.50   13.74   17.90  157.10   13217 </span></span></code></pre></div>
+<p>Missing values are a common problem with environmental data and so we check to se what proportion of the observations are missing (i.e. coded as <code>NA</code>).</p>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb213-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="co">## Are missing values important here?</span></span>
+<span id="cb213-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb213-2"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">mean</span>(<span class="kw">is.na</span>(x0))</span>
+<span id="cb213-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb213-3"></a>[<span class="dv">1</span>] <span class="fl">0.1125608</span></span></code></pre></div>
+<p>Because the proportion of missing values is relatively low (0.1125608), we choose to ignore missing values for now.</p>
+</div>
+<div id="reading-in-the-2012-data" class="section level3" number="16.2.2">
+<h3><span class="header-section-number">16.2.2</span> Reading in the 2012 data</h3>
+<p>We then read in the 2012 data in the same manner in which we read the 1999 data (the data files are in the same format).</p>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb214-1"></a><span class="op">&gt;</span><span class="st"> </span>pm1 &lt;-<span class="st"> </span><span class="kw">read_delim</span>(<span class="st">&quot;data/RD_501_88101_2012-0.txt&quot;</span>, </span>
+<span id="cb214-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb214-2"></a><span class="op">+</span><span class="st">                   </span><span class="dt">comment =</span> <span class="st">&quot;#&quot;</span>, </span>
+<span id="cb214-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb214-3"></a><span class="op">+</span><span class="st">                   </span><span class="dt">col_names =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb214-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb214-4"></a><span class="op">+</span><span class="st">                   </span><span class="dt">delim =</span> <span class="st">&quot;|&quot;</span>, </span>
+<span id="cb214-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb214-5"></a><span class="op">+</span><span class="st">                   </span><span class="dt">na =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<p>We also set the column names (they are the same as the 1999 dataset) and extract the <code>Sample.Value</code> column from this dataset.</p>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb215-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">names</span>(pm1) &lt;-<span class="st"> </span><span class="kw">make.names</span>(cnames[[<span class="dv">1</span>]])</span></code></pre></div>
+<p>Since we will be comparing the two years of data, it makes sense to combine them into a single data frame</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb216-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</span>
+<span id="cb216-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb216-2"></a><span class="op">&gt;</span><span class="st"> </span>pm &lt;-<span class="st"> </span><span class="kw">rbind</span>(pm0, pm1)</span></code></pre></div>
+<p>and create a factor variable indicating which year the data comes from. We also rename the <code>Sample.Value</code> variable to a more sensible <code>PM</code>.</p>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb217-1"></a><span class="op">&gt;</span><span class="st"> </span>pm &lt;-<span class="st"> </span><span class="kw">mutate</span>(pm, <span class="dt">year =</span> <span class="kw">factor</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">1999</span>, <span class="dv">2012</span>), <span class="kw">c</span>(<span class="kw">nrow</span>(pm0), <span class="kw">nrow</span>(pm1))))) <span class="op">%&gt;%</span></span>
+<span id="cb217-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb217-2"></a><span class="op">+</span><span class="st">         </span><span class="kw">rename</span>(<span class="dt">PM =</span> Sample.Value)</span></code></pre></div>
+</div>
+</div>
+<div id="results" class="section level2" number="16.3">
+<h2><span class="header-section-number">16.3</span> Results</h2>
+<div id="entire-u.s.-analysis" class="section level3" number="16.3.1">
+<h3><span class="header-section-number">16.3.1</span> Entire U.S. analysis</h3>
+<p>In order to show aggregate changes in PM across the entire monitoring network, we can make boxplots of all monitor values in 1999 and 2012. Here, we take the log of the PM values to adjust for the skew in the data.</p>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb218-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)</span>
+<span id="cb218-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb218-2"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb218-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb218-3"></a><span class="er">&gt;</span><span class="st"> </span><span class="co">## Take a random sample because it&#39;s faster</span></span>
+<span id="cb218-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb218-4"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">2015</span>)</span>
+<span id="cb218-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb218-5"></a><span class="op">&gt;</span><span class="st"> </span>idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">nrow</span>(pm), <span class="dv">1000</span>)</span>
+<span id="cb218-6"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb218-6"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">qplot</span>(year, <span class="kw">log2</span>(PM), <span class="dt">data =</span> pm[idx, ], <span class="dt">geom =</span> <span class="st">&quot;boxplot&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:boxplotlogvalues"></span>
+<img src="images/example-boxplotlogvalues-1.png" alt="Boxplot of PM values in 1999 and 2012" width="672" />
+<p class="caption">
+Figure 16.1: Boxplot of PM values in 1999 and 2012
+</p>
+</div>
+<p>From the raw boxplot, it seems that on average, the levels of PM in 2012 are lower than they were in 1999. Interestingly, there also appears to be much greater variation in PM in 2012 than there was in 1999.</p>
+<p>We can make some summaries of the two year’s worth data to get at actual numbers.</p>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb219-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">with</span>(pm, <span class="kw">tapply</span>(PM, year, summary))</span>
+<span id="cb219-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb219-2"></a><span class="op">$</span><span class="st">`</span><span class="dt">1999</span><span class="st">`</span></span>
+<span id="cb219-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb219-3"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA<span class="st">&#39;s </span></span>
+<span id="cb219-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb219-4"></a><span class="st">   0.00    7.20   11.50   13.74   17.90  157.10   13217 </span></span>
+<span id="cb219-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb219-5"></a></span>
+<span id="cb219-6"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb219-6"></a><span class="st">$`2012`</span></span>
+<span id="cb219-7"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb219-7"></a><span class="st">   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;</span>s </span>
+<span id="cb219-8"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb219-8"></a> <span class="fl">-10.00</span>    <span class="fl">4.00</span>    <span class="fl">7.63</span>    <span class="fl">9.14</span>   <span class="fl">12.00</span>  <span class="fl">908.97</span>   <span class="dv">73133</span> </span></code></pre></div>
+<p>Interestingly, from the summary of 2012 it appears there are some negative values of PM, which in general should not occur. We can investigate that somewhat to see if there is anything we should worry about.</p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb220-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">filter</span>(pm, year <span class="op">==</span><span class="st"> &quot;2012&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">negative =</span> <span class="kw">mean</span>(PM <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb220-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb220-2"></a><span class="co"># A tibble: 1 x 1</span></span>
+<span id="cb220-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb220-3"></a>  negative</span>
+<span id="cb220-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb220-4"></a>     <span class="op">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb220-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb220-5"></a><span class="dv">1</span>   <span class="fl">0.0215</span></span></code></pre></div>
+<p>There is a relatively small proportion of values that are negative, which is perhaps reassuring. In order to investigate this a step further we can extract the date of each measurement from the original data frame. The idea here is that perhaps negative values occur more often in some parts of the year than other parts. However, the original data are formatted as character strings so we convert them to R’s <code>Date</code> format for easier manipulation.</p>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb221-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(lubridate)</span>
+<span id="cb221-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb221-2"></a></span>
+<span id="cb221-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb221-3"></a>Attaching package<span class="op">:</span><span class="st"> &#39;lubridate&#39;</span></span>
+<span id="cb221-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb221-4"></a>The following objects are masked from <span class="st">&#39;package:base&#39;</span><span class="op">:</span></span>
+<span id="cb221-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb221-5"></a></span>
+<span id="cb221-6"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb221-6"></a><span class="st">    </span>date, intersect, setdiff, union</span>
+<span id="cb221-7"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb221-7"></a><span class="op">&gt;</span><span class="st"> </span>negative &lt;-<span class="st"> </span><span class="kw">filter</span>(pm, year <span class="op">==</span><span class="st"> &quot;2012&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb221-8"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb221-8"></a><span class="op">+</span><span class="st">         </span><span class="kw">mutate</span>(<span class="dt">negative =</span> PM <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dt">date =</span> <span class="kw">ymd</span>(Date)) <span class="op">%&gt;%</span></span>
+<span id="cb221-9"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb221-9"></a><span class="op">+</span><span class="st">         </span><span class="kw">select</span>(date, negative)</span></code></pre></div>
+<p>We can then extract the month from each of the dates with negative values and attempt to identify when negative values occur most often.</p>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">mutate</span>(negative, <span class="dt">month =</span> <span class="kw">factor</span>(month.name[<span class="kw">month</span>(date)], <span class="dt">levels =</span> month.name)) <span class="op">%&gt;%</span></span>
+<span id="cb222-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-2"></a><span class="op">+</span><span class="st">         </span><span class="kw">group_by</span>(month) <span class="op">%&gt;%</span></span>
+<span id="cb222-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-3"></a><span class="op">+</span><span class="st">         </span><span class="kw">summarize</span>(<span class="dt">pct.negative =</span> <span class="kw">mean</span>(negative, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>)</span>
+<span id="cb222-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-4"></a><span class="co"># A tibble: 10 x 2</span></span>
+<span id="cb222-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-5"></a>   month     pct.negative</span>
+<span id="cb222-6"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-6"></a> <span class="op">*</span><span class="st"> </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">            </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb222-7"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-7"></a><span class="st"> </span><span class="dv">1</span> January          <span class="fl">2.97</span> </span>
+<span id="cb222-8"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-8"></a> <span class="dv">2</span> February         <span class="fl">2.43</span> </span>
+<span id="cb222-9"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-9"></a> <span class="dv">3</span> March            <span class="fl">2.41</span> </span>
+<span id="cb222-10"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-10"></a> <span class="dv">4</span> April            <span class="fl">2.18</span> </span>
+<span id="cb222-11"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-11"></a> <span class="dv">5</span> May              <span class="fl">1.73</span> </span>
+<span id="cb222-12"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-12"></a> <span class="dv">6</span> June             <span class="fl">2.56</span> </span>
+<span id="cb222-13"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-13"></a> <span class="dv">7</span> July             <span class="fl">0.792</span></span>
+<span id="cb222-14"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-14"></a> <span class="dv">8</span> August           <span class="fl">1.06</span> </span>
+<span id="cb222-15"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-15"></a> <span class="dv">9</span> September        <span class="fl">1.52</span> </span>
+<span id="cb222-16"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb222-16"></a><span class="dv">10</span> October          <span class="dv">0</span>    </span></code></pre></div>
+<p>From the table above it appears that bulk of the negative values occur in the first four months of the year (January–April). However, beyond that simple observation, it is not clear why the negative values occur. That said, given the relatively low proportion of negative values, we will ignore them for now.</p>
+</div>
+<div id="changes-in-pm-levels-at-an-individual-monitor" class="section level3" number="16.3.2">
+<h3><span class="header-section-number">16.3.2</span> Changes in PM levels at an individual monitor</h3>
+<p>So far we have examined the change in PM levels on average across the country. One issue with the previous analysis is that the monitoring network could have changed in the time period between 1999 and 2012. So if for some reason in 2012 there are more monitors concentrated in cleaner parts of the country than there were in 1999, it might appear the PM levels decreased when in fact they didn’t. In this section we will focus on a single monitor in New York State to see if PM levels <em>at that monitor</em> decreased from 1999 to 2012.</p>
+<p>Our first task is to identify a monitor in New York State that has data in 1999 and 2012 (not all monitors operated during both time periods). First we subset the data frames to only include data from New York (<code>State.Code == 36</code>) and only include the <code>County.Code</code> and the <code>Site.ID</code> (i.e. monitor number) variables.</p>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb223-1"></a><span class="op">&gt;</span><span class="st"> </span>sites &lt;-<span class="st"> </span><span class="kw">filter</span>(pm, State.Code <span class="op">==</span><span class="st"> </span><span class="dv">36</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(County.Code, Site.ID, year) <span class="op">%&gt;%</span><span class="st"> </span>unique</span></code></pre></div>
+<p>Then we create a new variable that combines the county code and the site ID into a single string.</p>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb224-1"></a><span class="op">&gt;</span><span class="st"> </span>sites &lt;-<span class="st"> </span><span class="kw">mutate</span>(sites, <span class="dt">site.code =</span> <span class="kw">paste</span>(County.Code, Site.ID, <span class="dt">sep =</span> <span class="st">&quot;.&quot;</span>))</span>
+<span id="cb224-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb224-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">str</span>(sites)</span>
+<span id="cb224-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb224-3"></a>tibble [<span class="dv">51</span> × <span class="dv">4</span>] (S3<span class="op">:</span><span class="st"> </span>tbl_df<span class="op">/</span>tbl<span class="op">/</span>data.frame)</span>
+<span id="cb224-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb224-4"></a> <span class="op">$</span><span class="st"> </span>County.Code<span class="op">:</span><span class="st"> </span>chr [<span class="dv">1</span><span class="op">:</span><span class="dv">51</span>] <span class="st">&quot;001&quot;</span> <span class="st">&quot;001&quot;</span> <span class="st">&quot;005&quot;</span> <span class="st">&quot;005&quot;</span> ...</span>
+<span id="cb224-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb224-5"></a> <span class="op">$</span><span class="st"> </span>Site.ID    <span class="op">:</span><span class="st"> </span>chr [<span class="dv">1</span><span class="op">:</span><span class="dv">51</span>] <span class="st">&quot;0005&quot;</span> <span class="st">&quot;0012&quot;</span> <span class="st">&quot;0073&quot;</span> <span class="st">&quot;0080&quot;</span> ...</span>
+<span id="cb224-6"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb224-6"></a> <span class="op">$</span><span class="st"> </span>year       <span class="op">:</span><span class="st"> </span>Factor w<span class="op">/</span><span class="st"> </span><span class="dv">2</span> levels <span class="st">&quot;1999&quot;</span>,<span class="st">&quot;2012&quot;</span><span class="op">:</span><span class="st"> </span><span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb224-7"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb224-7"></a> <span class="op">$</span><span class="st"> </span>site.code  <span class="op">:</span><span class="st"> </span>chr [<span class="dv">1</span><span class="op">:</span><span class="dv">51</span>] <span class="st">&quot;001.0005&quot;</span> <span class="st">&quot;001.0012&quot;</span> <span class="st">&quot;005.0073&quot;</span> <span class="st">&quot;005.0080&quot;</span> ...</span></code></pre></div>
+<p>Finally, we want the intersection between the sites present in 1999 and 2012 so that we might choose a monitor that has data in both periods.</p>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb225-1"></a><span class="op">&gt;</span><span class="st"> </span>site.year &lt;-<span class="st"> </span><span class="kw">with</span>(sites, <span class="kw">split</span>(site.code, year))</span>
+<span id="cb225-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb225-2"></a><span class="op">&gt;</span><span class="st"> </span>both &lt;-<span class="st"> </span><span class="kw">intersect</span>(site.year[[<span class="dv">1</span>]], site.year[[<span class="dv">2</span>]])</span>
+<span id="cb225-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb225-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">print</span>(both)</span>
+<span id="cb225-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb225-4"></a> [<span class="dv">1</span>] <span class="st">&quot;001.0005&quot;</span> <span class="st">&quot;001.0012&quot;</span> <span class="st">&quot;005.0080&quot;</span> <span class="st">&quot;013.0011&quot;</span> <span class="st">&quot;029.0005&quot;</span> <span class="st">&quot;031.0003&quot;</span></span>
+<span id="cb225-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb225-5"></a> [<span class="dv">7</span>] <span class="st">&quot;063.2008&quot;</span> <span class="st">&quot;067.1015&quot;</span> <span class="st">&quot;085.0055&quot;</span> <span class="st">&quot;101.0003&quot;</span></span></code></pre></div>
+<p>Here (above) we can see that there are 10 monitors that were operating in both time periods. However, rather than choose one at random, it might best to choose one that had a reasonable amount of data in each year.</p>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb226-1"></a><span class="op">&gt;</span><span class="st"> </span>count &lt;-<span class="st"> </span><span class="kw">mutate</span>(pm, <span class="dt">site.code =</span> <span class="kw">paste</span>(County.Code, Site.ID, <span class="dt">sep =</span> <span class="st">&quot;.&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb226-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb226-2"></a><span class="op">+</span><span class="st">         </span><span class="kw">filter</span>(site.code <span class="op">%in%</span><span class="st"> </span>both)</span></code></pre></div>
+<p>Now that we have subsetted the original data frames to only include the data from the monitors that overlap between 1999 and 2012, we can count the number of observations at each monitor to see which ones have the most observations.</p>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">group_by</span>(count, site.code) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>())</span>
+<span id="cb227-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-2"></a><span class="co"># A tibble: 10 x 2</span></span>
+<span id="cb227-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-3"></a>   site.code     n</span>
+<span id="cb227-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-4"></a> <span class="op">*</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>int<span class="op">&gt;</span></span>
+<span id="cb227-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-5"></a><span class="st"> </span><span class="dv">1</span> <span class="fl">001.0005</span>    <span class="dv">186</span></span>
+<span id="cb227-6"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-6"></a> <span class="dv">2</span> <span class="fl">001.0012</span>     <span class="dv">92</span></span>
+<span id="cb227-7"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-7"></a> <span class="dv">3</span> <span class="fl">005.0080</span>     <span class="dv">92</span></span>
+<span id="cb227-8"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-8"></a> <span class="dv">4</span> <span class="fl">013.0011</span>    <span class="dv">213</span></span>
+<span id="cb227-9"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-9"></a> <span class="dv">5</span> <span class="fl">029.0005</span>     <span class="dv">94</span></span>
+<span id="cb227-10"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-10"></a> <span class="dv">6</span> <span class="fl">031.0003</span>    <span class="dv">198</span></span>
+<span id="cb227-11"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-11"></a> <span class="dv">7</span> <span class="fl">063.2008</span>    <span class="dv">152</span></span>
+<span id="cb227-12"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-12"></a> <span class="dv">8</span> <span class="fl">067.1015</span>    <span class="dv">153</span></span>
+<span id="cb227-13"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-13"></a> <span class="dv">9</span> <span class="fl">085.0055</span>     <span class="dv">38</span></span>
+<span id="cb227-14"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb227-14"></a><span class="dv">10</span> <span class="fl">101.0003</span>    <span class="dv">527</span></span></code></pre></div>
+<p>A number of monitors seem suitable from the output, but we will focus here on County 63 and site ID 2008.</p>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb228-1"></a><span class="op">&gt;</span><span class="st"> </span>pmsub &lt;-<span class="st"> </span><span class="kw">filter</span>(pm, State.Code <span class="op">==</span><span class="st"> &quot;36&quot;</span> <span class="op">&amp;</span><span class="st"> </span>County.Code <span class="op">==</span><span class="st"> &quot;063&quot;</span> <span class="op">&amp;</span><span class="st"> </span>Site.ID <span class="op">==</span><span class="st"> &quot;2008&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb228-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb228-2"></a><span class="op">+</span><span class="st">         </span><span class="kw">select</span>(Date, year, PM) <span class="op">%&gt;%</span></span>
+<span id="cb228-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb228-3"></a><span class="op">+</span><span class="st">         </span><span class="kw">mutate</span>(<span class="dt">Date =</span> <span class="kw">ymd</span>(Date), <span class="dt">yday =</span> <span class="kw">yday</span>(Date))</span></code></pre></div>
+<p>Now we plot the time series data of PM for the monitor in both years.</p>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb229-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">qplot</span>(yday, PM, <span class="dt">data =</span> pmsub, <span class="dt">facets =</span> . <span class="op">~</span><span class="st"> </span>year, <span class="dt">xlab =</span> <span class="st">&quot;Day of the year&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-13"></span>
+<img src="images/example-unnamed-chunk-13-1.png" alt="Daily PM for 1999 and 2012" width="768" />
+<p class="caption">
+Figure 6.3: Daily PM for 1999 and 2012
+</p>
+</div>
+<p>From the plot above, we can that median levels of PM (horizontal solid line) have decreased a little from 10.45 in 1999 to 8.29 in 2012. However, perhaps more interesting is that the variation (spread) in the PM values in 2012 is much smaller than it was in 1999. This suggest that not only are median levels of PM lower in 2012, but that there are fewer large spikes from day to day. One issue with the data here is that the 1999 data are from July through December while the 2012 data are recorded in January through April. It would have been better if we’d had full-year data for both years as there could be some seasonal confounding going on.</p>
+</div>
+<div id="changes-in-state-wide-pm-levels" class="section level3" number="16.3.3">
+<h3><span class="header-section-number">16.3.3</span> Changes in state-wide PM levels</h3>
+<p>Although ambient air quality standards are set at the federal level in the U.S. and hence affect the entire country, the actual reduction and management of PM is left to the individual states. States that are not “in attainment” have to develop a plan to reduce PM so that that the are in attainment (eventually). Therefore, it might be useful to examine changes in PM at the state level. This analysis falls somewhere in between looking at the entire country all at once and looking at an individual monitor.</p>
+<p>What we do here is calculate the mean of PM for each state in 1999 and 2012.</p>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-1"></a><span class="op">&gt;</span><span class="st"> </span>mn &lt;-<span class="st"> </span><span class="kw">group_by</span>(pm, year, State.Code) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">PM =</span> <span class="kw">mean</span>(PM, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb230-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(mn)</span>
+<span id="cb230-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-3"></a><span class="co"># A tibble: 6 x 3</span></span>
+<span id="cb230-4"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-4"></a><span class="co"># Groups:   year [1]</span></span>
+<span id="cb230-5"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-5"></a>  year  State.Code    PM</span>
+<span id="cb230-6"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-6"></a>  <span class="op">&lt;</span>fct<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb230-7"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-7"></a><span class="dv">1</span> <span class="dv">1999</span>  <span class="dv">01</span>         <span class="fl">20.0</span> </span>
+<span id="cb230-8"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-8"></a><span class="dv">2</span> <span class="dv">1999</span>  <span class="dv">02</span>          <span class="fl">6.67</span></span>
+<span id="cb230-9"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-9"></a><span class="dv">3</span> <span class="dv">1999</span>  <span class="dv">04</span>         <span class="fl">10.8</span> </span>
+<span id="cb230-10"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-10"></a><span class="dv">4</span> <span class="dv">1999</span>  <span class="dv">05</span>         <span class="fl">15.7</span> </span>
+<span id="cb230-11"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-11"></a><span class="dv">5</span> <span class="dv">1999</span>  <span class="dv">06</span>         <span class="fl">17.7</span> </span>
+<span id="cb230-12"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-12"></a><span class="dv">6</span> <span class="dv">1999</span>  <span class="dv">08</span>          <span class="fl">7.53</span></span>
+<span id="cb230-13"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-13"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">tail</span>(mn)</span>
+<span id="cb230-14"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-14"></a><span class="co"># A tibble: 6 x 3</span></span>
+<span id="cb230-15"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-15"></a><span class="co"># Groups:   year [1]</span></span>
+<span id="cb230-16"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-16"></a>  year  State.Code    PM</span>
+<span id="cb230-17"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-17"></a>  <span class="op">&lt;</span>fct<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb230-18"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-18"></a><span class="dv">1</span> <span class="dv">2012</span>  <span class="dv">51</span>          <span class="fl">8.71</span></span>
+<span id="cb230-19"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-19"></a><span class="dv">2</span> <span class="dv">2012</span>  <span class="dv">53</span>          <span class="fl">6.36</span></span>
+<span id="cb230-20"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-20"></a><span class="dv">3</span> <span class="dv">2012</span>  <span class="dv">54</span>          <span class="fl">9.82</span></span>
+<span id="cb230-21"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-21"></a><span class="dv">4</span> <span class="dv">2012</span>  <span class="dv">55</span>          <span class="fl">7.91</span></span>
+<span id="cb230-22"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-22"></a><span class="dv">5</span> <span class="dv">2012</span>  <span class="dv">56</span>          <span class="fl">4.01</span></span>
+<span id="cb230-23"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb230-23"></a><span class="dv">6</span> <span class="dv">2012</span>  <span class="dv">72</span>          <span class="fl">6.05</span></span></code></pre></div>
+<p>Now make a plot that shows the 1999 state-wide means in one “column” and the 2012 state-wide means in another columns. We then draw a line connecting the means for each year in the same state to highlight the trend.</p>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb231-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">qplot</span>(xyear, PM, <span class="dt">data =</span> <span class="kw">mutate</span>(mn, <span class="dt">xyear =</span> <span class="kw">as.numeric</span>(<span class="kw">as.character</span>(year))), </span>
+<span id="cb231-2"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb231-2"></a><span class="op">+</span><span class="st">       </span><span class="dt">color =</span> <span class="kw">factor</span>(State.Code), </span>
+<span id="cb231-3"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#cb231-3"></a><span class="op">+</span><span class="st">       </span><span class="dt">geom =</span> <span class="kw">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;line&quot;</span>))</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-16"></span>
+<img src="images/example-unnamed-chunk-16-1.png" alt="Change in mean PM levels from 1999 to 2012 by state" width="864" />
+<p class="caption">
+Figure 6.5: Change in mean PM levels from 1999 to 2012 by state
+</p>
+</div>
+<p>This plot needs a bit of work still. But we can see that many states have decreased the average PM levels from 1999 to 2012 (although a few states actually increased their levels).</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="the-ggplot2-plotting-system-part-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="about-the-author.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rdpeng/exdata/edit/bookdown/example.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

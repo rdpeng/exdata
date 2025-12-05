@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6 Exploratory Graphs | Exploratory Data Analysis with R</title>
+  <meta name="description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6 Exploratory Graphs | Exploratory Data Analysis with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/rdpeng/exdata/" />
+  <meta property="og:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+  <meta property="og:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="github-repo" content="rdpeng/exdata" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Exploratory Graphs | Exploratory Data Analysis with R" />
+  
+  <meta name="twitter:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="twitter:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+
+<meta name="author" content="Roger D. Peng" />
+
+
+<meta name="date" content="2020-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="principles-of-analytic-graphics.html"/>
+<link rel="next" href="plotting-systems.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Exploratory Data Analysis with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#stay-in-touch"><i class="fa fa-check"></i>Stay in Touch!</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>2</b> Getting Started with R</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-started-with-the-r-interface"><i class="fa fa-check"></i><b>2.2</b> Getting started with the R interface</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html"><i class="fa fa-check"></i><b>3</b> Managing Data Frames with the <code>dplyr</code> package</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#data-frames"><i class="fa fa-check"></i><b>3.1</b> Data Frames</a></li>
+<li class="chapter" data-level="3.2" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#the-dplyr-package"><i class="fa fa-check"></i><b>3.2</b> The <code>dplyr</code> Package</a></li>
+<li class="chapter" data-level="3.3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#dplyr-grammar"><i class="fa fa-check"></i><b>3.3</b> <code>dplyr</code> Grammar</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#common-dplyr-function-properties"><i class="fa fa-check"></i><b>3.3.1</b> Common <code>dplyr</code> Function Properties</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#installing-the-dplyr-package"><i class="fa fa-check"></i><b>3.4</b> Installing the <code>dplyr</code> package</a></li>
+<li class="chapter" data-level="3.5" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>3.5</b> <code>select()</code></a></li>
+<li class="chapter" data-level="3.6" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>3.6</b> <code>filter()</code></a></li>
+<li class="chapter" data-level="3.7" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#arrange"><i class="fa fa-check"></i><b>3.7</b> <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.8" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#rename"><i class="fa fa-check"></i><b>3.8</b> <code>rename()</code></a></li>
+<li class="chapter" data-level="3.9" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>3.9</b> <code>mutate()</code></a></li>
+<li class="chapter" data-level="3.10" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#group_by"><i class="fa fa-check"></i><b>3.10</b> <code>group_by()</code></a></li>
+<li class="chapter" data-level="3.11" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#section"><i class="fa fa-check"></i><b>3.11</b> <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="3.12" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#summary"><i class="fa fa-check"></i><b>3.12</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis Checklist</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#formulate-your-question"><i class="fa fa-check"></i><b>4.1</b> Formulate your question</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#read-in-your-data"><i class="fa fa-check"></i><b>4.2</b> Read in your data</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-the-packaging"><i class="fa fa-check"></i><b>4.3</b> Check the packaging</a></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#run-str"><i class="fa fa-check"></i><b>4.4</b> Run <code>str()</code></a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#look-at-the-top-and-the-bottom-of-your-data"><i class="fa fa-check"></i><b>4.5</b> Look at the top and the bottom of your data</a></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-your-ns"><i class="fa fa-check"></i><b>4.6</b> Check your “n”s</a></li>
+<li class="chapter" data-level="4.7" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#validate-with-at-least-one-external-data-source"><i class="fa fa-check"></i><b>4.7</b> Validate with at least one external data source</a></li>
+<li class="chapter" data-level="4.8" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#try-the-easy-solution-first"><i class="fa fa-check"></i><b>4.8</b> Try the easy solution first</a></li>
+<li class="chapter" data-level="4.9" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#challenge-your-solution"><i class="fa fa-check"></i><b>4.9</b> Challenge your solution</a></li>
+<li class="chapter" data-level="4.10" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#follow-up-questions"><i class="fa fa-check"></i><b>4.10</b> Follow up questions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html"><i class="fa fa-check"></i><b>5</b> Principles of Analytic Graphics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-comparisons"><i class="fa fa-check"></i><b>5.1</b> Show comparisons</a></li>
+<li class="chapter" data-level="5.2" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-causality-mechanism-explanation-systematic-structure"><i class="fa fa-check"></i><b>5.2</b> Show causality, mechanism, explanation, systematic structure</a></li>
+<li class="chapter" data-level="5.3" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-multivariate-data"><i class="fa fa-check"></i><b>5.3</b> Show multivariate data</a></li>
+<li class="chapter" data-level="5.4" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#integrate-evidence"><i class="fa fa-check"></i><b>5.4</b> Integrate evidence</a></li>
+<li class="chapter" data-level="5.5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#describe-and-document-the-evidence"><i class="fa fa-check"></i><b>5.5</b> Describe and document the evidence</a></li>
+<li class="chapter" data-level="5.6" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#content-content-content"><i class="fa fa-check"></i><b>5.6</b> Content, Content, Content</a></li>
+<li class="chapter" data-level="5.7" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html"><i class="fa fa-check"></i><b>6</b> Exploratory Graphs</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#characteristics-of-exploratory-graphs"><i class="fa fa-check"></i><b>6.1</b> Characteristics of exploratory graphs</a></li>
+<li class="chapter" data-level="6.2" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#air-pollution-in-the-united-states"><i class="fa fa-check"></i><b>6.2</b> Air Pollution in the United States</a></li>
+<li class="chapter" data-level="6.3" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#getting-the-data"><i class="fa fa-check"></i><b>6.3</b> Getting the Data</a></li>
+<li class="chapter" data-level="6.4" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-one-dimension"><i class="fa fa-check"></i><b>6.4</b> Simple Summaries: One Dimension</a></li>
+<li class="chapter" data-level="6.5" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#five-number-summary"><i class="fa fa-check"></i><b>6.5</b> Five Number Summary</a></li>
+<li class="chapter" data-level="6.6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#boxplot"><i class="fa fa-check"></i><b>6.6</b> Boxplot</a></li>
+<li class="chapter" data-level="6.7" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#histogram"><i class="fa fa-check"></i><b>6.7</b> Histogram</a></li>
+<li class="chapter" data-level="6.8" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#overlaying-features"><i class="fa fa-check"></i><b>6.8</b> Overlaying Features</a></li>
+<li class="chapter" data-level="6.9" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#barplot"><i class="fa fa-check"></i><b>6.9</b> Barplot</a></li>
+<li class="chapter" data-level="6.10" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-two-dimensions-and-beyond"><i class="fa fa-check"></i><b>6.10</b> Simple Summaries: Two Dimensions and Beyond</a></li>
+<li class="chapter" data-level="6.11" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-boxplots"><i class="fa fa-check"></i><b>6.11</b> Multiple Boxplots</a></li>
+<li class="chapter" data-level="6.12" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-histograms"><i class="fa fa-check"></i><b>6.12</b> Multiple Histograms</a></li>
+<li class="chapter" data-level="6.13" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplots"><i class="fa fa-check"></i><b>6.13</b> Scatterplots</a></li>
+<li class="chapter" data-level="6.14" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplot---using-color"><i class="fa fa-check"></i><b>6.14</b> Scatterplot - Using Color</a></li>
+<li class="chapter" data-level="6.15" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-scatterplots"><i class="fa fa-check"></i><b>6.15</b> Multiple Scatterplots</a></li>
+<li class="chapter" data-level="6.16" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#summary-1"><i class="fa fa-check"></i><b>6.16</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="plotting-systems.html"><a href="plotting-systems.html"><i class="fa fa-check"></i><b>7</b> Plotting Systems</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="plotting-systems.html"><a href="plotting-systems.html#the-base-plotting-system"><i class="fa fa-check"></i><b>7.1</b> The Base Plotting System</a></li>
+<li class="chapter" data-level="7.2" data-path="plotting-systems.html"><a href="plotting-systems.html#the-lattice-system"><i class="fa fa-check"></i><b>7.2</b> The Lattice System</a></li>
+<li class="chapter" data-level="7.3" data-path="plotting-systems.html"><a href="plotting-systems.html#the-ggplot2-system"><i class="fa fa-check"></i><b>7.3</b> The ggplot2 System</a></li>
+<li class="chapter" data-level="7.4" data-path="plotting-systems.html"><a href="plotting-systems.html#references-1"><i class="fa fa-check"></i><b>7.4</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="graphics-devices.html"><a href="graphics-devices.html"><i class="fa fa-check"></i><b>8</b> Graphics Devices</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="graphics-devices.html"><a href="graphics-devices.html#the-process-of-making-a-plot"><i class="fa fa-check"></i><b>8.1</b> The Process of Making a Plot</a></li>
+<li class="chapter" data-level="8.2" data-path="graphics-devices.html"><a href="graphics-devices.html#how-does-a-plot-get-created"><i class="fa fa-check"></i><b>8.2</b> How Does a Plot Get Created?</a></li>
+<li class="chapter" data-level="8.3" data-path="graphics-devices.html"><a href="graphics-devices.html#graphics-file-devices"><i class="fa fa-check"></i><b>8.3</b> Graphics File Devices</a></li>
+<li class="chapter" data-level="8.4" data-path="graphics-devices.html"><a href="graphics-devices.html#multiple-open-graphics-devices"><i class="fa fa-check"></i><b>8.4</b> Multiple Open Graphics Devices</a></li>
+<li class="chapter" data-level="8.5" data-path="graphics-devices.html"><a href="graphics-devices.html#copying-plots"><i class="fa fa-check"></i><b>8.5</b> Copying Plots</a></li>
+<li class="chapter" data-level="8.6" data-path="graphics-devices.html"><a href="graphics-devices.html#summary-2"><i class="fa fa-check"></i><b>8.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html"><i class="fa fa-check"></i><b>9</b> The Base Plotting System</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-graphics"><i class="fa fa-check"></i><b>9.1</b> Base Graphics</a></li>
+<li class="chapter" data-level="9.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#simple-base-graphics"><i class="fa fa-check"></i><b>9.2</b> Simple Base Graphics</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#histogram-1"><i class="fa fa-check"></i><b>9.2.1</b> Histogram</a></li>
+<li class="chapter" data-level="9.2.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#boxplot-1"><i class="fa fa-check"></i><b>9.2.2</b> Boxplot</a></li>
+<li class="chapter" data-level="9.2.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#scatterplot"><i class="fa fa-check"></i><b>9.2.3</b> Scatterplot</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#some-important-base-graphics-parameters"><i class="fa fa-check"></i><b>9.3</b> Some Important Base Graphics Parameters</a></li>
+<li class="chapter" data-level="9.4" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plotting-functions"><i class="fa fa-check"></i><b>9.4</b> Base Plotting Functions</a></li>
+<li class="chapter" data-level="9.5" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plot-with-regression-line"><i class="fa fa-check"></i><b>9.5</b> Base Plot with Regression Line</a></li>
+<li class="chapter" data-level="9.6" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#multiple-base-plots"><i class="fa fa-check"></i><b>9.6</b> Multiple Base Plots</a></li>
+<li class="chapter" data-level="9.7" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#summary-3"><i class="fa fa-check"></i><b>9.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html"><i class="fa fa-check"></i><b>10</b> Plotting and Color in R</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colors-1-2-and-3"><i class="fa fa-check"></i><b>10.1</b> Colors 1, 2, and 3</a></li>
+<li class="chapter" data-level="10.2" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#connecting-colors-with-data"><i class="fa fa-check"></i><b>10.2</b> Connecting colors with data</a></li>
+<li class="chapter" data-level="10.3" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#color-utilities-in-r"><i class="fa fa-check"></i><b>10.3</b> Color Utilities in R</a></li>
+<li class="chapter" data-level="10.4" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramp"><i class="fa fa-check"></i><b>10.4</b> <code>colorRamp()</code></a></li>
+<li class="chapter" data-level="10.5" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramppalette"><i class="fa fa-check"></i><b>10.5</b> <code>colorRampPalette()</code></a></li>
+<li class="chapter" data-level="10.6" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#rcolorbrewer-package"><i class="fa fa-check"></i><b>10.6</b> RColorBrewer Package</a></li>
+<li class="chapter" data-level="10.7" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#using-the-rcolorbrewer-palettes"><i class="fa fa-check"></i><b>10.7</b> Using the RColorBrewer palettes</a></li>
+<li class="chapter" data-level="10.8" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#the-smoothscatter-function"><i class="fa fa-check"></i><b>10.8</b> The <code>smoothScatter()</code> function</a></li>
+<li class="chapter" data-level="10.9" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#adding-transparency"><i class="fa fa-check"></i><b>10.9</b> Adding transparency</a></li>
+<li class="chapter" data-level="10.10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#summary-4"><i class="fa fa-check"></i><b>10.10</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html"><i class="fa fa-check"></i><b>11</b> Hierarchical Clustering</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#hierarchical-clustering-1"><i class="fa fa-check"></i><b>11.1</b> Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.2" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#how-do-we-define-close"><i class="fa fa-check"></i><b>11.2</b> How do we define close?</a></li>
+<li class="chapter" data-level="11.3" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-euclidean-distance"><i class="fa fa-check"></i><b>11.3</b> Example: Euclidean distance</a></li>
+<li class="chapter" data-level="11.4" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-manhattan-distance"><i class="fa fa-check"></i><b>11.4</b> Example: Manhattan distance</a></li>
+<li class="chapter" data-level="11.5" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-hierarchical-clustering"><i class="fa fa-check"></i><b>11.5</b> Example: Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.6" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#prettier-dendrograms"><i class="fa fa-check"></i><b>11.6</b> Prettier dendrograms</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-complete"><i class="fa fa-check"></i><b>11.7</b> Merging points: Complete</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-average"><i class="fa fa-check"></i><b>11.8</b> Merging points: Average</a></li>
+<li class="chapter" data-level="11.9" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#using-the-heatmap-function"><i class="fa fa-check"></i><b>11.9</b> Using the <code>heatmap()</code> function</a></li>
+<li class="chapter" data-level="11.10" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#notes-and-further-resources"><i class="fa fa-check"></i><b>11.10</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="k-means-clustering.html"><a href="k-means-clustering.html"><i class="fa fa-check"></i><b>12</b> K-Means Clustering</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-means-clustering.html"><a href="k-means-clustering.html#illustrating-the-k-means-algorithm"><i class="fa fa-check"></i><b>12.1</b> Illustrating the K-means algorithm</a></li>
+<li class="chapter" data-level="12.2" data-path="k-means-clustering.html"><a href="k-means-clustering.html#stopping-the-algorithm"><i class="fa fa-check"></i><b>12.2</b> Stopping the algorithm</a></li>
+<li class="chapter" data-level="12.3" data-path="k-means-clustering.html"><a href="k-means-clustering.html#using-the-kmeans-function"><i class="fa fa-check"></i><b>12.3</b> Using the <code>kmeans()</code> function</a></li>
+<li class="chapter" data-level="12.4" data-path="k-means-clustering.html"><a href="k-means-clustering.html#building-heatmaps-from-k-means-solutions"><i class="fa fa-check"></i><b>12.4</b> Building heatmaps from K-means solutions</a></li>
+<li class="chapter" data-level="12.5" data-path="k-means-clustering.html"><a href="k-means-clustering.html#notes-and-further-resources-1"><i class="fa fa-check"></i><b>12.5</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="dimension-reduction.html"><a href="dimension-reduction.html"><i class="fa fa-check"></i><b>13</b> Dimension Reduction</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="dimension-reduction.html"><a href="dimension-reduction.html#matrix-data"><i class="fa fa-check"></i><b>13.1</b> Matrix data</a></li>
+<li class="chapter" data-level="13.2" data-path="dimension-reduction.html"><a href="dimension-reduction.html#patterns-in-rows-and-columns"><i class="fa fa-check"></i><b>13.2</b> Patterns in rows and columns</a></li>
+<li class="chapter" data-level="13.3" data-path="dimension-reduction.html"><a href="dimension-reduction.html#related-problem"><i class="fa fa-check"></i><b>13.3</b> Related problem</a></li>
+<li class="chapter" data-level="13.4" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-and-pca"><i class="fa fa-check"></i><b>13.4</b> SVD and PCA</a></li>
+<li class="chapter" data-level="13.5" data-path="dimension-reduction.html"><a href="dimension-reduction.html#unpacking-the-svd-u-and-v"><i class="fa fa-check"></i><b>13.5</b> Unpacking the SVD: <em>u</em> and <em>v</em></a></li>
+<li class="chapter" data-level="13.6" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-for-data-compression"><i class="fa fa-check"></i><b>13.6</b> SVD for data compression</a></li>
+<li class="chapter" data-level="13.7" data-path="dimension-reduction.html"><a href="dimension-reduction.html#components-of-the-svd---variance-explained"><i class="fa fa-check"></i><b>13.7</b> Components of the SVD - Variance explained</a></li>
+<li class="chapter" data-level="13.8" data-path="dimension-reduction.html"><a href="dimension-reduction.html#relationship-to-principal-components"><i class="fa fa-check"></i><b>13.8</b> Relationship to principal components</a></li>
+<li class="chapter" data-level="13.9" data-path="dimension-reduction.html"><a href="dimension-reduction.html#what-if-we-add-a-second-pattern"><i class="fa fa-check"></i><b>13.9</b> What if we add a second pattern?</a></li>
+<li class="chapter" data-level="13.10" data-path="dimension-reduction.html"><a href="dimension-reduction.html#dealing-with-missing-values"><i class="fa fa-check"></i><b>13.10</b> Dealing with missing values</a></li>
+<li class="chapter" data-level="13.11" data-path="dimension-reduction.html"><a href="dimension-reduction.html#example-face-data"><i class="fa fa-check"></i><b>13.11</b> Example: Face data</a></li>
+<li class="chapter" data-level="13.12" data-path="dimension-reduction.html"><a href="dimension-reduction.html#notes-and-further-resources-2"><i class="fa fa-check"></i><b>13.12</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html"><i class="fa fa-check"></i><b>14</b> The ggplot2 Plotting System: Part 1</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#the-basics-qplot"><i class="fa fa-check"></i><b>14.1</b> The Basics: <code>qplot()</code></a></li>
+<li class="chapter" data-level="14.2" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#before-you-start-label-your-data"><i class="fa fa-check"></i><b>14.2</b> Before You Start: Label Your Data</a></li>
+<li class="chapter" data-level="14.3" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#ggplot2-hello-world"><i class="fa fa-check"></i><b>14.3</b> ggplot2 “Hello, world!”</a></li>
+<li class="chapter" data-level="14.4" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#modifying-aesthetics"><i class="fa fa-check"></i><b>14.4</b> Modifying aesthetics</a></li>
+<li class="chapter" data-level="14.5" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#adding-a-geom"><i class="fa fa-check"></i><b>14.5</b> Adding a geom</a></li>
+<li class="chapter" data-level="14.6" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#histograms"><i class="fa fa-check"></i><b>14.6</b> Histograms</a></li>
+<li class="chapter" data-level="14.7" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#facets"><i class="fa fa-check"></i><b>14.7</b> Facets</a></li>
+<li class="chapter" data-level="14.8" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#case-study-maacs-cohort"><i class="fa fa-check"></i><b>14.8</b> Case Study: MAACS Cohort</a></li>
+<li class="chapter" data-level="14.9" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#summary-of-qplot"><i class="fa fa-check"></i><b>14.9</b> Summary of qplot()</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html"><i class="fa fa-check"></i><b>15</b> The ggplot2 Plotting System: Part 2</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#basic-components-of-a-ggplot2-plot"><i class="fa fa-check"></i><b>15.1</b> Basic Components of a ggplot2 Plot</a></li>
+<li class="chapter" data-level="15.2" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#example-bmi-pm2.5-asthma"><i class="fa fa-check"></i><b>15.2</b> Example: BMI, PM2.5, Asthma</a></li>
+<li class="chapter" data-level="15.3" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#building-up-in-layers"><i class="fa fa-check"></i><b>15.3</b> Building Up in Layers</a></li>
+<li class="chapter" data-level="15.4" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#first-plot-with-point-layer"><i class="fa fa-check"></i><b>15.4</b> First Plot with Point Layer</a></li>
+<li class="chapter" data-level="15.5" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-smooth"><i class="fa fa-check"></i><b>15.5</b> Adding More Layers: Smooth</a></li>
+<li class="chapter" data-level="15.6" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-facets"><i class="fa fa-check"></i><b>15.6</b> Adding More Layers: Facets</a></li>
+<li class="chapter" data-level="15.7" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-geom-properties"><i class="fa fa-check"></i><b>15.7</b> Modifying Geom Properties</a></li>
+<li class="chapter" data-level="15.8" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-labels"><i class="fa fa-check"></i><b>15.8</b> Modifying Labels</a></li>
+<li class="chapter" data-level="15.9" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#customizing-the-smooth"><i class="fa fa-check"></i><b>15.9</b> Customizing the Smooth</a></li>
+<li class="chapter" data-level="15.10" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#changing-the-theme"><i class="fa fa-check"></i><b>15.10</b> Changing the Theme</a></li>
+<li class="chapter" data-level="15.11" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#more-complex-example"><i class="fa fa-check"></i><b>15.11</b> More Complex Example</a></li>
+<li class="chapter" data-level="15.12" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#a-quick-aside-about-axis-limits"><i class="fa fa-check"></i><b>15.12</b> A Quick Aside about Axis Limits</a></li>
+<li class="chapter" data-level="15.13" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#resources"><i class="fa fa-check"></i><b>15.13</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><i class="fa fa-check"></i><b>16</b> Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S.</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#synopsis"><i class="fa fa-check"></i><b>16.1</b> Synopsis</a></li>
+<li class="chapter" data-level="16.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#loading-and-processing-the-raw-data"><i class="fa fa-check"></i><b>16.2</b> Loading and Processing the Raw Data</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-1999-data"><i class="fa fa-check"></i><b>16.2.1</b> Reading in the 1999 data</a></li>
+<li class="chapter" data-level="16.2.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-2012-data"><i class="fa fa-check"></i><b>16.2.2</b> Reading in the 2012 data</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#results"><i class="fa fa-check"></i><b>16.3</b> Results</a>
+<ul>
+<li class="chapter" data-level="16.3.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#entire-u.s.-analysis"><i class="fa fa-check"></i><b>16.3.1</b> Entire U.S. analysis</a></li>
+<li class="chapter" data-level="16.3.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-pm-levels-at-an-individual-monitor"><i class="fa fa-check"></i><b>16.3.2</b> Changes in PM levels at an individual monitor</a></li>
+<li class="chapter" data-level="16.3.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-state-wide-pm-levels"><i class="fa fa-check"></i><b>16.3.3</b> Changes in state-wide PM levels</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i><b>17</b> About the Author</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Exploratory Data Analysis with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="exploratory-graphs" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Exploratory Graphs</h1>
+<p>Watch a video of this chapter: <a href="https://youtu.be/ma6-0PSNLHo">Part 1</a> <a href="https://youtu.be/UyopqXQ8TTM">Part 2</a></p>
+<p>There are many reasons to use graphics or plots in exploratory data analysis. If you just have a few data points, you might just print them out on the screen or on a sheet of paper and scan them over quickly before doing any real analysis (technique I commonly use for small datasets or subsets). If you have a dataset with more than just a few data points, then you’ll typically need some assistance to visualize the data.</p>
+<p>Visualizing the data via graphics can be important at the beginning stages of data analysis to understand basic properties of the data, to find simple patterns in data, and to suggest possible modeling strategies. In later stages of an analysis, graphics can be used to “debug” an analysis, if an unexpected (but not necessarily wrong) result occurs, or ultimately, to communicate your findings to others.</p>
+<div id="characteristics-of-exploratory-graphs" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Characteristics of exploratory graphs</h2>
+<p>For the purposes of this chapter (and the rest of this book), we will make a distinction between <em>exploratory</em> graphs and <em>final</em> graphs. This distinction is not a very formal one, but it serves to highlight the fact that graphs are used for many different purposes. Exploratory graphs are usually made very quickly and a lot of them are made in the process of checking out the data.</p>
+<p>The goal of making exploratory graphs is usually developing a personal understanding of the data and to prioritize tasks for follow up. Details like axis orientation or legends, while present, are generally cleaned up and prettified if the graph is going to be used for communication later. Often color and plot symbol size are used to convey various dimensions of information.</p>
+</div>
+<div id="air-pollution-in-the-united-states" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Air Pollution in the United States</h2>
+<p>For this chapter, we will use a simple case study to demonstrate the kinds of simple graphs that can be useful in exploratory analyses. The data we will be using come from the U.S. Environmental Protection Agency (EPA), which is the U.S. government agency that sets <a href="http://www.epa.gov/air/criteria.html">national air quality standards for outdoor air pollution</a>. One of the national ambient air quality standards in the U.S. concerns the long-term average level of fine particle pollution, also referred to as PM2.5. Here, the standard says that the “annual mean, averaged over 3 years” cannot exceed 12 micrograms per cubic meter. Data on daily PM2.5 are available from the U.S. EPA web site, or specifically, the <a href="http://www.epa.gov/ttn/airs/airsaqs/detaildata/downloadaqsdata.htm">EPA Air Quality System</a> web site.</p>
+<p>One key question we are interested is: <strong>Are there any counties in the U.S. that exceed the national standard for fine particle pollution?</strong> This question has important consequences because counties that are found to be in violation of the national standards can face serious legal consequences. In particular, states that have counties in violation of the standards are required to create a State Implementation Plan (SIP) that shows how those counties will come within the national standards within a given period of time.</p>
+</div>
+<div id="getting-the-data" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Getting the Data</h2>
+<p>First, we can read the data into R with <code>read.csv()</code>. This dataset contains the annual mean PM2.5 averaged over the period 2008 through 2010</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="exploratory-graphs.html#cb58-1"></a><span class="op">&gt;</span><span class="st"> </span>class &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;character&quot;</span>, <span class="st">&quot;factor&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>)</span>
+<span id="cb58-2"><a href="exploratory-graphs.html#cb58-2"></a><span class="op">&gt;</span><span class="st"> </span>pollution &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/avgpm25.csv&quot;</span>, <span class="dt">colClasses =</span> class)</span></code></pre></div>
+<p>Here are the first few rows of the data frame.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="exploratory-graphs.html#cb59-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(pollution)</span>
+<span id="cb59-2"><a href="exploratory-graphs.html#cb59-2"></a>       pm25  fips region longitude latitude</span>
+<span id="cb59-3"><a href="exploratory-graphs.html#cb59-3"></a><span class="dv">1</span>  <span class="fl">9.771185</span> <span class="dv">01003</span>   east <span class="fl">-87.74826</span> <span class="fl">30.59278</span></span>
+<span id="cb59-4"><a href="exploratory-graphs.html#cb59-4"></a><span class="dv">2</span>  <span class="fl">9.993817</span> <span class="dv">01027</span>   east <span class="fl">-85.84286</span> <span class="fl">33.26581</span></span>
+<span id="cb59-5"><a href="exploratory-graphs.html#cb59-5"></a><span class="dv">3</span> <span class="fl">10.688618</span> <span class="dv">01033</span>   east <span class="fl">-87.72596</span> <span class="fl">34.73148</span></span>
+<span id="cb59-6"><a href="exploratory-graphs.html#cb59-6"></a><span class="dv">4</span> <span class="fl">11.337424</span> <span class="dv">01049</span>   east <span class="fl">-85.79892</span> <span class="fl">34.45913</span></span>
+<span id="cb59-7"><a href="exploratory-graphs.html#cb59-7"></a><span class="dv">5</span> <span class="fl">12.119764</span> <span class="dv">01055</span>   east <span class="fl">-86.03212</span> <span class="fl">34.01860</span></span>
+<span id="cb59-8"><a href="exploratory-graphs.html#cb59-8"></a><span class="dv">6</span> <span class="fl">10.827805</span> <span class="dv">01069</span>   east <span class="fl">-85.35039</span> <span class="fl">31.18973</span></span></code></pre></div>
+<p>Each row contains the 5-digit code indicating the county (<code>fips</code>), the region of the country in which the county resides, the longitude and latitude of the centroid for that county, and the average PM2.5 level.</p>
+<p>Here’s a bit more information on the dataset as given by <code>str()</code>.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="exploratory-graphs.html#cb60-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">str</span>(pollution)</span>
+<span id="cb60-2"><a href="exploratory-graphs.html#cb60-2"></a><span class="st">&#39;data.frame&#39;</span><span class="op">:</span><span class="st">   </span><span class="dv">576</span> obs. of  <span class="dv">5</span> variables<span class="op">:</span></span>
+<span id="cb60-3"><a href="exploratory-graphs.html#cb60-3"></a><span class="st"> </span><span class="er">$</span><span class="st"> </span>pm25     <span class="op">:</span><span class="st"> </span>num  <span class="fl">9.77</span> <span class="fl">9.99</span> <span class="fl">10.69</span> <span class="fl">11.34</span> <span class="fl">12.12</span> ...</span>
+<span id="cb60-4"><a href="exploratory-graphs.html#cb60-4"></a> <span class="op">$</span><span class="st"> </span>fips     <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;01003&quot;</span> <span class="st">&quot;01027&quot;</span> <span class="st">&quot;01033&quot;</span> <span class="st">&quot;01049&quot;</span> ...</span>
+<span id="cb60-5"><a href="exploratory-graphs.html#cb60-5"></a> <span class="op">$</span><span class="st"> </span>region   <span class="op">:</span><span class="st"> </span>Factor w<span class="op">/</span><span class="st"> </span><span class="dv">2</span> levels <span class="st">&quot;east&quot;</span>,<span class="st">&quot;west&quot;</span><span class="op">:</span><span class="st"> </span><span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb60-6"><a href="exploratory-graphs.html#cb60-6"></a> <span class="op">$</span><span class="st"> </span>longitude<span class="op">:</span><span class="st"> </span>num  <span class="fl">-87.7</span> <span class="fl">-85.8</span> <span class="fl">-87.7</span> <span class="fl">-85.8</span> <span class="dv">-86</span> ...</span>
+<span id="cb60-7"><a href="exploratory-graphs.html#cb60-7"></a> <span class="op">$</span><span class="st"> </span>latitude <span class="op">:</span><span class="st"> </span>num  <span class="fl">30.6</span> <span class="fl">33.3</span> <span class="fl">34.7</span> <span class="fl">34.5</span> <span class="dv">34</span> ...</span></code></pre></div>
+<p>Back to the question, though. How can we see if any counties exceed the standard of 12 micrograms per cubic meter?</p>
+</div>
+<div id="simple-summaries-one-dimension" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Simple Summaries: One Dimension</h2>
+<p>For one dimensional summarize, there are number of options in R.</p>
+<ul>
+<li><p><strong>Five-number summary</strong>: This gives the minimum, 25th percentile, median, 75th percentile, maximum of the data and is quick check on the distribution of the data (see the <code>fivenum()</code>)</p></li>
+<li><p><strong>Boxplots</strong>: Boxplots are a visual representation of the five-number summary plus a bit more information. In particular, boxplots commonly plot outliers that go beyond the bulk of the data. This is implemented via the <code>boxplot()</code> function</p></li>
+<li><p><strong>Barplot</strong>: Barplots are useful for visualizing categorical data, with the number of entries for each category being proportional to the height of the bar. Think “pie chart” but actually useful. The barplot can be made with the <code>barplot()</code> function.</p></li>
+<li><p><strong>Histograms</strong>: Histograms show the complete empirical distribution of the data, beyond the five data points shown by the boxplots. Here, you can easily check skewwness of the data, symmetry, multi-modality, and other features. The <code>hist()</code> function makes a histogram, and a handy function to go with it sometimes is the <code>rug()</code> function.</p></li>
+<li><p><strong>Density plot</strong>: The <code>density()</code> function computes a non-parametric estimate of the distribution of a variables</p></li>
+</ul>
+</div>
+<div id="five-number-summary" class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Five Number Summary</h2>
+<p>A five-number summary can be computed with the <code>fivenum()</code> function, which takes a vector of numbers as input. Here, we compute a five-number summary of the PM2.5 data in the pollution dataset.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="exploratory-graphs.html#cb61-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">fivenum</span>(pollution<span class="op">$</span>pm25)</span>
+<span id="cb61-2"><a href="exploratory-graphs.html#cb61-2"></a>[<span class="dv">1</span>]  <span class="fl">3.382626</span>  <span class="fl">8.547590</span> <span class="fl">10.046697</span> <span class="fl">11.356829</span> <span class="fl">18.440731</span></span></code></pre></div>
+<p>We can see that the median across all the counties in the dataset is about 10 micrograms per cubic meter.</p>
+<p>For interactive work, it’s often a bit nice to use the <code>summary()</code> function, which has a default method for numeric vectors.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="exploratory-graphs.html#cb62-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(pollution<span class="op">$</span>pm25)</span>
+<span id="cb62-2"><a href="exploratory-graphs.html#cb62-2"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span id="cb62-3"><a href="exploratory-graphs.html#cb62-3"></a>  <span class="fl">3.383</span>   <span class="fl">8.549</span>  <span class="fl">10.047</span>   <span class="fl">9.836</span>  <span class="fl">11.356</span>  <span class="fl">18.441</span> </span></code></pre></div>
+<p>You’ll notice that in addition to the five-number summary, the <code>summary()</code> function also adds the mean of the data, which can be compared to the median to identify any skewness in the data. Given that the mean is fairly close to the median, there doesn’t appear to be a dramatic amount of skewness in the distribution of PM2.5 in this dataset.</p>
+</div>
+<div id="boxplot" class="section level2" number="6.6">
+<h2><span class="header-section-number">6.6</span> Boxplot</h2>
+<p>Here’s a quick boxplot of the PM2.5 data. Note that in a boxplot, the “whiskers” that stick out above and below the box have a length of 1.5 times the <em>inter-quartile range</em>, or IQR, which is simply the distance from the bottom of the box to the top of the box. Anything beyond the whiskers is marked as an “outlier” and is plotted separately as an individual point.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="exploratory-graphs.html#cb63-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(pollution<span class="op">$</span>pm25, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-6"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-6-1.png" alt="Boxplot of PM2.5 data" width="480" />
+<p class="caption">
+Figure 5.5: Boxplot of PM2.5 data
+</p>
+</div>
+<p>From the boxplot, we can see that there are a few points on both the high and the low end that appear to be outliers according to the <code>boxplot()</code> algorithm. These points migth be worth looking at individually.</p>
+<p>From the plot, it appears that the high points are all above the level of 15, so we can take a look at those data points directly. Note that although the current national ambient air quality standard is 12 micrograms per cubic meter, it used to be 15.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="exploratory-graphs.html#cb64-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</span>
+<span id="cb64-2"><a href="exploratory-graphs.html#cb64-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">filter</span>(pollution, pm25 <span class="op">&gt;</span><span class="st"> </span><span class="dv">15</span>)</span>
+<span id="cb64-3"><a href="exploratory-graphs.html#cb64-3"></a>      pm25  fips region longitude latitude</span>
+<span id="cb64-4"><a href="exploratory-graphs.html#cb64-4"></a><span class="dv">1</span> <span class="fl">16.19452</span> <span class="dv">06019</span>   west <span class="fl">-119.9035</span> <span class="fl">36.63837</span></span>
+<span id="cb64-5"><a href="exploratory-graphs.html#cb64-5"></a><span class="dv">2</span> <span class="fl">15.80378</span> <span class="dv">06029</span>   west <span class="fl">-118.6833</span> <span class="fl">35.29602</span></span>
+<span id="cb64-6"><a href="exploratory-graphs.html#cb64-6"></a><span class="dv">3</span> <span class="fl">18.44073</span> <span class="dv">06031</span>   west <span class="fl">-119.8113</span> <span class="fl">36.15514</span></span>
+<span id="cb64-7"><a href="exploratory-graphs.html#cb64-7"></a><span class="dv">4</span> <span class="fl">16.66180</span> <span class="dv">06037</span>   west <span class="fl">-118.2342</span> <span class="fl">34.08851</span></span>
+<span id="cb64-8"><a href="exploratory-graphs.html#cb64-8"></a><span class="dv">5</span> <span class="fl">15.01573</span> <span class="dv">06047</span>   west <span class="fl">-120.6741</span> <span class="fl">37.24578</span></span>
+<span id="cb64-9"><a href="exploratory-graphs.html#cb64-9"></a><span class="dv">6</span> <span class="fl">17.42905</span> <span class="dv">06065</span>   west <span class="fl">-116.8036</span> <span class="fl">33.78331</span></span>
+<span id="cb64-10"><a href="exploratory-graphs.html#cb64-10"></a><span class="dv">7</span> <span class="fl">16.25190</span> <span class="dv">06099</span>   west <span class="fl">-120.9588</span> <span class="fl">37.61380</span></span>
+<span id="cb64-11"><a href="exploratory-graphs.html#cb64-11"></a><span class="dv">8</span> <span class="fl">16.18358</span> <span class="dv">06107</span>   west <span class="fl">-119.1661</span> <span class="fl">36.23465</span></span></code></pre></div>
+<p>These counties are all in the western U.S. (<code>region == west</code>) and in fact are all in California because the first two digits of the <code>fips</code> code are <code>06</code>.</p>
+<p>We can make a quick map of these counties to get a sense of where they are in California.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="exploratory-graphs.html#cb65-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(maps)</span>
+<span id="cb65-2"><a href="exploratory-graphs.html#cb65-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">map</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;california&quot;</span>)</span>
+<span id="cb65-3"><a href="exploratory-graphs.html#cb65-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">with</span>(<span class="kw">filter</span>(pollution, pm25 <span class="op">&gt;</span><span class="st"> </span><span class="dv">15</span>), <span class="kw">points</span>(longitude, latitude))</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-8"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-8-1.png" alt="Map of California counties" width="672" />
+<p class="caption">
+Figure 5.7: Map of California counties
+</p>
+</div>
+<p>At this point, you might decide to follow up on these counties, or ignore them if you are interested in other features. Since these counties appear to have very high levels, relative to the distribution of levels in the other counties in the U.S., they may be worth following up on if you are interested in describing counties that are potentially in violation of the standards.</p>
+<p>Note that the plot/map above is not very pretty, but it was made quickly and it gave us a sense of where these outlying counties were located and conveyed enough information to help decide if we an to follow up or not.</p>
+</div>
+<div id="histogram" class="section level2" number="6.7">
+<h2><span class="header-section-number">6.7</span> Histogram</h2>
+<p>A histogram is useful to look at when we want to see more detail on the full distribution of the data. The boxplot is quick and handy, but fundamentally only gives us a bit of information.</p>
+<p>Here is a histogram of the PM2.5 annual average data.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="exploratory-graphs.html#cb66-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(pollution<span class="op">$</span>pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-9"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-9-1.png" alt="Histogram of PM2.5 data" width="672" />
+<p class="caption">
+Figure 5.8: Histogram of PM2.5 data
+</p>
+</div>
+<p>This distribution is interesting because there appears to be a high concentration of counties in the neighborhood of 9 to 12 micrograms per cubic meter. We can get a little more detail of we use the <code>rug()</code> function to show us the actual data points.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="exploratory-graphs.html#cb67-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(pollution<span class="op">$</span>pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</span>
+<span id="cb67-2"><a href="exploratory-graphs.html#cb67-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">rug</span>(pollution<span class="op">$</span>pm25)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-10"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-10-1.png" alt="Histogram of PM2.5 data with rug" width="672" />
+<p class="caption">
+Figure 5.9: Histogram of PM2.5 data with rug
+</p>
+</div>
+<p>The large cluster of data points in the 9 to 12 range is perhaps not surprising in this context. It’s not uncommon to observe this behavior in situations where you have a strict limit imposed at a certain level. Note that there are still quite a few counties above the level of 12, which may be worth investigating.</p>
+<p>The <code>hist()</code> function has a default algorithm for determining the number of bars to use in the histogram based on the density of the data (see <code>?nclass.Sturges</code>). However, you can override the default option by setting the <code>breaks</code> argument to something else. Here, we use more bars to try to get more detail.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="exploratory-graphs.html#cb68-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(pollution<span class="op">$</span>pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">breaks =</span> <span class="dv">100</span>)</span>
+<span id="cb68-2"><a href="exploratory-graphs.html#cb68-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">rug</span>(pollution<span class="op">$</span>pm25)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-11"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-11-1.png" alt="Histogram of PM2.5 data with more breaks" width="672" />
+<p class="caption">
+Figure 6.1: Histogram of PM2.5 data with more breaks
+</p>
+</div>
+<p>Now we see that there’s a rather large spike 9 micrograms per cubic meter. It’s not immediately clear why, but again, it might be worth following up on.</p>
+</div>
+<div id="overlaying-features" class="section level2" number="6.8">
+<h2><span class="header-section-number">6.8</span> Overlaying Features</h2>
+<p>Once we start seeing interesting features in our data, it’s often useful to lay down annotations on our plots as reference points are markers. For example in our boxplot above, we might want to draw a horizontal line at 12 where the national standard is.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="exploratory-graphs.html#cb69-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(pollution<span class="op">$</span>pm25, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb69-2"><a href="exploratory-graphs.html#cb69-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">12</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-12"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-12-1.png" alt="Boxplot of PM2.5 data with added line" width="480" />
+<p class="caption">
+Figure 6.2: Boxplot of PM2.5 data with added line
+</p>
+</div>
+<p>We can see that a reasonable portion of the distribution as displayed by the boxplot is above the line (i.e. potentially in violation of the standard).</p>
+<p>While the boxplot gives a sense, the histogram might be better suited to visualizing the data here. In the plot below, we see the histogram and draw two lines, one at the median of the data and one at 12, the level of the standard.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="exploratory-graphs.html#cb70-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(pollution<span class="op">$</span>pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</span>
+<span id="cb70-2"><a href="exploratory-graphs.html#cb70-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">abline</span>(<span class="dt">v =</span> <span class="dv">12</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb70-3"><a href="exploratory-graphs.html#cb70-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">abline</span>(<span class="dt">v =</span> <span class="kw">median</span>(pollution<span class="op">$</span>pm25), <span class="dt">col =</span> <span class="st">&quot;magenta&quot;</span>, <span class="dt">lwd =</span> <span class="dv">4</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-13"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-13-1.png" alt="Histogram of PM2.5 data with annotation" width="672" />
+<p class="caption">
+Figure 6.3: Histogram of PM2.5 data with annotation
+</p>
+</div>
+<p>Note that for the vertical lines, we can use both color (<code>col</code>) and the line width (<code>lwd</code>) to indicate different components of information.</p>
+</div>
+<div id="barplot" class="section level2" number="6.9">
+<h2><span class="header-section-number">6.9</span> Barplot</h2>
+<p>The barplot is useful for summarizing categorical data. Here we have one categorical variable, the region in which a county resides (east or west). We can see how many western and eastern counties there are with <code>barplot()</code>. We use the <code>table()</code> function to do the actual tabulation of how many counties there are in each region.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="exploratory-graphs.html#cb71-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</span>
+<span id="cb71-2"><a href="exploratory-graphs.html#cb71-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(pollution<span class="op">$</span>region) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">barplot</span>(<span class="dt">col =</span> <span class="st">&quot;wheat&quot;</span>)</span></code></pre></div>
+<p><img src="images/exploratorygraphs-unnamed-chunk-14-1.png" width="672" /></p>
+<p>We can see quite clearly that there are many more counties in the eastern U.S. in this dataset than in the western U.S.</p>
+</div>
+<div id="simple-summaries-two-dimensions-and-beyond" class="section level2" number="6.10">
+<h2><span class="header-section-number">6.10</span> Simple Summaries: Two Dimensions and Beyond</h2>
+<p>So far we’ve covered some of the main tools used to summarize one dimensional data. For investigating data in two dimensions and beyond, there is an array of additional tools. Some of the key approaches are</p>
+<ul>
+<li><p><strong>Multiple or overlayed 1-D plots</strong> (Lattice/ggplot2): Using multiple boxplots or multiple histograms can be useful for seeing the relationship between two variables, especially when on is naturally categorical.</p></li>
+<li><p><strong>Scatterplots</strong>: Scatterplots are the natural tool for visualizing two continuous variables. Transformations of the variables (e.g. log or square-root transformation) may be necessary for effective visualization.</p></li>
+<li><p><strong>Smooth scatterplots</strong>: Similar in concept to scatterplots but rather plots a 2-D histogram of the data. Can be useful for scatterplots that may contain many many data points.</p></li>
+</ul>
+<p>For visualizing data in more than 2 dimensions, without resorting to 3-D animations (or glasses!), we can often combine the tools that we’ve already learned:</p>
+<ul>
+<li><p><strong>Overlayed or multiple 2-D plots; conditioning plots (coplots)</strong>: A conditioning plot, or coplot, shows the relationship between two variables as a third (or more) variable changes. For example, you might want to see how the relationship between air pollution levels and mortality changes with the season of the year. Here, air pollution and mortality are the two primary variables and season is the third variable varying in the background.</p></li>
+<li><p><strong>Use color, size, shape to add dimensions</strong>: Plotting points with different colors or shapes is useful for indicating a third dimension, where different colors can indicate different categories or ranges of something. Plotting symbols with different sizes can also achieve the same effect when the third dimension is continuous.</p></li>
+<li><p><strong>Spinning/interactive plots</strong>: Spinning plots can be used to simulate 3-D plots by allowing the user to essentially quickly cycle through many different 2-D projections so that the plot feels 3-D. These are sometimes helpful to capture unusual structure in the data, but I rarely use them.</p></li>
+<li><p><strong>Actual 3-D plots (not that useful)</strong>: Actual 3-D plots (for example, requiring 3-D glasses) are relatively few and far between and are generally impractical for communicating to a large audience. Of course, this may change in the future with improvements in technology….</p></li>
+</ul>
+</div>
+<div id="multiple-boxplots" class="section level2" number="6.11">
+<h2><span class="header-section-number">6.11</span> Multiple Boxplots</h2>
+<p>One of the simplest ways to show the relationship between two variables (in this case, one categorical and one continuous) is to show side-by-side boxplots. Using the pollution data described above, we can show the difference in PM2.5 levels between the eastern and western parts of the U.S. with the <code>boxplot()</code> function.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="exploratory-graphs.html#cb72-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">boxplot</span>(pm25 <span class="op">~</span><span class="st"> </span>region, <span class="dt">data =</span> pollution, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-15"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-15-1.png" alt="Boxplot of PM2.5 by region" width="672" />
+<p class="caption">
+Figure 6.4: Boxplot of PM2.5 by region
+</p>
+</div>
+<p>The <code>boxplot()</code> function can take a <em>formula</em>, with the left hand side indicating the variable for which we want to create the boxplot (continuous) and the right hand side indicating the variable that stratifies the left hand side into categories. Since the <code>region</code> variable only has two categories, we end up with two boxplots. Side-by-side boxplots are useful because you can often fit many on a page to get a rich sense of any trends or changes in a variable. Their compact format allow you to visualize a lot of data in a small space.</p>
+<p>From the plot above, we can see rather clearly that the levels in eastern counties are on average higher than the levels in western counties.</p>
+</div>
+<div id="multiple-histograms" class="section level2" number="6.12">
+<h2><span class="header-section-number">6.12</span> Multiple Histograms</h2>
+<p>It can sometimes be useful to plot multiple histograms, much like with side-by-side boxplots, to see changes in the shape of the distribution of a variable across different categories. However, the number of histograms that you can effectively put on a page is limited.</p>
+<p>Here is the distribution of PM2.5 in the eastern and western regions of the U.S.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="exploratory-graphs.html#cb73-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb73-2"><a href="exploratory-graphs.html#cb73-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(<span class="kw">subset</span>(pollution, region <span class="op">==</span><span class="st"> &quot;east&quot;</span>)<span class="op">$</span>pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</span>
+<span id="cb73-3"><a href="exploratory-graphs.html#cb73-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">hist</span>(<span class="kw">subset</span>(pollution, region <span class="op">==</span><span class="st"> &quot;west&quot;</span>)<span class="op">$</span>pm25, <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-16"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-16-1.png" alt="Histogram of PM2.5 by region" width="768" />
+<p class="caption">
+Figure 6.5: Histogram of PM2.5 by region
+</p>
+</div>
+<p>You can see here that the PM2.5 in the western U.S. tends to be right-skewed with some outlying counties with very high levels. The PM2.5 in the east tends to be left skewed some counties having very low levels.</p>
+</div>
+<div id="scatterplots" class="section level2" number="6.13">
+<h2><span class="header-section-number">6.13</span> Scatterplots</h2>
+<p>For continuous variables, the most common visualization technique is the scatterplot, which simply maps each variable to an x- or y-axis coordinate. Here is a scatterplot of latitude and PM2.5, which can be made with the <code>plot()</code> function.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="exploratory-graphs.html#cb74-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">with</span>(pollution, <span class="kw">plot</span>(latitude, pm25))</span>
+<span id="cb74-2"><a href="exploratory-graphs.html#cb74-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">12</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-17"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-17-1.png" alt="Scatterplot of PM2.5 and latitude" width="672" />
+<p class="caption">
+Figure 6.6: Scatterplot of PM2.5 and latitude
+</p>
+</div>
+<p>As you go from south to north in the U.S., we can see that the highest levels of PM2.5 tend to be in the middle region of the country.</p>
+</div>
+<div id="scatterplot---using-color" class="section level2" number="6.14">
+<h2><span class="header-section-number">6.14</span> Scatterplot - Using Color</h2>
+<p>If we wanted to add a third dimension to the scatterplot above, say the <code>region</code> variable indicating east and west, we could use color to highlight that dimension. Here we color the circles in the plot to indicate east (black) or west (red).</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="exploratory-graphs.html#cb75-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">with</span>(pollution, <span class="kw">plot</span>(latitude, pm25, <span class="dt">col =</span> region))</span>
+<span id="cb75-2"><a href="exploratory-graphs.html#cb75-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">12</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-18"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-18-1.png" alt="Scatterplot of PM2.5 and latitude by region" width="672" />
+<p class="caption">
+Figure 6.7: Scatterplot of PM2.5 and latitude by region
+</p>
+</div>
+<p>It may be confusing at first to figure out which color gets mapped to which region. We can find out by looking directly at the levels of the <code>region</code> variable.</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="exploratory-graphs.html#cb76-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">levels</span>(pollution<span class="op">$</span>region)</span>
+<span id="cb76-2"><a href="exploratory-graphs.html#cb76-2"></a>[<span class="dv">1</span>] <span class="st">&quot;east&quot;</span> <span class="st">&quot;west&quot;</span></span></code></pre></div>
+<p>Here we see that the first level is “east” and the second level is “west”. So the color for “east” will get mapped to 1 and the color for “west” will get mapped to 2. For plotting functions, <code>col = 1</code> is black (the default color) and <code>col = 2</code> is red.</p>
+</div>
+<div id="multiple-scatterplots" class="section level2" number="6.15">
+<h2><span class="header-section-number">6.15</span> Multiple Scatterplots</h2>
+<p>Using multiple scatterplots can be necessary when overlaying points with different colors or shapes is confusing (sometimes because of the volume of data). Separating the plots out can sometimes make visualization easier.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="exploratory-graphs.html#cb77-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb77-2"><a href="exploratory-graphs.html#cb77-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">with</span>(<span class="kw">subset</span>(pollution, region <span class="op">==</span><span class="st"> &quot;west&quot;</span>), <span class="kw">plot</span>(latitude, pm25, <span class="dt">main =</span> <span class="st">&quot;West&quot;</span>))</span>
+<span id="cb77-3"><a href="exploratory-graphs.html#cb77-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">with</span>(<span class="kw">subset</span>(pollution, region <span class="op">==</span><span class="st"> &quot;east&quot;</span>), <span class="kw">plot</span>(latitude, pm25, <span class="dt">main =</span> <span class="st">&quot;East&quot;</span>))</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-20"></span>
+<img src="images/exploratorygraphs-unnamed-chunk-20-1.png" alt="Multiple Scatterplots of PM2.5 and latitude by region" width="1152" />
+<p class="caption">
+Figure 6.8: Multiple Scatterplots of PM2.5 and latitude by region
+</p>
+</div>
+<p>These kinds of plots, sometimes called panel plots, are generally easier to make with either the <code>lattice</code> or <code>ggplot2</code> system, which we will learn about in greater detail in later chapters..</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="exploratory-graphs.html#cb78-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="co">## Lattice</span></span>
+<span id="cb78-2"><a href="exploratory-graphs.html#cb78-2"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(lattice)</span>
+<span id="cb78-3"><a href="exploratory-graphs.html#cb78-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">xyplot</span>(pm25 <span class="op">~</span><span class="st"> </span>latitude <span class="op">|</span><span class="st"> </span>region, <span class="dt">data =</span> pollution)</span>
+<span id="cb78-4"><a href="exploratory-graphs.html#cb78-4"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb78-5"><a href="exploratory-graphs.html#cb78-5"></a><span class="er">&gt;</span><span class="st"> </span><span class="co">## ggplot2</span></span>
+<span id="cb78-6"><a href="exploratory-graphs.html#cb78-6"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(ggplot2)</span>
+<span id="cb78-7"><a href="exploratory-graphs.html#cb78-7"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">qplot</span>(latitude, pm25, <span class="dt">data =</span> pollution, <span class="dt">facets =</span> . <span class="op">~</span><span class="st"> </span>region)</span></code></pre></div>
+</div>
+<div id="summary-1" class="section level2" number="6.16">
+<h2><span class="header-section-number">6.16</span> Summary</h2>
+<p>Exploratory plots are “quick and dirty” and their purpose is to let you summarize the data and highlight any broad features. They are also useful for exploring basic questions about the data and for judging the evidence for or against certain hypotheses. Ultimately, they may be useful for suggesting modeling strategies that can be employed in the “next step” of the data analysis process.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="principles-of-analytic-graphics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="plotting-systems.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rdpeng/exdata/edit/bookdown/exploratorygraphs.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

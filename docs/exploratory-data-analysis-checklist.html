@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Exploratory Data Analysis Checklist | Exploratory Data Analysis with R</title>
+  <meta name="description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Exploratory Data Analysis Checklist | Exploratory Data Analysis with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/rdpeng/exdata/" />
+  <meta property="og:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+  <meta property="og:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="github-repo" content="rdpeng/exdata" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Exploratory Data Analysis Checklist | Exploratory Data Analysis with R" />
+  
+  <meta name="twitter:description" content="This book covers the essential exploratory techniques for summarizing data with R. These techniques are typically applied before formal modeling commences and can help inform the development of more complex statistical models. Exploratory techniques are also important for eliminating or sharpening potential hypotheses about the world that can be addressed by the data you have. We will cover in detail the plotting systems in R as well as some of the basic principles of constructing informative data graphics. We will also cover some of the common multivariate statistical techniques used to visualize high-dimensional data." />
+  <meta name="twitter:image" content="https://bookdown.org/rdpeng/exdata/cover_sm.png" />
+
+<meta name="author" content="Roger D. Peng" />
+
+
+<meta name="date" content="2020-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="managing-data-frames-with-the-dplyr-package.html"/>
+<link rel="next" href="principles-of-analytic-graphics.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Exploratory Data Analysis with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#stay-in-touch"><i class="fa fa-check"></i>Stay in Touch!</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>2</b> Getting Started with R</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-started-with-the-r-interface"><i class="fa fa-check"></i><b>2.2</b> Getting started with the R interface</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html"><i class="fa fa-check"></i><b>3</b> Managing Data Frames with the <code>dplyr</code> package</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#data-frames"><i class="fa fa-check"></i><b>3.1</b> Data Frames</a></li>
+<li class="chapter" data-level="3.2" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#the-dplyr-package"><i class="fa fa-check"></i><b>3.2</b> The <code>dplyr</code> Package</a></li>
+<li class="chapter" data-level="3.3" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#dplyr-grammar"><i class="fa fa-check"></i><b>3.3</b> <code>dplyr</code> Grammar</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#common-dplyr-function-properties"><i class="fa fa-check"></i><b>3.3.1</b> Common <code>dplyr</code> Function Properties</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#installing-the-dplyr-package"><i class="fa fa-check"></i><b>3.4</b> Installing the <code>dplyr</code> package</a></li>
+<li class="chapter" data-level="3.5" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>3.5</b> <code>select()</code></a></li>
+<li class="chapter" data-level="3.6" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>3.6</b> <code>filter()</code></a></li>
+<li class="chapter" data-level="3.7" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#arrange"><i class="fa fa-check"></i><b>3.7</b> <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.8" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#rename"><i class="fa fa-check"></i><b>3.8</b> <code>rename()</code></a></li>
+<li class="chapter" data-level="3.9" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>3.9</b> <code>mutate()</code></a></li>
+<li class="chapter" data-level="3.10" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#group_by"><i class="fa fa-check"></i><b>3.10</b> <code>group_by()</code></a></li>
+<li class="chapter" data-level="3.11" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#section"><i class="fa fa-check"></i><b>3.11</b> <code>%&gt;%</code></a></li>
+<li class="chapter" data-level="3.12" data-path="managing-data-frames-with-the-dplyr-package.html"><a href="managing-data-frames-with-the-dplyr-package.html#summary"><i class="fa fa-check"></i><b>3.12</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis Checklist</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#formulate-your-question"><i class="fa fa-check"></i><b>4.1</b> Formulate your question</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#read-in-your-data"><i class="fa fa-check"></i><b>4.2</b> Read in your data</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-the-packaging"><i class="fa fa-check"></i><b>4.3</b> Check the packaging</a></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#run-str"><i class="fa fa-check"></i><b>4.4</b> Run <code>str()</code></a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#look-at-the-top-and-the-bottom-of-your-data"><i class="fa fa-check"></i><b>4.5</b> Look at the top and the bottom of your data</a></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#check-your-ns"><i class="fa fa-check"></i><b>4.6</b> Check your “n”s</a></li>
+<li class="chapter" data-level="4.7" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#validate-with-at-least-one-external-data-source"><i class="fa fa-check"></i><b>4.7</b> Validate with at least one external data source</a></li>
+<li class="chapter" data-level="4.8" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#try-the-easy-solution-first"><i class="fa fa-check"></i><b>4.8</b> Try the easy solution first</a></li>
+<li class="chapter" data-level="4.9" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#challenge-your-solution"><i class="fa fa-check"></i><b>4.9</b> Challenge your solution</a></li>
+<li class="chapter" data-level="4.10" data-path="exploratory-data-analysis-checklist.html"><a href="exploratory-data-analysis-checklist.html#follow-up-questions"><i class="fa fa-check"></i><b>4.10</b> Follow up questions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html"><i class="fa fa-check"></i><b>5</b> Principles of Analytic Graphics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-comparisons"><i class="fa fa-check"></i><b>5.1</b> Show comparisons</a></li>
+<li class="chapter" data-level="5.2" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-causality-mechanism-explanation-systematic-structure"><i class="fa fa-check"></i><b>5.2</b> Show causality, mechanism, explanation, systematic structure</a></li>
+<li class="chapter" data-level="5.3" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#show-multivariate-data"><i class="fa fa-check"></i><b>5.3</b> Show multivariate data</a></li>
+<li class="chapter" data-level="5.4" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#integrate-evidence"><i class="fa fa-check"></i><b>5.4</b> Integrate evidence</a></li>
+<li class="chapter" data-level="5.5" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#describe-and-document-the-evidence"><i class="fa fa-check"></i><b>5.5</b> Describe and document the evidence</a></li>
+<li class="chapter" data-level="5.6" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#content-content-content"><i class="fa fa-check"></i><b>5.6</b> Content, Content, Content</a></li>
+<li class="chapter" data-level="5.7" data-path="principles-of-analytic-graphics.html"><a href="principles-of-analytic-graphics.html#references"><i class="fa fa-check"></i><b>5.7</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html"><i class="fa fa-check"></i><b>6</b> Exploratory Graphs</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#characteristics-of-exploratory-graphs"><i class="fa fa-check"></i><b>6.1</b> Characteristics of exploratory graphs</a></li>
+<li class="chapter" data-level="6.2" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#air-pollution-in-the-united-states"><i class="fa fa-check"></i><b>6.2</b> Air Pollution in the United States</a></li>
+<li class="chapter" data-level="6.3" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#getting-the-data"><i class="fa fa-check"></i><b>6.3</b> Getting the Data</a></li>
+<li class="chapter" data-level="6.4" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-one-dimension"><i class="fa fa-check"></i><b>6.4</b> Simple Summaries: One Dimension</a></li>
+<li class="chapter" data-level="6.5" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#five-number-summary"><i class="fa fa-check"></i><b>6.5</b> Five Number Summary</a></li>
+<li class="chapter" data-level="6.6" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#boxplot"><i class="fa fa-check"></i><b>6.6</b> Boxplot</a></li>
+<li class="chapter" data-level="6.7" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#histogram"><i class="fa fa-check"></i><b>6.7</b> Histogram</a></li>
+<li class="chapter" data-level="6.8" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#overlaying-features"><i class="fa fa-check"></i><b>6.8</b> Overlaying Features</a></li>
+<li class="chapter" data-level="6.9" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#barplot"><i class="fa fa-check"></i><b>6.9</b> Barplot</a></li>
+<li class="chapter" data-level="6.10" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#simple-summaries-two-dimensions-and-beyond"><i class="fa fa-check"></i><b>6.10</b> Simple Summaries: Two Dimensions and Beyond</a></li>
+<li class="chapter" data-level="6.11" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-boxplots"><i class="fa fa-check"></i><b>6.11</b> Multiple Boxplots</a></li>
+<li class="chapter" data-level="6.12" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-histograms"><i class="fa fa-check"></i><b>6.12</b> Multiple Histograms</a></li>
+<li class="chapter" data-level="6.13" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplots"><i class="fa fa-check"></i><b>6.13</b> Scatterplots</a></li>
+<li class="chapter" data-level="6.14" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#scatterplot---using-color"><i class="fa fa-check"></i><b>6.14</b> Scatterplot - Using Color</a></li>
+<li class="chapter" data-level="6.15" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#multiple-scatterplots"><i class="fa fa-check"></i><b>6.15</b> Multiple Scatterplots</a></li>
+<li class="chapter" data-level="6.16" data-path="exploratory-graphs.html"><a href="exploratory-graphs.html#summary-1"><i class="fa fa-check"></i><b>6.16</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="plotting-systems.html"><a href="plotting-systems.html"><i class="fa fa-check"></i><b>7</b> Plotting Systems</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="plotting-systems.html"><a href="plotting-systems.html#the-base-plotting-system"><i class="fa fa-check"></i><b>7.1</b> The Base Plotting System</a></li>
+<li class="chapter" data-level="7.2" data-path="plotting-systems.html"><a href="plotting-systems.html#the-lattice-system"><i class="fa fa-check"></i><b>7.2</b> The Lattice System</a></li>
+<li class="chapter" data-level="7.3" data-path="plotting-systems.html"><a href="plotting-systems.html#the-ggplot2-system"><i class="fa fa-check"></i><b>7.3</b> The ggplot2 System</a></li>
+<li class="chapter" data-level="7.4" data-path="plotting-systems.html"><a href="plotting-systems.html#references-1"><i class="fa fa-check"></i><b>7.4</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="graphics-devices.html"><a href="graphics-devices.html"><i class="fa fa-check"></i><b>8</b> Graphics Devices</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="graphics-devices.html"><a href="graphics-devices.html#the-process-of-making-a-plot"><i class="fa fa-check"></i><b>8.1</b> The Process of Making a Plot</a></li>
+<li class="chapter" data-level="8.2" data-path="graphics-devices.html"><a href="graphics-devices.html#how-does-a-plot-get-created"><i class="fa fa-check"></i><b>8.2</b> How Does a Plot Get Created?</a></li>
+<li class="chapter" data-level="8.3" data-path="graphics-devices.html"><a href="graphics-devices.html#graphics-file-devices"><i class="fa fa-check"></i><b>8.3</b> Graphics File Devices</a></li>
+<li class="chapter" data-level="8.4" data-path="graphics-devices.html"><a href="graphics-devices.html#multiple-open-graphics-devices"><i class="fa fa-check"></i><b>8.4</b> Multiple Open Graphics Devices</a></li>
+<li class="chapter" data-level="8.5" data-path="graphics-devices.html"><a href="graphics-devices.html#copying-plots"><i class="fa fa-check"></i><b>8.5</b> Copying Plots</a></li>
+<li class="chapter" data-level="8.6" data-path="graphics-devices.html"><a href="graphics-devices.html#summary-2"><i class="fa fa-check"></i><b>8.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html"><i class="fa fa-check"></i><b>9</b> The Base Plotting System</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-graphics"><i class="fa fa-check"></i><b>9.1</b> Base Graphics</a></li>
+<li class="chapter" data-level="9.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#simple-base-graphics"><i class="fa fa-check"></i><b>9.2</b> Simple Base Graphics</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#histogram-1"><i class="fa fa-check"></i><b>9.2.1</b> Histogram</a></li>
+<li class="chapter" data-level="9.2.2" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#boxplot-1"><i class="fa fa-check"></i><b>9.2.2</b> Boxplot</a></li>
+<li class="chapter" data-level="9.2.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#scatterplot"><i class="fa fa-check"></i><b>9.2.3</b> Scatterplot</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#some-important-base-graphics-parameters"><i class="fa fa-check"></i><b>9.3</b> Some Important Base Graphics Parameters</a></li>
+<li class="chapter" data-level="9.4" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plotting-functions"><i class="fa fa-check"></i><b>9.4</b> Base Plotting Functions</a></li>
+<li class="chapter" data-level="9.5" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#base-plot-with-regression-line"><i class="fa fa-check"></i><b>9.5</b> Base Plot with Regression Line</a></li>
+<li class="chapter" data-level="9.6" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#multiple-base-plots"><i class="fa fa-check"></i><b>9.6</b> Multiple Base Plots</a></li>
+<li class="chapter" data-level="9.7" data-path="the-base-plotting-system-1.html"><a href="the-base-plotting-system-1.html#summary-3"><i class="fa fa-check"></i><b>9.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html"><i class="fa fa-check"></i><b>10</b> Plotting and Color in R</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colors-1-2-and-3"><i class="fa fa-check"></i><b>10.1</b> Colors 1, 2, and 3</a></li>
+<li class="chapter" data-level="10.2" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#connecting-colors-with-data"><i class="fa fa-check"></i><b>10.2</b> Connecting colors with data</a></li>
+<li class="chapter" data-level="10.3" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#color-utilities-in-r"><i class="fa fa-check"></i><b>10.3</b> Color Utilities in R</a></li>
+<li class="chapter" data-level="10.4" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramp"><i class="fa fa-check"></i><b>10.4</b> <code>colorRamp()</code></a></li>
+<li class="chapter" data-level="10.5" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#colorramppalette"><i class="fa fa-check"></i><b>10.5</b> <code>colorRampPalette()</code></a></li>
+<li class="chapter" data-level="10.6" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#rcolorbrewer-package"><i class="fa fa-check"></i><b>10.6</b> RColorBrewer Package</a></li>
+<li class="chapter" data-level="10.7" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#using-the-rcolorbrewer-palettes"><i class="fa fa-check"></i><b>10.7</b> Using the RColorBrewer palettes</a></li>
+<li class="chapter" data-level="10.8" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#the-smoothscatter-function"><i class="fa fa-check"></i><b>10.8</b> The <code>smoothScatter()</code> function</a></li>
+<li class="chapter" data-level="10.9" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#adding-transparency"><i class="fa fa-check"></i><b>10.9</b> Adding transparency</a></li>
+<li class="chapter" data-level="10.10" data-path="plotting-and-color-in-r.html"><a href="plotting-and-color-in-r.html#summary-4"><i class="fa fa-check"></i><b>10.10</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html"><i class="fa fa-check"></i><b>11</b> Hierarchical Clustering</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#hierarchical-clustering-1"><i class="fa fa-check"></i><b>11.1</b> Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.2" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#how-do-we-define-close"><i class="fa fa-check"></i><b>11.2</b> How do we define close?</a></li>
+<li class="chapter" data-level="11.3" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-euclidean-distance"><i class="fa fa-check"></i><b>11.3</b> Example: Euclidean distance</a></li>
+<li class="chapter" data-level="11.4" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-manhattan-distance"><i class="fa fa-check"></i><b>11.4</b> Example: Manhattan distance</a></li>
+<li class="chapter" data-level="11.5" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#example-hierarchical-clustering"><i class="fa fa-check"></i><b>11.5</b> Example: Hierarchical clustering</a></li>
+<li class="chapter" data-level="11.6" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#prettier-dendrograms"><i class="fa fa-check"></i><b>11.6</b> Prettier dendrograms</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-complete"><i class="fa fa-check"></i><b>11.7</b> Merging points: Complete</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#merging-points-average"><i class="fa fa-check"></i><b>11.8</b> Merging points: Average</a></li>
+<li class="chapter" data-level="11.9" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#using-the-heatmap-function"><i class="fa fa-check"></i><b>11.9</b> Using the <code>heatmap()</code> function</a></li>
+<li class="chapter" data-level="11.10" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#notes-and-further-resources"><i class="fa fa-check"></i><b>11.10</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="k-means-clustering.html"><a href="k-means-clustering.html"><i class="fa fa-check"></i><b>12</b> K-Means Clustering</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-means-clustering.html"><a href="k-means-clustering.html#illustrating-the-k-means-algorithm"><i class="fa fa-check"></i><b>12.1</b> Illustrating the K-means algorithm</a></li>
+<li class="chapter" data-level="12.2" data-path="k-means-clustering.html"><a href="k-means-clustering.html#stopping-the-algorithm"><i class="fa fa-check"></i><b>12.2</b> Stopping the algorithm</a></li>
+<li class="chapter" data-level="12.3" data-path="k-means-clustering.html"><a href="k-means-clustering.html#using-the-kmeans-function"><i class="fa fa-check"></i><b>12.3</b> Using the <code>kmeans()</code> function</a></li>
+<li class="chapter" data-level="12.4" data-path="k-means-clustering.html"><a href="k-means-clustering.html#building-heatmaps-from-k-means-solutions"><i class="fa fa-check"></i><b>12.4</b> Building heatmaps from K-means solutions</a></li>
+<li class="chapter" data-level="12.5" data-path="k-means-clustering.html"><a href="k-means-clustering.html#notes-and-further-resources-1"><i class="fa fa-check"></i><b>12.5</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="dimension-reduction.html"><a href="dimension-reduction.html"><i class="fa fa-check"></i><b>13</b> Dimension Reduction</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="dimension-reduction.html"><a href="dimension-reduction.html#matrix-data"><i class="fa fa-check"></i><b>13.1</b> Matrix data</a></li>
+<li class="chapter" data-level="13.2" data-path="dimension-reduction.html"><a href="dimension-reduction.html#patterns-in-rows-and-columns"><i class="fa fa-check"></i><b>13.2</b> Patterns in rows and columns</a></li>
+<li class="chapter" data-level="13.3" data-path="dimension-reduction.html"><a href="dimension-reduction.html#related-problem"><i class="fa fa-check"></i><b>13.3</b> Related problem</a></li>
+<li class="chapter" data-level="13.4" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-and-pca"><i class="fa fa-check"></i><b>13.4</b> SVD and PCA</a></li>
+<li class="chapter" data-level="13.5" data-path="dimension-reduction.html"><a href="dimension-reduction.html#unpacking-the-svd-u-and-v"><i class="fa fa-check"></i><b>13.5</b> Unpacking the SVD: <em>u</em> and <em>v</em></a></li>
+<li class="chapter" data-level="13.6" data-path="dimension-reduction.html"><a href="dimension-reduction.html#svd-for-data-compression"><i class="fa fa-check"></i><b>13.6</b> SVD for data compression</a></li>
+<li class="chapter" data-level="13.7" data-path="dimension-reduction.html"><a href="dimension-reduction.html#components-of-the-svd---variance-explained"><i class="fa fa-check"></i><b>13.7</b> Components of the SVD - Variance explained</a></li>
+<li class="chapter" data-level="13.8" data-path="dimension-reduction.html"><a href="dimension-reduction.html#relationship-to-principal-components"><i class="fa fa-check"></i><b>13.8</b> Relationship to principal components</a></li>
+<li class="chapter" data-level="13.9" data-path="dimension-reduction.html"><a href="dimension-reduction.html#what-if-we-add-a-second-pattern"><i class="fa fa-check"></i><b>13.9</b> What if we add a second pattern?</a></li>
+<li class="chapter" data-level="13.10" data-path="dimension-reduction.html"><a href="dimension-reduction.html#dealing-with-missing-values"><i class="fa fa-check"></i><b>13.10</b> Dealing with missing values</a></li>
+<li class="chapter" data-level="13.11" data-path="dimension-reduction.html"><a href="dimension-reduction.html#example-face-data"><i class="fa fa-check"></i><b>13.11</b> Example: Face data</a></li>
+<li class="chapter" data-level="13.12" data-path="dimension-reduction.html"><a href="dimension-reduction.html#notes-and-further-resources-2"><i class="fa fa-check"></i><b>13.12</b> Notes and further resources</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html"><i class="fa fa-check"></i><b>14</b> The ggplot2 Plotting System: Part 1</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#the-basics-qplot"><i class="fa fa-check"></i><b>14.1</b> The Basics: <code>qplot()</code></a></li>
+<li class="chapter" data-level="14.2" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#before-you-start-label-your-data"><i class="fa fa-check"></i><b>14.2</b> Before You Start: Label Your Data</a></li>
+<li class="chapter" data-level="14.3" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#ggplot2-hello-world"><i class="fa fa-check"></i><b>14.3</b> ggplot2 “Hello, world!”</a></li>
+<li class="chapter" data-level="14.4" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#modifying-aesthetics"><i class="fa fa-check"></i><b>14.4</b> Modifying aesthetics</a></li>
+<li class="chapter" data-level="14.5" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#adding-a-geom"><i class="fa fa-check"></i><b>14.5</b> Adding a geom</a></li>
+<li class="chapter" data-level="14.6" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#histograms"><i class="fa fa-check"></i><b>14.6</b> Histograms</a></li>
+<li class="chapter" data-level="14.7" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#facets"><i class="fa fa-check"></i><b>14.7</b> Facets</a></li>
+<li class="chapter" data-level="14.8" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#case-study-maacs-cohort"><i class="fa fa-check"></i><b>14.8</b> Case Study: MAACS Cohort</a></li>
+<li class="chapter" data-level="14.9" data-path="the-ggplot2-plotting-system-part-1.html"><a href="the-ggplot2-plotting-system-part-1.html#summary-of-qplot"><i class="fa fa-check"></i><b>14.9</b> Summary of qplot()</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html"><i class="fa fa-check"></i><b>15</b> The ggplot2 Plotting System: Part 2</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#basic-components-of-a-ggplot2-plot"><i class="fa fa-check"></i><b>15.1</b> Basic Components of a ggplot2 Plot</a></li>
+<li class="chapter" data-level="15.2" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#example-bmi-pm2.5-asthma"><i class="fa fa-check"></i><b>15.2</b> Example: BMI, PM2.5, Asthma</a></li>
+<li class="chapter" data-level="15.3" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#building-up-in-layers"><i class="fa fa-check"></i><b>15.3</b> Building Up in Layers</a></li>
+<li class="chapter" data-level="15.4" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#first-plot-with-point-layer"><i class="fa fa-check"></i><b>15.4</b> First Plot with Point Layer</a></li>
+<li class="chapter" data-level="15.5" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-smooth"><i class="fa fa-check"></i><b>15.5</b> Adding More Layers: Smooth</a></li>
+<li class="chapter" data-level="15.6" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#adding-more-layers-facets"><i class="fa fa-check"></i><b>15.6</b> Adding More Layers: Facets</a></li>
+<li class="chapter" data-level="15.7" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-geom-properties"><i class="fa fa-check"></i><b>15.7</b> Modifying Geom Properties</a></li>
+<li class="chapter" data-level="15.8" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#modifying-labels"><i class="fa fa-check"></i><b>15.8</b> Modifying Labels</a></li>
+<li class="chapter" data-level="15.9" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#customizing-the-smooth"><i class="fa fa-check"></i><b>15.9</b> Customizing the Smooth</a></li>
+<li class="chapter" data-level="15.10" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#changing-the-theme"><i class="fa fa-check"></i><b>15.10</b> Changing the Theme</a></li>
+<li class="chapter" data-level="15.11" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#more-complex-example"><i class="fa fa-check"></i><b>15.11</b> More Complex Example</a></li>
+<li class="chapter" data-level="15.12" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#a-quick-aside-about-axis-limits"><i class="fa fa-check"></i><b>15.12</b> A Quick Aside about Axis Limits</a></li>
+<li class="chapter" data-level="15.13" data-path="the-ggplot2-plotting-system-part-2.html"><a href="the-ggplot2-plotting-system-part-2.html#resources"><i class="fa fa-check"></i><b>15.13</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><i class="fa fa-check"></i><b>16</b> Data Analysis Case Study: Changes in Fine Particle Air Pollution in the U.S.</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#synopsis"><i class="fa fa-check"></i><b>16.1</b> Synopsis</a></li>
+<li class="chapter" data-level="16.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#loading-and-processing-the-raw-data"><i class="fa fa-check"></i><b>16.2</b> Loading and Processing the Raw Data</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-1999-data"><i class="fa fa-check"></i><b>16.2.1</b> Reading in the 1999 data</a></li>
+<li class="chapter" data-level="16.2.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#reading-in-the-2012-data"><i class="fa fa-check"></i><b>16.2.2</b> Reading in the 2012 data</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#results"><i class="fa fa-check"></i><b>16.3</b> Results</a>
+<ul>
+<li class="chapter" data-level="16.3.1" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#entire-u.s.-analysis"><i class="fa fa-check"></i><b>16.3.1</b> Entire U.S. analysis</a></li>
+<li class="chapter" data-level="16.3.2" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-pm-levels-at-an-individual-monitor"><i class="fa fa-check"></i><b>16.3.2</b> Changes in PM levels at an individual monitor</a></li>
+<li class="chapter" data-level="16.3.3" data-path="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html"><a href="data-analysis-case-study-changes-in-fine-particle-air-pollution-in-the-u-s-.html#changes-in-state-wide-pm-levels"><i class="fa fa-check"></i><b>16.3.3</b> Changes in state-wide PM levels</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i><b>17</b> About the Author</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Exploratory Data Analysis with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="exploratory-data-analysis-checklist" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Exploratory Data Analysis Checklist</h1>
+<p>In this chapter we will run through an informal “checklist” of things to do when embarking on an exploratory data analysis. As a running example I will use a dataset on hourly ozone levels in the United States for the year 2014. The elements of the checklist are</p>
+<ol style="list-style-type: decimal">
+<li><p>Formulate your question</p></li>
+<li><p>Read in your data</p></li>
+<li><p>Check the packaging</p></li>
+<li><p>Run <code>str()</code></p></li>
+<li><p>Look at the top and the bottom of your data</p></li>
+<li><p>Check your “n”s</p></li>
+<li><p>Validate with at least one external data source</p></li>
+<li><p>Try the easy solution first</p></li>
+<li><p>Challenge your solution</p></li>
+<li><p>Follow up</p></li>
+</ol>
+<div id="formulate-your-question" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Formulate your question</h2>
+<p>Formulating a question can be a useful way to guide the exploratory data analysis process and to limit the exponential number of paths that can be taken with any sizeable dataset. In particular, a <em>sharp</em> question or hypothesis can serve as a dimension reduction tool that can eliminate variables that are not immediately relevant to the question.</p>
+<p>For example, in this chapter we will be looking at an air pollution dataset from the U.S. Environmental Protection Agency (EPA). A general question one could as is</p>
+<blockquote>
+<p>Are air pollution levels higher on the east coast than on the west coast?</p>
+</blockquote>
+<p>But a more specific question might be</p>
+<blockquote>
+<p>Are hourly ozone levels on average higher in New York City than they are in Los Angeles?</p>
+</blockquote>
+<p>Note that both questions may be of interest, and neither is right or wrong. But the first question requires looking at all pollutants across the entire east and west coasts, while the second question only requires looking at single pollutant in two cities.</p>
+<p>It’s usually a good idea to spend a few minutes to figure out what is the question you’re <em>really</em> interested in, and narrow it down to be as specific as possible (without becoming uninteresting).</p>
+<p>For this chapter, we will focus on the following question:</p>
+<blockquote>
+<p>Which counties in the United States have the highest levels of ambient ozone pollution?</p>
+</blockquote>
+<p>As a side note, one of the most important questions you can answer with an exploratory data analysis is “Do I have the right data to answer this question?” Often this question is difficult ot answer at first, but can become more clear as we sort through and look at the data.</p>
+</div>
+<div id="read-in-your-data" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Read in your data</h2>
+<p>The next task in any exploratory data analysis is to read in some data. Sometimes the data will come in a very messy format and you’ll need to do some cleaning. Other times, someone else will have cleaned up that data for you so you’ll be spared the pain of having to do the cleaning.</p>
+<p>We won’t go through the pain of cleaning up a dataset here, not because it’s not important, but rather because there’s often not much generalizable knowledge to obtain from going through it. Every dataset has its unique quirks and so for now it’s probably best to not get bogged down in the details.</p>
+<p>Here we have a relatively clean dataset from the U.S. EPA on hourly ozone measurements in the entire U.S. for the year 2014. The data are available from the EPA’s <a href="https://aqs.epa.gov/aqsweb/airdata/download_files.html">Air Quality System web page</a>. I’ve simply downloaded the zip file from the web site, unzipped the archive, and put the resulting file in a directory called “data”. If you want to run this code you’ll have to use the same directory structure.</p>
+<p>The dataset is a comma-separated value (CSV) file, where each row of the file contains one hourly measurement of ozone at some location in the country.</p>
+<p><strong>NOTE</strong>: Running the code below may take a few minutes. There are 7,147,884 rows in the CSV file. If it takes too long, you can read in a subset by specifying a value for the <code>n_max</code> argument to <code>read_csv()</code> that is greater than 0.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="exploratory-data-analysis-checklist.html#cb33-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(readr)</span>
+<span id="cb33-2"><a href="exploratory-data-analysis-checklist.html#cb33-2"></a><span class="op">&gt;</span><span class="st"> </span>ozone &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/hourly_44201_2014.csv&quot;</span>, </span>
+<span id="cb33-3"><a href="exploratory-data-analysis-checklist.html#cb33-3"></a><span class="op">+</span><span class="st">                   </span><span class="dt">col_types =</span> <span class="st">&quot;ccccinnccccccncnncccccc&quot;</span>)</span></code></pre></div>
+<p>The <code>readr</code> package by Hadley Wickham is a nice package for reading in flat files <em>very</em> fast, or at least much faster than R’s built-in functions. It makes some tradeoffs to obtain that speed, so these functions are not always appropriate, but they serve our purposes here.</p>
+<p>The character string provided to the <code>col_types</code> argument specifies the class of each column in the dataset. Each letter represents the class of a column: “c” for character, “n” for numeric“, and”i" for integer. No, I didn’t magically know the classes of each column—I just looked quickly at the file to see what the column classes were. If there are too many columns, you can not specify <code>col_types</code> and <code>read_csv()</code> will try to figure it out for you.</p>
+<p>Just as a convenience for later, we can rewrite the names of the columns to remove any spaces.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="exploratory-data-analysis-checklist.html#cb34-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">names</span>(ozone) &lt;-<span class="st"> </span><span class="kw">make.names</span>(<span class="kw">names</span>(ozone))</span></code></pre></div>
+</div>
+<div id="check-the-packaging" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Check the packaging</h2>
+<p>Have you ever gotten a present <em>before</em> the time when you were allowed to open it? Sure, we all have. The problem is that the present is wrapped, but you desperately want to know what’s inside. What’s a person to do in those circumstances? Well, you can shake the box a bit, maybe knock it with your knuckle to see if it makes a hollow sound, or even weigh it to see how heavy it is. This is how you should think about your dataset before you start analyzing it for real.</p>
+<p>Assuming you don’t get any warnings or errors when reading in the dataset, you should now have an object in your workspace named <code>ozone</code>. It’s usually a good idea to poke at that object a little bit before we break open the wrapping paper.</p>
+<p>For example, you can check the number of rows and columns.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="exploratory-data-analysis-checklist.html#cb35-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">nrow</span>(ozone)</span>
+<span id="cb35-2"><a href="exploratory-data-analysis-checklist.html#cb35-2"></a>[<span class="dv">1</span>] <span class="dv">7147884</span></span>
+<span id="cb35-3"><a href="exploratory-data-analysis-checklist.html#cb35-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">ncol</span>(ozone)</span>
+<span id="cb35-4"><a href="exploratory-data-analysis-checklist.html#cb35-4"></a>[<span class="dv">1</span>] <span class="dv">23</span></span></code></pre></div>
+<p>Remember when I said there were 7,147,884 rows in the file? How does that match up with what we’ve read in? This dataset also has relatively few columns, so you might be able to check the original text file to see if the number of columns printed out (23) here matches the number of columns you see in the original file.</p>
+</div>
+<div id="run-str" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Run <code>str()</code></h2>
+<p>Another thing you can do is run <code>str()</code> on the dataset. This is usually a safe operation in the sense that even with a very large dataset, running <code>str()</code> shouldn’t take too long.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="exploratory-data-analysis-checklist.html#cb36-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">str</span>(ozone)</span>
+<span id="cb36-2"><a href="exploratory-data-analysis-checklist.html#cb36-2"></a>Classes <span class="st">&#39;tbl_df&#39;</span>, <span class="st">&#39;tbl&#39;</span> and <span class="st">&#39;data.frame&#39;</span><span class="op">:</span><span class="st">   </span><span class="dv">7147884</span> obs. of  <span class="dv">23</span> variables<span class="op">:</span></span>
+<span id="cb36-3"><a href="exploratory-data-analysis-checklist.html#cb36-3"></a><span class="st"> </span><span class="er">$</span><span class="st"> </span>State.Code         <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;01&quot;</span> <span class="st">&quot;01&quot;</span> <span class="st">&quot;01&quot;</span> <span class="st">&quot;01&quot;</span> ...</span>
+<span id="cb36-4"><a href="exploratory-data-analysis-checklist.html#cb36-4"></a> <span class="op">$</span><span class="st"> </span>County.Code        <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;003&quot;</span> <span class="st">&quot;003&quot;</span> <span class="st">&quot;003&quot;</span> <span class="st">&quot;003&quot;</span> ...</span>
+<span id="cb36-5"><a href="exploratory-data-analysis-checklist.html#cb36-5"></a> <span class="op">$</span><span class="st"> </span>Site.Num           <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;0010&quot;</span> <span class="st">&quot;0010&quot;</span> <span class="st">&quot;0010&quot;</span> <span class="st">&quot;0010&quot;</span> ...</span>
+<span id="cb36-6"><a href="exploratory-data-analysis-checklist.html#cb36-6"></a> <span class="op">$</span><span class="st"> </span>Parameter.Code     <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;44201&quot;</span> <span class="st">&quot;44201&quot;</span> <span class="st">&quot;44201&quot;</span> <span class="st">&quot;44201&quot;</span> ...</span>
+<span id="cb36-7"><a href="exploratory-data-analysis-checklist.html#cb36-7"></a> <span class="op">$</span><span class="st"> </span>POC                <span class="op">:</span><span class="st"> </span>int  <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb36-8"><a href="exploratory-data-analysis-checklist.html#cb36-8"></a> <span class="op">$</span><span class="st"> </span>Latitude           <span class="op">:</span><span class="st"> </span>num  <span class="fl">30.5</span> <span class="fl">30.5</span> <span class="fl">30.5</span> <span class="fl">30.5</span> <span class="fl">30.5</span> ...</span>
+<span id="cb36-9"><a href="exploratory-data-analysis-checklist.html#cb36-9"></a> <span class="op">$</span><span class="st"> </span>Longitude          <span class="op">:</span><span class="st"> </span>num  <span class="fl">-87.9</span> <span class="fl">-87.9</span> <span class="fl">-87.9</span> <span class="fl">-87.9</span> <span class="fl">-87.9</span> ...</span>
+<span id="cb36-10"><a href="exploratory-data-analysis-checklist.html#cb36-10"></a> <span class="op">$</span><span class="st"> </span>Datum              <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;NAD83&quot;</span> <span class="st">&quot;NAD83&quot;</span> <span class="st">&quot;NAD83&quot;</span> <span class="st">&quot;NAD83&quot;</span> ...</span>
+<span id="cb36-11"><a href="exploratory-data-analysis-checklist.html#cb36-11"></a> <span class="op">$</span><span class="st"> </span>Parameter.Name     <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;Ozone&quot;</span> <span class="st">&quot;Ozone&quot;</span> <span class="st">&quot;Ozone&quot;</span> <span class="st">&quot;Ozone&quot;</span> ...</span>
+<span id="cb36-12"><a href="exploratory-data-analysis-checklist.html#cb36-12"></a> <span class="op">$</span><span class="st"> </span>Date.Local         <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> ...</span>
+<span id="cb36-13"><a href="exploratory-data-analysis-checklist.html#cb36-13"></a> <span class="op">$</span><span class="st"> </span>Time.Local         <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;01:00&quot;</span> <span class="st">&quot;02:00&quot;</span> <span class="st">&quot;03:00&quot;</span> <span class="st">&quot;04:00&quot;</span> ...</span>
+<span id="cb36-14"><a href="exploratory-data-analysis-checklist.html#cb36-14"></a> <span class="op">$</span><span class="st"> </span>Date.GMT           <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> <span class="st">&quot;2014-03-01&quot;</span> ...</span>
+<span id="cb36-15"><a href="exploratory-data-analysis-checklist.html#cb36-15"></a> <span class="op">$</span><span class="st"> </span>Time.GMT           <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;07:00&quot;</span> <span class="st">&quot;08:00&quot;</span> <span class="st">&quot;09:00&quot;</span> <span class="st">&quot;10:00&quot;</span> ...</span>
+<span id="cb36-16"><a href="exploratory-data-analysis-checklist.html#cb36-16"></a> <span class="op">$</span><span class="st"> </span>Sample.Measurement <span class="op">:</span><span class="st"> </span>num  <span class="fl">0.047</span> <span class="fl">0.047</span> <span class="fl">0.043</span> <span class="fl">0.038</span> <span class="fl">0.035</span> <span class="fl">0.035</span> <span class="fl">0.034</span> <span class="fl">0.037</span> <span class="fl">0.044</span> <span class="fl">0.046</span> ...</span>
+<span id="cb36-17"><a href="exploratory-data-analysis-checklist.html#cb36-17"></a> <span class="op">$</span><span class="st"> </span>Units.of.Measure   <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;Parts per million&quot;</span> <span class="st">&quot;Parts per million&quot;</span> <span class="st">&quot;Parts per million&quot;</span> <span class="st">&quot;Parts per million&quot;</span> ...</span>
+<span id="cb36-18"><a href="exploratory-data-analysis-checklist.html#cb36-18"></a> <span class="op">$</span><span class="st"> </span>MDL                <span class="op">:</span><span class="st"> </span>num  <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> <span class="fl">0.005</span> ...</span>
+<span id="cb36-19"><a href="exploratory-data-analysis-checklist.html#cb36-19"></a> <span class="op">$</span><span class="st"> </span>Uncertainty        <span class="op">:</span><span class="st"> </span>num  <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> <span class="ot">NA</span> ...</span>
+<span id="cb36-20"><a href="exploratory-data-analysis-checklist.html#cb36-20"></a> <span class="op">$</span><span class="st"> </span>Qualifier          <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;&quot;</span> <span class="st">&quot;&quot;</span> <span class="st">&quot;&quot;</span> <span class="st">&quot;&quot;</span> ...</span>
+<span id="cb36-21"><a href="exploratory-data-analysis-checklist.html#cb36-21"></a> <span class="op">$</span><span class="st"> </span>Method.Type        <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;FEM&quot;</span> <span class="st">&quot;FEM&quot;</span> <span class="st">&quot;FEM&quot;</span> <span class="st">&quot;FEM&quot;</span> ...</span>
+<span id="cb36-22"><a href="exploratory-data-analysis-checklist.html#cb36-22"></a> <span class="op">$</span><span class="st"> </span>Method.Name        <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;INSTRUMENTAL - ULTRA VIOLET&quot;</span> <span class="st">&quot;INSTRUMENTAL - ULTRA VIOLET&quot;</span> <span class="st">&quot;INSTRUMENTAL - ULTRA VIOLET&quot;</span> <span class="st">&quot;INSTRUMENTAL - ULTRA VIOLET&quot;</span> ...</span>
+<span id="cb36-23"><a href="exploratory-data-analysis-checklist.html#cb36-23"></a> <span class="op">$</span><span class="st"> </span>State.Name         <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;Alabama&quot;</span> <span class="st">&quot;Alabama&quot;</span> <span class="st">&quot;Alabama&quot;</span> <span class="st">&quot;Alabama&quot;</span> ...</span>
+<span id="cb36-24"><a href="exploratory-data-analysis-checklist.html#cb36-24"></a> <span class="op">$</span><span class="st"> </span>County.Name        <span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;Baldwin&quot;</span> <span class="st">&quot;Baldwin&quot;</span> <span class="st">&quot;Baldwin&quot;</span> <span class="st">&quot;Baldwin&quot;</span> ...</span>
+<span id="cb36-25"><a href="exploratory-data-analysis-checklist.html#cb36-25"></a> <span class="op">$</span><span class="st"> </span>Date.of.Last.Change<span class="op">:</span><span class="st"> </span>chr  <span class="st">&quot;2014-06-30&quot;</span> <span class="st">&quot;2014-06-30&quot;</span> <span class="st">&quot;2014-06-30&quot;</span> <span class="st">&quot;2014-06-30&quot;</span> ...</span></code></pre></div>
+<p>The output for <code>str()</code> duplicates some information that we already have, like the number of rows and columns. More importantly, you can examine the <em>classes</em> of each of the columns to make sure they are correctly specified (i.e. numbers are <code>numeric</code> and strings are <code>character</code>, etc.). Because I pre-specified all of the column classes in <code>read_csv()</code>, they all should match up with what I specified.</p>
+<p>Often, with just these simple maneuvers, you can identify potential problems with the data before plunging in head first into a complicated data analysis.</p>
+</div>
+<div id="look-at-the-top-and-the-bottom-of-your-data" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Look at the top and the bottom of your data</h2>
+<p>I find it useful to look at the “beginning” and “end” of a dataset right after I check the packaging. This lets me know if the data were read in properly, things are properly formatted, and that everthing is there. If your data are time series data, then make sure the dates at the beginning and end of the dataset match what you expect the beginning and ending time period to be.</p>
+<p>You can peek at the top and bottom of the data with the <code>head()</code> and <code>tail()</code> functions.</p>
+<p>Here’s the top.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="exploratory-data-analysis-checklist.html#cb37-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(ozone[, <span class="kw">c</span>(<span class="dv">6</span><span class="op">:</span><span class="dv">7</span>, <span class="dv">10</span>)])</span>
+<span id="cb37-2"><a href="exploratory-data-analysis-checklist.html#cb37-2"></a>  Latitude Longitude Date.Local</span>
+<span id="cb37-3"><a href="exploratory-data-analysis-checklist.html#cb37-3"></a><span class="dv">1</span>   <span class="fl">30.498</span> <span class="fl">-87.88141</span> <span class="dv">2014-03-01</span></span>
+<span id="cb37-4"><a href="exploratory-data-analysis-checklist.html#cb37-4"></a><span class="dv">2</span>   <span class="fl">30.498</span> <span class="fl">-87.88141</span> <span class="dv">2014-03-01</span></span>
+<span id="cb37-5"><a href="exploratory-data-analysis-checklist.html#cb37-5"></a><span class="dv">3</span>   <span class="fl">30.498</span> <span class="fl">-87.88141</span> <span class="dv">2014-03-01</span></span>
+<span id="cb37-6"><a href="exploratory-data-analysis-checklist.html#cb37-6"></a><span class="dv">4</span>   <span class="fl">30.498</span> <span class="fl">-87.88141</span> <span class="dv">2014-03-01</span></span>
+<span id="cb37-7"><a href="exploratory-data-analysis-checklist.html#cb37-7"></a><span class="dv">5</span>   <span class="fl">30.498</span> <span class="fl">-87.88141</span> <span class="dv">2014-03-01</span></span>
+<span id="cb37-8"><a href="exploratory-data-analysis-checklist.html#cb37-8"></a><span class="dv">6</span>   <span class="fl">30.498</span> <span class="fl">-87.88141</span> <span class="dv">2014-03-01</span></span></code></pre></div>
+<p>For brevity I’ve only taken a few columns. And here’s the bottom.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="exploratory-data-analysis-checklist.html#cb38-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">tail</span>(ozone[, <span class="kw">c</span>(<span class="dv">6</span><span class="op">:</span><span class="dv">7</span>, <span class="dv">10</span>)])</span>
+<span id="cb38-2"><a href="exploratory-data-analysis-checklist.html#cb38-2"></a>        Latitude Longitude Date.Local</span>
+<span id="cb38-3"><a href="exploratory-data-analysis-checklist.html#cb38-3"></a><span class="dv">7147879</span> <span class="fl">18.17794</span> <span class="fl">-65.91548</span> <span class="dv">2014-09-30</span></span>
+<span id="cb38-4"><a href="exploratory-data-analysis-checklist.html#cb38-4"></a><span class="dv">7147880</span> <span class="fl">18.17794</span> <span class="fl">-65.91548</span> <span class="dv">2014-09-30</span></span>
+<span id="cb38-5"><a href="exploratory-data-analysis-checklist.html#cb38-5"></a><span class="dv">7147881</span> <span class="fl">18.17794</span> <span class="fl">-65.91548</span> <span class="dv">2014-09-30</span></span>
+<span id="cb38-6"><a href="exploratory-data-analysis-checklist.html#cb38-6"></a><span class="dv">7147882</span> <span class="fl">18.17794</span> <span class="fl">-65.91548</span> <span class="dv">2014-09-30</span></span>
+<span id="cb38-7"><a href="exploratory-data-analysis-checklist.html#cb38-7"></a><span class="dv">7147883</span> <span class="fl">18.17794</span> <span class="fl">-65.91548</span> <span class="dv">2014-09-30</span></span>
+<span id="cb38-8"><a href="exploratory-data-analysis-checklist.html#cb38-8"></a><span class="dv">7147884</span> <span class="fl">18.17794</span> <span class="fl">-65.91548</span> <span class="dv">2014-09-30</span></span></code></pre></div>
+<p>I find <code>tail()</code> to be particularly useful because often there will be some problem reading the end of a dataset and if you don’t check that you’d never know. Sometimes there’s weird formatting at the end or some extra comment lines that someone decided to stick at the end.</p>
+<p>Make sure to check all the columns and verify that all of the data in each column looks the way it’s supposed to look. This isn’t a foolproof approach, because we’re only looking at a few rows, but it’s a decent start.</p>
+</div>
+<div id="check-your-ns" class="section level2" number="4.6">
+<h2><span class="header-section-number">4.6</span> Check your “n”s</h2>
+<p>In general, counting things is usually a good way to figure out if anything is wrong or not. In the simplest case, if you’re expecting there to be 1,000 observations and it turns out there’s only 20, you know something must have gone wrong somewhere. But there are other areas that you can check depending on your application. To do this properly, you need to identify some <em>landmarks</em> that can be used to check against your data. For example, if you are collecting data on people, such as in a survey or clinical trial, then you should know how many people there are in your study. That’s something you should check in your dataset, to make sure that you have data on all the people you thought you would have data on.</p>
+<p>In this example, we will use the fact that the dataset purportedly contains <em>hourly</em> data for the <em>entire country</em>. These will be our two landmarks for comparison.</p>
+<p>Here, we have hourly ozone data that comes from monitors across the country. The monitors should be monitoring continuously during the day, so all hours should be represented. We can take a look at the <code>Time.Local</code> variable to see what time measurements are recorded as being taken.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="exploratory-data-analysis-checklist.html#cb39-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">table</span>(ozone<span class="op">$</span>Time.Local)</span>
+<span id="cb39-2"><a href="exploratory-data-analysis-checklist.html#cb39-2"></a></span>
+<span id="cb39-3"><a href="exploratory-data-analysis-checklist.html#cb39-3"></a> <span class="dv">00</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">00</span><span class="op">:</span><span class="dv">01</span>  <span class="dv">01</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">01</span><span class="op">:</span><span class="dv">02</span>  <span class="dv">02</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">02</span><span class="op">:</span><span class="dv">03</span>  <span class="dv">03</span><span class="op">:</span><span class="dv">00</span> </span>
+<span id="cb39-4"><a href="exploratory-data-analysis-checklist.html#cb39-4"></a><span class="dv">288698</span>      <span class="dv">2</span> <span class="dv">290871</span>      <span class="dv">2</span> <span class="dv">283709</span>      <span class="dv">2</span> <span class="dv">282951</span> </span>
+<span id="cb39-5"><a href="exploratory-data-analysis-checklist.html#cb39-5"></a> <span class="dv">03</span><span class="op">:</span><span class="dv">04</span>  <span class="dv">04</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">04</span><span class="op">:</span><span class="dv">05</span>  <span class="dv">05</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">05</span><span class="op">:</span><span class="dv">06</span>  <span class="dv">06</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">06</span><span class="op">:</span><span class="dv">07</span> </span>
+<span id="cb39-6"><a href="exploratory-data-analysis-checklist.html#cb39-6"></a>     <span class="dv">2</span> <span class="dv">288963</span>      <span class="dv">2</span> <span class="dv">302696</span>      <span class="dv">2</span> <span class="dv">302356</span>      <span class="dv">2</span> </span>
+<span id="cb39-7"><a href="exploratory-data-analysis-checklist.html#cb39-7"></a> <span class="dv">07</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">07</span><span class="op">:</span><span class="dv">08</span>  <span class="dv">08</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">08</span><span class="op">:</span><span class="dv">09</span>  <span class="dv">09</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">09</span><span class="op">:</span><span class="dv">10</span>  <span class="dv">10</span><span class="op">:</span><span class="dv">00</span> </span>
+<span id="cb39-8"><a href="exploratory-data-analysis-checklist.html#cb39-8"></a><span class="dv">300950</span>      <span class="dv">2</span> <span class="dv">298566</span>      <span class="dv">2</span> <span class="dv">297154</span>      <span class="dv">2</span> <span class="dv">297132</span> </span>
+<span id="cb39-9"><a href="exploratory-data-analysis-checklist.html#cb39-9"></a> <span class="dv">10</span><span class="op">:</span><span class="dv">11</span>  <span class="dv">11</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">11</span><span class="op">:</span><span class="dv">12</span>  <span class="dv">12</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">12</span><span class="op">:</span><span class="dv">13</span>  <span class="dv">13</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">13</span><span class="op">:</span><span class="dv">14</span> </span>
+<span id="cb39-10"><a href="exploratory-data-analysis-checklist.html#cb39-10"></a>     <span class="dv">2</span> <span class="dv">298125</span>      <span class="dv">2</span> <span class="dv">298297</span>      <span class="dv">2</span> <span class="dv">299997</span>      <span class="dv">2</span> </span>
+<span id="cb39-11"><a href="exploratory-data-analysis-checklist.html#cb39-11"></a> <span class="dv">14</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">14</span><span class="op">:</span><span class="dv">15</span>  <span class="dv">15</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">15</span><span class="op">:</span><span class="dv">16</span>  <span class="dv">16</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">16</span><span class="op">:</span><span class="dv">17</span>  <span class="dv">17</span><span class="op">:</span><span class="dv">00</span> </span>
+<span id="cb39-12"><a href="exploratory-data-analysis-checklist.html#cb39-12"></a><span class="dv">301410</span>      <span class="dv">2</span> <span class="dv">302636</span>      <span class="dv">2</span> <span class="dv">303387</span>      <span class="dv">2</span> <span class="dv">303806</span> </span>
+<span id="cb39-13"><a href="exploratory-data-analysis-checklist.html#cb39-13"></a> <span class="dv">17</span><span class="op">:</span><span class="dv">18</span>  <span class="dv">18</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">18</span><span class="op">:</span><span class="dv">19</span>  <span class="dv">19</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">19</span><span class="op">:</span><span class="dv">20</span>  <span class="dv">20</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">20</span><span class="op">:</span><span class="dv">21</span> </span>
+<span id="cb39-14"><a href="exploratory-data-analysis-checklist.html#cb39-14"></a>     <span class="dv">2</span> <span class="dv">303795</span>      <span class="dv">2</span> <span class="dv">304268</span>      <span class="dv">2</span> <span class="dv">304268</span>      <span class="dv">2</span> </span>
+<span id="cb39-15"><a href="exploratory-data-analysis-checklist.html#cb39-15"></a> <span class="dv">21</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">21</span><span class="op">:</span><span class="dv">22</span>  <span class="dv">22</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">22</span><span class="op">:</span><span class="dv">23</span>  <span class="dv">23</span><span class="op">:</span><span class="dv">00</span>  <span class="dv">23</span><span class="op">:</span><span class="dv">24</span> </span>
+<span id="cb39-16"><a href="exploratory-data-analysis-checklist.html#cb39-16"></a><span class="dv">303551</span>      <span class="dv">2</span> <span class="dv">295701</span>      <span class="dv">2</span> <span class="dv">294549</span>      <span class="dv">2</span> </span></code></pre></div>
+<p>One thing we notice here is that while almost all measurements in the dataset are recorded as being taken on the hour, some are taken at slightly different times. Such a small number of readings are taken at these off times that we might not want to care. But it does seem a bit odd, so it might be worth a quick check.</p>
+<p>We can take a look at which observations were measured at time “00:01”.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="exploratory-data-analysis-checklist.html#cb40-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(dplyr)</span>
+<span id="cb40-2"><a href="exploratory-data-analysis-checklist.html#cb40-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">filter</span>(ozone, Time.Local <span class="op">==</span><span class="st"> &quot;13:14&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-3"><a href="exploratory-data-analysis-checklist.html#cb40-3"></a><span class="op">+</span><span class="st">         </span><span class="kw">select</span>(State.Name, County.Name, Date.Local, </span>
+<span id="cb40-4"><a href="exploratory-data-analysis-checklist.html#cb40-4"></a><span class="op">+</span><span class="st">                </span>Time.Local, Sample.Measurement)</span>
+<span id="cb40-5"><a href="exploratory-data-analysis-checklist.html#cb40-5"></a><span class="co"># A tibble: 2 x 5</span></span>
+<span id="cb40-6"><a href="exploratory-data-analysis-checklist.html#cb40-6"></a>  State.Name County.Name Date.Local Time.Local</span>
+<span id="cb40-7"><a href="exploratory-data-analysis-checklist.html#cb40-7"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span></span>
+<span id="cb40-8"><a href="exploratory-data-analysis-checklist.html#cb40-8"></a><span class="dv">1</span> New York   Franklin    <span class="dv">2014-09-30</span> <span class="dv">13</span><span class="op">:</span><span class="dv">14</span>     </span>
+<span id="cb40-9"><a href="exploratory-data-analysis-checklist.html#cb40-9"></a><span class="dv">2</span> New York   Franklin    <span class="dv">2014-09-30</span> <span class="dv">13</span><span class="op">:</span><span class="dv">14</span>     </span>
+<span id="cb40-10"><a href="exploratory-data-analysis-checklist.html#cb40-10"></a><span class="co"># … with 1 more variable:</span></span>
+<span id="cb40-11"><a href="exploratory-data-analysis-checklist.html#cb40-11"></a><span class="co">#   Sample.Measurement &lt;dbl&gt;</span></span></code></pre></div>
+<p>We can see that it’s a monitor in Franklin County, New York and that the measurements were taken on September 30, 2014. What if we just pulled all of the measurements taken at this monitor on this date?</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="exploratory-data-analysis-checklist.html#cb41-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">filter</span>(ozone, State.Code <span class="op">==</span><span class="st"> &quot;36&quot;</span> </span>
+<span id="cb41-2"><a href="exploratory-data-analysis-checklist.html#cb41-2"></a><span class="op">+</span><span class="st">        </span><span class="er">&amp;</span><span class="st"> </span>County.Code <span class="op">==</span><span class="st"> &quot;033&quot;</span> </span>
+<span id="cb41-3"><a href="exploratory-data-analysis-checklist.html#cb41-3"></a><span class="op">+</span><span class="st">        </span><span class="er">&amp;</span><span class="st"> </span>Date.Local <span class="op">==</span><span class="st"> &quot;2014-09-30&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb41-4"><a href="exploratory-data-analysis-checklist.html#cb41-4"></a><span class="op">+</span><span class="st">         </span><span class="kw">select</span>(Date.Local, Time.Local, </span>
+<span id="cb41-5"><a href="exploratory-data-analysis-checklist.html#cb41-5"></a><span class="op">+</span><span class="st">                </span>Sample.Measurement) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb41-6"><a href="exploratory-data-analysis-checklist.html#cb41-6"></a><span class="op">+</span><span class="st">         </span>as.data.frame</span>
+<span id="cb41-7"><a href="exploratory-data-analysis-checklist.html#cb41-7"></a>   Date.Local Time.Local Sample.Measurement</span>
+<span id="cb41-8"><a href="exploratory-data-analysis-checklist.html#cb41-8"></a><span class="dv">1</span>  <span class="dv">2014-09-30</span>      <span class="dv">00</span><span class="op">:</span><span class="dv">01</span>              <span class="fl">0.011</span></span>
+<span id="cb41-9"><a href="exploratory-data-analysis-checklist.html#cb41-9"></a><span class="dv">2</span>  <span class="dv">2014-09-30</span>      <span class="dv">01</span><span class="op">:</span><span class="dv">02</span>              <span class="fl">0.012</span></span>
+<span id="cb41-10"><a href="exploratory-data-analysis-checklist.html#cb41-10"></a><span class="dv">3</span>  <span class="dv">2014-09-30</span>      <span class="dv">02</span><span class="op">:</span><span class="dv">03</span>              <span class="fl">0.012</span></span>
+<span id="cb41-11"><a href="exploratory-data-analysis-checklist.html#cb41-11"></a><span class="dv">4</span>  <span class="dv">2014-09-30</span>      <span class="dv">03</span><span class="op">:</span><span class="dv">04</span>              <span class="fl">0.011</span></span>
+<span id="cb41-12"><a href="exploratory-data-analysis-checklist.html#cb41-12"></a><span class="dv">5</span>  <span class="dv">2014-09-30</span>      <span class="dv">04</span><span class="op">:</span><span class="dv">05</span>              <span class="fl">0.011</span></span>
+<span id="cb41-13"><a href="exploratory-data-analysis-checklist.html#cb41-13"></a><span class="dv">6</span>  <span class="dv">2014-09-30</span>      <span class="dv">05</span><span class="op">:</span><span class="dv">06</span>              <span class="fl">0.011</span></span>
+<span id="cb41-14"><a href="exploratory-data-analysis-checklist.html#cb41-14"></a><span class="dv">7</span>  <span class="dv">2014-09-30</span>      <span class="dv">06</span><span class="op">:</span><span class="dv">07</span>              <span class="fl">0.010</span></span>
+<span id="cb41-15"><a href="exploratory-data-analysis-checklist.html#cb41-15"></a><span class="dv">8</span>  <span class="dv">2014-09-30</span>      <span class="dv">07</span><span class="op">:</span><span class="dv">08</span>              <span class="fl">0.010</span></span>
+<span id="cb41-16"><a href="exploratory-data-analysis-checklist.html#cb41-16"></a><span class="dv">9</span>  <span class="dv">2014-09-30</span>      <span class="dv">08</span><span class="op">:</span><span class="dv">09</span>              <span class="fl">0.010</span></span>
+<span id="cb41-17"><a href="exploratory-data-analysis-checklist.html#cb41-17"></a><span class="dv">10</span> <span class="dv">2014-09-30</span>      <span class="dv">09</span><span class="op">:</span><span class="dv">10</span>              <span class="fl">0.010</span></span>
+<span id="cb41-18"><a href="exploratory-data-analysis-checklist.html#cb41-18"></a><span class="dv">11</span> <span class="dv">2014-09-30</span>      <span class="dv">10</span><span class="op">:</span><span class="dv">11</span>              <span class="fl">0.010</span></span>
+<span id="cb41-19"><a href="exploratory-data-analysis-checklist.html#cb41-19"></a><span class="dv">12</span> <span class="dv">2014-09-30</span>      <span class="dv">11</span><span class="op">:</span><span class="dv">12</span>              <span class="fl">0.012</span></span>
+<span id="cb41-20"><a href="exploratory-data-analysis-checklist.html#cb41-20"></a><span class="dv">13</span> <span class="dv">2014-09-30</span>      <span class="dv">12</span><span class="op">:</span><span class="dv">13</span>              <span class="fl">0.011</span></span>
+<span id="cb41-21"><a href="exploratory-data-analysis-checklist.html#cb41-21"></a><span class="dv">14</span> <span class="dv">2014-09-30</span>      <span class="dv">13</span><span class="op">:</span><span class="dv">14</span>              <span class="fl">0.013</span></span>
+<span id="cb41-22"><a href="exploratory-data-analysis-checklist.html#cb41-22"></a><span class="dv">15</span> <span class="dv">2014-09-30</span>      <span class="dv">14</span><span class="op">:</span><span class="dv">15</span>              <span class="fl">0.016</span></span>
+<span id="cb41-23"><a href="exploratory-data-analysis-checklist.html#cb41-23"></a><span class="dv">16</span> <span class="dv">2014-09-30</span>      <span class="dv">15</span><span class="op">:</span><span class="dv">16</span>              <span class="fl">0.017</span></span>
+<span id="cb41-24"><a href="exploratory-data-analysis-checklist.html#cb41-24"></a><span class="dv">17</span> <span class="dv">2014-09-30</span>      <span class="dv">16</span><span class="op">:</span><span class="dv">17</span>              <span class="fl">0.017</span></span>
+<span id="cb41-25"><a href="exploratory-data-analysis-checklist.html#cb41-25"></a><span class="dv">18</span> <span class="dv">2014-09-30</span>      <span class="dv">17</span><span class="op">:</span><span class="dv">18</span>              <span class="fl">0.015</span></span>
+<span id="cb41-26"><a href="exploratory-data-analysis-checklist.html#cb41-26"></a><span class="dv">19</span> <span class="dv">2014-09-30</span>      <span class="dv">18</span><span class="op">:</span><span class="dv">19</span>              <span class="fl">0.017</span></span>
+<span id="cb41-27"><a href="exploratory-data-analysis-checklist.html#cb41-27"></a><span class="dv">20</span> <span class="dv">2014-09-30</span>      <span class="dv">19</span><span class="op">:</span><span class="dv">20</span>              <span class="fl">0.014</span></span>
+<span id="cb41-28"><a href="exploratory-data-analysis-checklist.html#cb41-28"></a><span class="dv">21</span> <span class="dv">2014-09-30</span>      <span class="dv">20</span><span class="op">:</span><span class="dv">21</span>              <span class="fl">0.014</span></span>
+<span id="cb41-29"><a href="exploratory-data-analysis-checklist.html#cb41-29"></a><span class="dv">22</span> <span class="dv">2014-09-30</span>      <span class="dv">21</span><span class="op">:</span><span class="dv">22</span>              <span class="fl">0.011</span></span>
+<span id="cb41-30"><a href="exploratory-data-analysis-checklist.html#cb41-30"></a><span class="dv">23</span> <span class="dv">2014-09-30</span>      <span class="dv">22</span><span class="op">:</span><span class="dv">23</span>              <span class="fl">0.010</span></span>
+<span id="cb41-31"><a href="exploratory-data-analysis-checklist.html#cb41-31"></a><span class="dv">24</span> <span class="dv">2014-09-30</span>      <span class="dv">23</span><span class="op">:</span><span class="dv">24</span>              <span class="fl">0.010</span></span>
+<span id="cb41-32"><a href="exploratory-data-analysis-checklist.html#cb41-32"></a><span class="dv">25</span> <span class="dv">2014-09-30</span>      <span class="dv">00</span><span class="op">:</span><span class="dv">01</span>              <span class="fl">0.010</span></span>
+<span id="cb41-33"><a href="exploratory-data-analysis-checklist.html#cb41-33"></a><span class="dv">26</span> <span class="dv">2014-09-30</span>      <span class="dv">01</span><span class="op">:</span><span class="dv">02</span>              <span class="fl">0.011</span></span>
+<span id="cb41-34"><a href="exploratory-data-analysis-checklist.html#cb41-34"></a><span class="dv">27</span> <span class="dv">2014-09-30</span>      <span class="dv">02</span><span class="op">:</span><span class="dv">03</span>              <span class="fl">0.011</span></span>
+<span id="cb41-35"><a href="exploratory-data-analysis-checklist.html#cb41-35"></a><span class="dv">28</span> <span class="dv">2014-09-30</span>      <span class="dv">03</span><span class="op">:</span><span class="dv">04</span>              <span class="fl">0.010</span></span>
+<span id="cb41-36"><a href="exploratory-data-analysis-checklist.html#cb41-36"></a><span class="dv">29</span> <span class="dv">2014-09-30</span>      <span class="dv">04</span><span class="op">:</span><span class="dv">05</span>              <span class="fl">0.010</span></span>
+<span id="cb41-37"><a href="exploratory-data-analysis-checklist.html#cb41-37"></a><span class="dv">30</span> <span class="dv">2014-09-30</span>      <span class="dv">05</span><span class="op">:</span><span class="dv">06</span>              <span class="fl">0.010</span></span>
+<span id="cb41-38"><a href="exploratory-data-analysis-checklist.html#cb41-38"></a><span class="dv">31</span> <span class="dv">2014-09-30</span>      <span class="dv">06</span><span class="op">:</span><span class="dv">07</span>              <span class="fl">0.009</span></span>
+<span id="cb41-39"><a href="exploratory-data-analysis-checklist.html#cb41-39"></a><span class="dv">32</span> <span class="dv">2014-09-30</span>      <span class="dv">07</span><span class="op">:</span><span class="dv">08</span>              <span class="fl">0.008</span></span>
+<span id="cb41-40"><a href="exploratory-data-analysis-checklist.html#cb41-40"></a><span class="dv">33</span> <span class="dv">2014-09-30</span>      <span class="dv">08</span><span class="op">:</span><span class="dv">09</span>              <span class="fl">0.009</span></span>
+<span id="cb41-41"><a href="exploratory-data-analysis-checklist.html#cb41-41"></a><span class="dv">34</span> <span class="dv">2014-09-30</span>      <span class="dv">09</span><span class="op">:</span><span class="dv">10</span>              <span class="fl">0.009</span></span>
+<span id="cb41-42"><a href="exploratory-data-analysis-checklist.html#cb41-42"></a><span class="dv">35</span> <span class="dv">2014-09-30</span>      <span class="dv">10</span><span class="op">:</span><span class="dv">11</span>              <span class="fl">0.009</span></span>
+<span id="cb41-43"><a href="exploratory-data-analysis-checklist.html#cb41-43"></a><span class="dv">36</span> <span class="dv">2014-09-30</span>      <span class="dv">11</span><span class="op">:</span><span class="dv">12</span>              <span class="fl">0.011</span></span>
+<span id="cb41-44"><a href="exploratory-data-analysis-checklist.html#cb41-44"></a><span class="dv">37</span> <span class="dv">2014-09-30</span>      <span class="dv">12</span><span class="op">:</span><span class="dv">13</span>              <span class="fl">0.010</span></span>
+<span id="cb41-45"><a href="exploratory-data-analysis-checklist.html#cb41-45"></a><span class="dv">38</span> <span class="dv">2014-09-30</span>      <span class="dv">13</span><span class="op">:</span><span class="dv">14</span>              <span class="fl">0.012</span></span>
+<span id="cb41-46"><a href="exploratory-data-analysis-checklist.html#cb41-46"></a><span class="dv">39</span> <span class="dv">2014-09-30</span>      <span class="dv">14</span><span class="op">:</span><span class="dv">15</span>              <span class="fl">0.015</span></span>
+<span id="cb41-47"><a href="exploratory-data-analysis-checklist.html#cb41-47"></a><span class="dv">40</span> <span class="dv">2014-09-30</span>      <span class="dv">15</span><span class="op">:</span><span class="dv">16</span>              <span class="fl">0.016</span></span>
+<span id="cb41-48"><a href="exploratory-data-analysis-checklist.html#cb41-48"></a><span class="dv">41</span> <span class="dv">2014-09-30</span>      <span class="dv">16</span><span class="op">:</span><span class="dv">17</span>              <span class="fl">0.016</span></span>
+<span id="cb41-49"><a href="exploratory-data-analysis-checklist.html#cb41-49"></a><span class="dv">42</span> <span class="dv">2014-09-30</span>      <span class="dv">17</span><span class="op">:</span><span class="dv">18</span>              <span class="fl">0.014</span></span>
+<span id="cb41-50"><a href="exploratory-data-analysis-checklist.html#cb41-50"></a><span class="dv">43</span> <span class="dv">2014-09-30</span>      <span class="dv">18</span><span class="op">:</span><span class="dv">19</span>              <span class="fl">0.016</span></span>
+<span id="cb41-51"><a href="exploratory-data-analysis-checklist.html#cb41-51"></a><span class="dv">44</span> <span class="dv">2014-09-30</span>      <span class="dv">19</span><span class="op">:</span><span class="dv">20</span>              <span class="fl">0.013</span></span>
+<span id="cb41-52"><a href="exploratory-data-analysis-checklist.html#cb41-52"></a><span class="dv">45</span> <span class="dv">2014-09-30</span>      <span class="dv">20</span><span class="op">:</span><span class="dv">21</span>              <span class="fl">0.013</span></span>
+<span id="cb41-53"><a href="exploratory-data-analysis-checklist.html#cb41-53"></a><span class="dv">46</span> <span class="dv">2014-09-30</span>      <span class="dv">21</span><span class="op">:</span><span class="dv">22</span>              <span class="fl">0.010</span></span>
+<span id="cb41-54"><a href="exploratory-data-analysis-checklist.html#cb41-54"></a><span class="dv">47</span> <span class="dv">2014-09-30</span>      <span class="dv">22</span><span class="op">:</span><span class="dv">23</span>              <span class="fl">0.009</span></span>
+<span id="cb41-55"><a href="exploratory-data-analysis-checklist.html#cb41-55"></a><span class="dv">48</span> <span class="dv">2014-09-30</span>      <span class="dv">23</span><span class="op">:</span><span class="dv">24</span>              <span class="fl">0.009</span></span></code></pre></div>
+<p>Now we can see that this monitor just records its values at odd times, rather than on the hour. It seems, from looking at the previous output, that this is the only monitor in the country that does this, so it’s probably not something we should worry about.</p>
+<p>Since EPA monitors pollution across the country, there should be a good representation of states. Perhaps we should see exactly how many states are represented in this dataset.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="exploratory-data-analysis-checklist.html#cb42-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">select</span>(ozone, State.Name) <span class="op">%&gt;%</span><span class="st"> </span>unique <span class="op">%&gt;%</span><span class="st"> </span>nrow</span>
+<span id="cb42-2"><a href="exploratory-data-analysis-checklist.html#cb42-2"></a>[<span class="dv">1</span>] <span class="dv">52</span></span></code></pre></div>
+<p>So it seems the representation is a bit too good—there are 52 states in the dataset, but only 50 states in the U.S.!</p>
+<p>We can take a look at the unique elements of the <code>State.Name</code> variable to see what’s going on.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="exploratory-data-analysis-checklist.html#cb43-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">unique</span>(ozone<span class="op">$</span>State.Name)</span>
+<span id="cb43-2"><a href="exploratory-data-analysis-checklist.html#cb43-2"></a> [<span class="dv">1</span>] <span class="st">&quot;Alabama&quot;</span>              <span class="st">&quot;Alaska&quot;</span>              </span>
+<span id="cb43-3"><a href="exploratory-data-analysis-checklist.html#cb43-3"></a> [<span class="dv">3</span>] <span class="st">&quot;Arizona&quot;</span>              <span class="st">&quot;Arkansas&quot;</span>            </span>
+<span id="cb43-4"><a href="exploratory-data-analysis-checklist.html#cb43-4"></a> [<span class="dv">5</span>] <span class="st">&quot;California&quot;</span>           <span class="st">&quot;Colorado&quot;</span>            </span>
+<span id="cb43-5"><a href="exploratory-data-analysis-checklist.html#cb43-5"></a> [<span class="dv">7</span>] <span class="st">&quot;Connecticut&quot;</span>          <span class="st">&quot;Delaware&quot;</span>            </span>
+<span id="cb43-6"><a href="exploratory-data-analysis-checklist.html#cb43-6"></a> [<span class="dv">9</span>] <span class="st">&quot;District Of Columbia&quot;</span> <span class="st">&quot;Florida&quot;</span>             </span>
+<span id="cb43-7"><a href="exploratory-data-analysis-checklist.html#cb43-7"></a>[<span class="dv">11</span>] <span class="st">&quot;Georgia&quot;</span>              <span class="st">&quot;Hawaii&quot;</span>              </span>
+<span id="cb43-8"><a href="exploratory-data-analysis-checklist.html#cb43-8"></a>[<span class="dv">13</span>] <span class="st">&quot;Idaho&quot;</span>                <span class="st">&quot;Illinois&quot;</span>            </span>
+<span id="cb43-9"><a href="exploratory-data-analysis-checklist.html#cb43-9"></a>[<span class="dv">15</span>] <span class="st">&quot;Indiana&quot;</span>              <span class="st">&quot;Iowa&quot;</span>                </span>
+<span id="cb43-10"><a href="exploratory-data-analysis-checklist.html#cb43-10"></a>[<span class="dv">17</span>] <span class="st">&quot;Kansas&quot;</span>               <span class="st">&quot;Kentucky&quot;</span>            </span>
+<span id="cb43-11"><a href="exploratory-data-analysis-checklist.html#cb43-11"></a>[<span class="dv">19</span>] <span class="st">&quot;Louisiana&quot;</span>            <span class="st">&quot;Maine&quot;</span>               </span>
+<span id="cb43-12"><a href="exploratory-data-analysis-checklist.html#cb43-12"></a>[<span class="dv">21</span>] <span class="st">&quot;Maryland&quot;</span>             <span class="st">&quot;Massachusetts&quot;</span>       </span>
+<span id="cb43-13"><a href="exploratory-data-analysis-checklist.html#cb43-13"></a>[<span class="dv">23</span>] <span class="st">&quot;Michigan&quot;</span>             <span class="st">&quot;Minnesota&quot;</span>           </span>
+<span id="cb43-14"><a href="exploratory-data-analysis-checklist.html#cb43-14"></a>[<span class="dv">25</span>] <span class="st">&quot;Mississippi&quot;</span>          <span class="st">&quot;Missouri&quot;</span>            </span>
+<span id="cb43-15"><a href="exploratory-data-analysis-checklist.html#cb43-15"></a>[<span class="dv">27</span>] <span class="st">&quot;Montana&quot;</span>              <span class="st">&quot;Nebraska&quot;</span>            </span>
+<span id="cb43-16"><a href="exploratory-data-analysis-checklist.html#cb43-16"></a>[<span class="dv">29</span>] <span class="st">&quot;Nevada&quot;</span>               <span class="st">&quot;New Hampshire&quot;</span>       </span>
+<span id="cb43-17"><a href="exploratory-data-analysis-checklist.html#cb43-17"></a>[<span class="dv">31</span>] <span class="st">&quot;New Jersey&quot;</span>           <span class="st">&quot;New Mexico&quot;</span>          </span>
+<span id="cb43-18"><a href="exploratory-data-analysis-checklist.html#cb43-18"></a>[<span class="dv">33</span>] <span class="st">&quot;New York&quot;</span>             <span class="st">&quot;North Carolina&quot;</span>      </span>
+<span id="cb43-19"><a href="exploratory-data-analysis-checklist.html#cb43-19"></a>[<span class="dv">35</span>] <span class="st">&quot;North Dakota&quot;</span>         <span class="st">&quot;Ohio&quot;</span>                </span>
+<span id="cb43-20"><a href="exploratory-data-analysis-checklist.html#cb43-20"></a>[<span class="dv">37</span>] <span class="st">&quot;Oklahoma&quot;</span>             <span class="st">&quot;Oregon&quot;</span>              </span>
+<span id="cb43-21"><a href="exploratory-data-analysis-checklist.html#cb43-21"></a>[<span class="dv">39</span>] <span class="st">&quot;Pennsylvania&quot;</span>         <span class="st">&quot;Rhode Island&quot;</span>        </span>
+<span id="cb43-22"><a href="exploratory-data-analysis-checklist.html#cb43-22"></a>[<span class="dv">41</span>] <span class="st">&quot;South Carolina&quot;</span>       <span class="st">&quot;South Dakota&quot;</span>        </span>
+<span id="cb43-23"><a href="exploratory-data-analysis-checklist.html#cb43-23"></a>[<span class="dv">43</span>] <span class="st">&quot;Tennessee&quot;</span>            <span class="st">&quot;Texas&quot;</span>               </span>
+<span id="cb43-24"><a href="exploratory-data-analysis-checklist.html#cb43-24"></a>[<span class="dv">45</span>] <span class="st">&quot;Utah&quot;</span>                 <span class="st">&quot;Vermont&quot;</span>             </span>
+<span id="cb43-25"><a href="exploratory-data-analysis-checklist.html#cb43-25"></a>[<span class="dv">47</span>] <span class="st">&quot;Virginia&quot;</span>             <span class="st">&quot;Washington&quot;</span>          </span>
+<span id="cb43-26"><a href="exploratory-data-analysis-checklist.html#cb43-26"></a>[<span class="dv">49</span>] <span class="st">&quot;West Virginia&quot;</span>        <span class="st">&quot;Wisconsin&quot;</span>           </span>
+<span id="cb43-27"><a href="exploratory-data-analysis-checklist.html#cb43-27"></a>[<span class="dv">51</span>] <span class="st">&quot;Wyoming&quot;</span>              <span class="st">&quot;Puerto Rico&quot;</span>         </span></code></pre></div>
+<p>Now we can see that Washington, D.C. (District of Columbia) and Puerto Rico are the “extra” states included in the dataset. Since they are clearly part of the U.S. (but not official states of the union) that all seems okay.</p>
+<p>This last bit of analysis made use of something we will discuss in the next section: external data. We knew that there are only 50 states in the U.S., so seeing 52 state names was an immediate trigger that something might be off. In this case, all was well, but validating your data with an external data source can be very useful.</p>
+</div>
+<div id="validate-with-at-least-one-external-data-source" class="section level2" number="4.7">
+<h2><span class="header-section-number">4.7</span> Validate with at least one external data source</h2>
+<p>Making sure your data matches something outside of the dataset is very important. It allows you to ensure that the measurements are roughly in line with what they should be and it serves as a check on what <em>other</em> things might be wrong in your dataset. External validation can often be as simple as checking your data against a single number, as we will do here.</p>
+<p>In the U.S. we have national ambient air quality standards, and for ozone, the <a href="http://www.epa.gov/ttn/naaqs/standards/ozone/s_o3_history.html">current standard</a> set in 2008 is that the “annual fourth-highest daily maximum 8-hr concentration, averaged over 3 years” should not exceed 0.075 parts per million (ppm). The exact details of how to calculate this are not important for this analysis, but roughly speaking, the 8-hour average concentration should not be too much higher than 0.075 ppm (it can be higher because of the way the standard is worded).</p>
+<p>Let’s take a look at the hourly measurements of ozone.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="exploratory-data-analysis-checklist.html#cb44-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(ozone<span class="op">$</span>Sample.Measurement)</span>
+<span id="cb44-2"><a href="exploratory-data-analysis-checklist.html#cb44-2"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span id="cb44-3"><a href="exploratory-data-analysis-checklist.html#cb44-3"></a><span class="fl">0.00000</span> <span class="fl">0.02000</span> <span class="fl">0.03200</span> <span class="fl">0.03123</span> <span class="fl">0.04200</span> <span class="fl">0.34900</span> </span></code></pre></div>
+<p>From the summary we can see that the maximum hourly concentration is quite high (0.349 ppm) but that in general, the bulk of the distribution is far below 0.075.</p>
+<p>We can get a bit more detail on the distribution by looking at deciles of the data.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="exploratory-data-analysis-checklist.html#cb45-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">quantile</span>(ozone<span class="op">$</span>Sample.Measurement, <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.1</span>))</span>
+<span id="cb45-2"><a href="exploratory-data-analysis-checklist.html#cb45-2"></a>   <span class="dv">0</span><span class="op">%   10%</span><span class="st">   </span><span class="dv">20</span><span class="op">%   30%</span><span class="st">   </span><span class="dv">40</span><span class="op">%   50%</span><span class="st">   </span><span class="dv">60</span><span class="op">%   70%</span><span class="st"> </span></span>
+<span id="cb45-3"><a href="exploratory-data-analysis-checklist.html#cb45-3"></a><span class="fl">0.000</span> <span class="fl">0.010</span> <span class="fl">0.018</span> <span class="fl">0.023</span> <span class="fl">0.028</span> <span class="fl">0.032</span> <span class="fl">0.036</span> <span class="fl">0.040</span> </span>
+<span id="cb45-4"><a href="exploratory-data-analysis-checklist.html#cb45-4"></a>  <span class="dv">80</span><span class="op">%   90%</span><span class="st">  </span><span class="dv">100</span>% </span>
+<span id="cb45-5"><a href="exploratory-data-analysis-checklist.html#cb45-5"></a><span class="fl">0.044</span> <span class="fl">0.051</span> <span class="fl">0.349</span> </span></code></pre></div>
+<p>Knowing that the national standard for ozone is something like 0.075, we can see from the data that</p>
+<ul>
+<li><p>The data are at least of the right order of magnitude (i.e. the units are correct)</p></li>
+<li><p>The range of the distribution is roughly what we’d expect, given the regulation around ambient pollution levels</p></li>
+<li><p>Some hourly levels (less than 10%) are above 0.075 but this may be reasonable given the wording of the standard and the averaging involved.</p></li>
+</ul>
+</div>
+<div id="try-the-easy-solution-first" class="section level2" number="4.8">
+<h2><span class="header-section-number">4.8</span> Try the easy solution first</h2>
+<p>Recall that our original question was</p>
+<blockquote>
+<p>Which counties in the United States have the highest levels of ambient ozone pollution?</p>
+</blockquote>
+<p>What’s the simplest answer we could provide to this question? For the moment, don’t worry about whether the answer is correct, but the point is how could you provide <em>prima facie</em> evidence for your hypothesis or question. You may refute that evidence later with deeper analysis, but this is the first pass.</p>
+<p>Because we want to know which counties have the <em>highest</em> levels, it seems we need a list of counties that are ordered from highest to lowest with respect to their levels of ozone. What do we mean by “levels of ozone”? For now, let’s just blindly take the average across the entire year for each county and then rank counties according to this metric.</p>
+<p>To identify each county we will use a combination of the <code>State.Name</code> and the <code>County.Name</code> variables.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="exploratory-data-analysis-checklist.html#cb46-1"></a><span class="op">&gt;</span><span class="st"> </span>ranking &lt;-<span class="st"> </span><span class="kw">group_by</span>(ozone, State.Name, County.Name) <span class="op">%&gt;%</span></span>
+<span id="cb46-2"><a href="exploratory-data-analysis-checklist.html#cb46-2"></a><span class="op">+</span><span class="st">         </span><span class="kw">summarize</span>(<span class="dt">ozone =</span> <span class="kw">mean</span>(Sample.Measurement)) <span class="op">%&gt;%</span></span>
+<span id="cb46-3"><a href="exploratory-data-analysis-checklist.html#cb46-3"></a><span class="op">+</span><span class="st">         </span>as.data.frame <span class="op">%&gt;%</span></span>
+<span id="cb46-4"><a href="exploratory-data-analysis-checklist.html#cb46-4"></a><span class="op">+</span><span class="st">         </span><span class="kw">arrange</span>(<span class="kw">desc</span>(ozone))</span></code></pre></div>
+<p>Now we can look at the top 10 counties in this ranking.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="exploratory-data-analysis-checklist.html#cb47-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(ranking, <span class="dv">10</span>)</span>
+<span id="cb47-2"><a href="exploratory-data-analysis-checklist.html#cb47-2"></a>   State.Name County.Name      ozone</span>
+<span id="cb47-3"><a href="exploratory-data-analysis-checklist.html#cb47-3"></a><span class="dv">1</span>  California    Mariposa <span class="fl">0.04992485</span></span>
+<span id="cb47-4"><a href="exploratory-data-analysis-checklist.html#cb47-4"></a><span class="dv">2</span>  California      Nevada <span class="fl">0.04866836</span></span>
+<span id="cb47-5"><a href="exploratory-data-analysis-checklist.html#cb47-5"></a><span class="dv">3</span>     Wyoming      Albany <span class="fl">0.04834274</span></span>
+<span id="cb47-6"><a href="exploratory-data-analysis-checklist.html#cb47-6"></a><span class="dv">4</span>     Arizona     Yavapai <span class="fl">0.04746346</span></span>
+<span id="cb47-7"><a href="exploratory-data-analysis-checklist.html#cb47-7"></a><span class="dv">5</span>     Arizona        Gila <span class="fl">0.04722276</span></span>
+<span id="cb47-8"><a href="exploratory-data-analysis-checklist.html#cb47-8"></a><span class="dv">6</span>  California        Inyo <span class="fl">0.04659648</span></span>
+<span id="cb47-9"><a href="exploratory-data-analysis-checklist.html#cb47-9"></a><span class="dv">7</span>        Utah    San Juan <span class="fl">0.04654895</span></span>
+<span id="cb47-10"><a href="exploratory-data-analysis-checklist.html#cb47-10"></a><span class="dv">8</span>     Arizona    Coconino <span class="fl">0.04605669</span></span>
+<span id="cb47-11"><a href="exploratory-data-analysis-checklist.html#cb47-11"></a><span class="dv">9</span>  California   El Dorado <span class="fl">0.04595514</span></span>
+<span id="cb47-12"><a href="exploratory-data-analysis-checklist.html#cb47-12"></a><span class="dv">10</span>     Nevada  White Pine <span class="fl">0.04465562</span></span></code></pre></div>
+<p>It seems interesting that all of these counties are in the western U.S., with 4 of them in California alone.</p>
+<p>For comparison we can look at the 10 lowest counties too.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="exploratory-data-analysis-checklist.html#cb48-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">tail</span>(ranking, <span class="dv">10</span>)</span>
+<span id="cb48-2"><a href="exploratory-data-analysis-checklist.html#cb48-2"></a>     State.Name          County.Name       ozone</span>
+<span id="cb48-3"><a href="exploratory-data-analysis-checklist.html#cb48-3"></a><span class="dv">781</span>      Alaska    Matanuska Susitna <span class="fl">0.020911008</span></span>
+<span id="cb48-4"><a href="exploratory-data-analysis-checklist.html#cb48-4"></a><span class="dv">782</span>  Washington              Whatcom <span class="fl">0.020114267</span></span>
+<span id="cb48-5"><a href="exploratory-data-analysis-checklist.html#cb48-5"></a><span class="dv">783</span>      Hawaii             Honolulu <span class="fl">0.019813165</span></span>
+<span id="cb48-6"><a href="exploratory-data-analysis-checklist.html#cb48-6"></a><span class="dv">784</span>   Tennessee                 Knox <span class="fl">0.018579452</span></span>
+<span id="cb48-7"><a href="exploratory-data-analysis-checklist.html#cb48-7"></a><span class="dv">785</span>  California               Merced <span class="fl">0.017200647</span></span>
+<span id="cb48-8"><a href="exploratory-data-analysis-checklist.html#cb48-8"></a><span class="dv">786</span>      Alaska Fairbanks North Star <span class="fl">0.014993138</span></span>
+<span id="cb48-9"><a href="exploratory-data-analysis-checklist.html#cb48-9"></a><span class="dv">787</span>    Oklahoma                Caddo <span class="fl">0.014677374</span></span>
+<span id="cb48-10"><a href="exploratory-data-analysis-checklist.html#cb48-10"></a><span class="dv">788</span> Puerto Rico               Juncos <span class="fl">0.013738328</span></span>
+<span id="cb48-11"><a href="exploratory-data-analysis-checklist.html#cb48-11"></a><span class="dv">789</span> Puerto Rico              Bayamon <span class="fl">0.010693529</span></span>
+<span id="cb48-12"><a href="exploratory-data-analysis-checklist.html#cb48-12"></a><span class="dv">790</span> Puerto Rico               Catano <span class="fl">0.004685369</span></span></code></pre></div>
+<p>Let’s take a look at one of the higest level counties, Mariposa County, California. First let’s see how many observations there are for this county in the dataset.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="exploratory-data-analysis-checklist.html#cb49-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">filter</span>(ozone, State.Name <span class="op">==</span><span class="st"> &quot;California&quot;</span> <span class="op">&amp;</span><span class="st"> </span>County.Name <span class="op">==</span><span class="st"> &quot;Mariposa&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>nrow</span>
+<span id="cb49-2"><a href="exploratory-data-analysis-checklist.html#cb49-2"></a>[<span class="dv">1</span>] <span class="dv">9328</span></span></code></pre></div>
+<p>Always be checking. Does that number of observations sound right? Well, there’s 24 hours in a day and 365 days per, which gives us 8760, which is close to that number of observations. Sometimes the counties use alternate methods of measurement during the year so there may be “extra” measurements.</p>
+<p>We can take a look at how ozone varies through the year in this county by looking at monthly averages. First we’ll need to convert the date variable into a <code>Date</code> class.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="exploratory-data-analysis-checklist.html#cb50-1"></a><span class="op">&gt;</span><span class="st"> </span>ozone &lt;-<span class="st"> </span><span class="kw">mutate</span>(ozone, <span class="dt">Date.Local =</span> <span class="kw">as.Date</span>(Date.Local))</span></code></pre></div>
+<p>Then we will split the data by month to look at the average hourly levels.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="exploratory-data-analysis-checklist.html#cb51-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">filter</span>(ozone, State.Name <span class="op">==</span><span class="st"> &quot;California&quot;</span> <span class="op">&amp;</span><span class="st"> </span>County.Name <span class="op">==</span><span class="st"> &quot;Mariposa&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb51-2"><a href="exploratory-data-analysis-checklist.html#cb51-2"></a><span class="op">+</span><span class="st">         </span><span class="kw">mutate</span>(<span class="dt">month =</span> <span class="kw">factor</span>(<span class="kw">months</span>(Date.Local), <span class="dt">levels =</span> month.name)) <span class="op">%&gt;%</span></span>
+<span id="cb51-3"><a href="exploratory-data-analysis-checklist.html#cb51-3"></a><span class="op">+</span><span class="st">         </span><span class="kw">group_by</span>(month) <span class="op">%&gt;%</span></span>
+<span id="cb51-4"><a href="exploratory-data-analysis-checklist.html#cb51-4"></a><span class="op">+</span><span class="st">         </span><span class="kw">summarize</span>(<span class="dt">ozone =</span> <span class="kw">mean</span>(Sample.Measurement))</span>
+<span id="cb51-5"><a href="exploratory-data-analysis-checklist.html#cb51-5"></a><span class="co"># A tibble: 10 x 2</span></span>
+<span id="cb51-6"><a href="exploratory-data-analysis-checklist.html#cb51-6"></a>   month      ozone</span>
+<span id="cb51-7"><a href="exploratory-data-analysis-checklist.html#cb51-7"></a> <span class="op">*</span><span class="st"> </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb51-8"><a href="exploratory-data-analysis-checklist.html#cb51-8"></a><span class="st"> </span><span class="dv">1</span> January   <span class="fl">0.0408</span></span>
+<span id="cb51-9"><a href="exploratory-data-analysis-checklist.html#cb51-9"></a> <span class="dv">2</span> February  <span class="fl">0.0388</span></span>
+<span id="cb51-10"><a href="exploratory-data-analysis-checklist.html#cb51-10"></a> <span class="dv">3</span> March     <span class="fl">0.0455</span></span>
+<span id="cb51-11"><a href="exploratory-data-analysis-checklist.html#cb51-11"></a> <span class="dv">4</span> April     <span class="fl">0.0498</span></span>
+<span id="cb51-12"><a href="exploratory-data-analysis-checklist.html#cb51-12"></a> <span class="dv">5</span> May       <span class="fl">0.0505</span></span>
+<span id="cb51-13"><a href="exploratory-data-analysis-checklist.html#cb51-13"></a> <span class="dv">6</span> June      <span class="fl">0.0564</span></span>
+<span id="cb51-14"><a href="exploratory-data-analysis-checklist.html#cb51-14"></a> <span class="dv">7</span> July      <span class="fl">0.0522</span></span>
+<span id="cb51-15"><a href="exploratory-data-analysis-checklist.html#cb51-15"></a> <span class="dv">8</span> August    <span class="fl">0.0554</span></span>
+<span id="cb51-16"><a href="exploratory-data-analysis-checklist.html#cb51-16"></a> <span class="dv">9</span> September <span class="fl">0.0512</span></span>
+<span id="cb51-17"><a href="exploratory-data-analysis-checklist.html#cb51-17"></a><span class="dv">10</span> October   <span class="fl">0.0469</span></span></code></pre></div>
+<p>A few things stand out here. First, ozone appears to be higher in the summer months and lower in the winter months. Second, there are two months missing (November and December) from the data. It’s not immediately clear why that is, but it’s probably worth investigating a bit later on.</p>
+<p>Now let’s take a look at one of the lowest level counties, Caddo County, Oklahoma.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="exploratory-data-analysis-checklist.html#cb52-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">filter</span>(ozone, State.Name <span class="op">==</span><span class="st"> &quot;Oklahoma&quot;</span> <span class="op">&amp;</span><span class="st"> </span>County.Name <span class="op">==</span><span class="st"> &quot;Caddo&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>nrow</span>
+<span id="cb52-2"><a href="exploratory-data-analysis-checklist.html#cb52-2"></a>[<span class="dv">1</span>] <span class="dv">5666</span></span></code></pre></div>
+<p>Here we see that there are perhaps fewer observations than we would expect for a monitor that was measuring 24 hours a day all year. We can check the data to see if anything funny is going on.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="exploratory-data-analysis-checklist.html#cb53-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">filter</span>(ozone, State.Name <span class="op">==</span><span class="st"> &quot;Oklahoma&quot;</span> <span class="op">&amp;</span><span class="st"> </span>County.Name <span class="op">==</span><span class="st"> &quot;Caddo&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb53-2"><a href="exploratory-data-analysis-checklist.html#cb53-2"></a><span class="op">+</span><span class="st">         </span><span class="kw">mutate</span>(<span class="dt">month =</span> <span class="kw">factor</span>(<span class="kw">months</span>(Date.Local), <span class="dt">levels =</span> month.name)) <span class="op">%&gt;%</span></span>
+<span id="cb53-3"><a href="exploratory-data-analysis-checklist.html#cb53-3"></a><span class="op">+</span><span class="st">         </span><span class="kw">group_by</span>(month) <span class="op">%&gt;%</span></span>
+<span id="cb53-4"><a href="exploratory-data-analysis-checklist.html#cb53-4"></a><span class="op">+</span><span class="st">         </span><span class="kw">summarize</span>(<span class="dt">ozone =</span> <span class="kw">mean</span>(Sample.Measurement))</span>
+<span id="cb53-5"><a href="exploratory-data-analysis-checklist.html#cb53-5"></a><span class="co"># A tibble: 9 x 2</span></span>
+<span id="cb53-6"><a href="exploratory-data-analysis-checklist.html#cb53-6"></a>  month       ozone</span>
+<span id="cb53-7"><a href="exploratory-data-analysis-checklist.html#cb53-7"></a><span class="op">*</span><span class="st"> </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb53-8"><a href="exploratory-data-analysis-checklist.html#cb53-8"></a><span class="dv">1</span> January   <span class="fl">0.0187</span> </span>
+<span id="cb53-9"><a href="exploratory-data-analysis-checklist.html#cb53-9"></a><span class="dv">2</span> February  <span class="fl">0.00206</span></span>
+<span id="cb53-10"><a href="exploratory-data-analysis-checklist.html#cb53-10"></a><span class="dv">3</span> March     <span class="fl">0.002</span>  </span>
+<span id="cb53-11"><a href="exploratory-data-analysis-checklist.html#cb53-11"></a><span class="dv">4</span> April     <span class="fl">0.0232</span> </span>
+<span id="cb53-12"><a href="exploratory-data-analysis-checklist.html#cb53-12"></a><span class="dv">5</span> May       <span class="fl">0.0242</span> </span>
+<span id="cb53-13"><a href="exploratory-data-analysis-checklist.html#cb53-13"></a><span class="dv">6</span> June      <span class="fl">0.0202</span> </span>
+<span id="cb53-14"><a href="exploratory-data-analysis-checklist.html#cb53-14"></a><span class="dv">7</span> July      <span class="fl">0.0191</span> </span>
+<span id="cb53-15"><a href="exploratory-data-analysis-checklist.html#cb53-15"></a><span class="dv">8</span> August    <span class="fl">0.0209</span> </span>
+<span id="cb53-16"><a href="exploratory-data-analysis-checklist.html#cb53-16"></a><span class="dv">9</span> September <span class="fl">0.002</span>  </span></code></pre></div>
+<p>Here we can see that the levels of ozone are much lower in this county and that also three months are missing (October, November, and December). Given the seasonal nature of ozone, it’s possible that the levels of ozone are so low in those months that it’s not even worth measuring. In fact some of the monthly averages are below the typical method detection limit of the measurement technology, meaning that those values are highly uncertain and likely not distinguishable from zero.</p>
+</div>
+<div id="challenge-your-solution" class="section level2" number="4.9">
+<h2><span class="header-section-number">4.9</span> Challenge your solution</h2>
+<p>The easy solution is nice because it is, well, easy, but you should never allow those results to hold the day. You should always be thinking of ways to challenge the results, especially if those results comport with your prior expectation.</p>
+<p>Now, the easy answer seemed to work okay in that it gave us a listing of counties that had the highest average levels of ozone for 2014. However, the analysis raised some issues. For example, some counties do not have measurements every month. Is this a problem? Would it affect our ranking of counties if we had those measurements?</p>
+<p>Also, how stable are the rankings from year to year? We only have one year’s worth of data for the moment, but we could perhaps get a sense of the stability of the rankings by shuffling the data around a bit to see if anything changes. We can imagine that from year to year, the ozone data are somewhat different randomly, but generally follow similar patterns across the country. So the shuffling process could approximate the data changing from one year to the next. It’s not an ideal solution, but it could give us a sense of how stable the rankings are.</p>
+<p>First we set our random number generator and resample the indices of the rows of the data frame with replacement. The statistical jargon for this approach is a bootstrap sample. We use the resampled indices to create a new dataset, <code>ozone2</code>, that shares many of the same qualities as the original but is randomly perturbed.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="exploratory-data-analysis-checklist.html#cb54-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">10234</span>)</span>
+<span id="cb54-2"><a href="exploratory-data-analysis-checklist.html#cb54-2"></a><span class="op">&gt;</span><span class="st"> </span>N &lt;-<span class="st"> </span><span class="kw">nrow</span>(ozone)</span>
+<span id="cb54-3"><a href="exploratory-data-analysis-checklist.html#cb54-3"></a><span class="op">&gt;</span><span class="st"> </span>idx &lt;-<span class="st"> </span><span class="kw">sample</span>(N, N, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb54-4"><a href="exploratory-data-analysis-checklist.html#cb54-4"></a><span class="op">&gt;</span><span class="st"> </span>ozone2 &lt;-<span class="st"> </span>ozone[idx, ]</span></code></pre></div>
+<p>Now we can reconstruct our rankings of the counties based on this resampled data.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="exploratory-data-analysis-checklist.html#cb55-1"></a><span class="op">&gt;</span><span class="st"> </span>ranking2 &lt;-<span class="st"> </span><span class="kw">group_by</span>(ozone2, State.Name, County.Name) <span class="op">%&gt;%</span></span>
+<span id="cb55-2"><a href="exploratory-data-analysis-checklist.html#cb55-2"></a><span class="op">+</span><span class="st">         </span><span class="kw">summarize</span>(<span class="dt">ozone =</span> <span class="kw">mean</span>(Sample.Measurement)) <span class="op">%&gt;%</span></span>
+<span id="cb55-3"><a href="exploratory-data-analysis-checklist.html#cb55-3"></a><span class="op">+</span><span class="st">         </span>as.data.frame <span class="op">%&gt;%</span></span>
+<span id="cb55-4"><a href="exploratory-data-analysis-checklist.html#cb55-4"></a><span class="op">+</span><span class="st">         </span><span class="kw">arrange</span>(<span class="kw">desc</span>(ozone))</span></code></pre></div>
+<p>We can then compare the top 10 counties from our original ranking and the top 10 counties from our ranking based on the resampled data.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="exploratory-data-analysis-checklist.html#cb56-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">cbind</span>(<span class="kw">head</span>(ranking, <span class="dv">10</span>),</span>
+<span id="cb56-2"><a href="exploratory-data-analysis-checklist.html#cb56-2"></a><span class="op">+</span><span class="st">       </span><span class="kw">head</span>(ranking2, <span class="dv">10</span>))</span>
+<span id="cb56-3"><a href="exploratory-data-analysis-checklist.html#cb56-3"></a>   State.Name County.Name      ozone State.Name</span>
+<span id="cb56-4"><a href="exploratory-data-analysis-checklist.html#cb56-4"></a><span class="dv">1</span>  California    Mariposa <span class="fl">0.04992485</span> California</span>
+<span id="cb56-5"><a href="exploratory-data-analysis-checklist.html#cb56-5"></a><span class="dv">2</span>  California      Nevada <span class="fl">0.04866836</span> California</span>
+<span id="cb56-6"><a href="exploratory-data-analysis-checklist.html#cb56-6"></a><span class="dv">3</span>     Wyoming      Albany <span class="fl">0.04834274</span>    Wyoming</span>
+<span id="cb56-7"><a href="exploratory-data-analysis-checklist.html#cb56-7"></a><span class="dv">4</span>     Arizona     Yavapai <span class="fl">0.04746346</span>    Arizona</span>
+<span id="cb56-8"><a href="exploratory-data-analysis-checklist.html#cb56-8"></a><span class="dv">5</span>     Arizona        Gila <span class="fl">0.04722276</span>    Arizona</span>
+<span id="cb56-9"><a href="exploratory-data-analysis-checklist.html#cb56-9"></a><span class="dv">6</span>  California        Inyo <span class="fl">0.04659648</span>       Utah</span>
+<span id="cb56-10"><a href="exploratory-data-analysis-checklist.html#cb56-10"></a><span class="dv">7</span>        Utah    San Juan <span class="fl">0.04654895</span> California</span>
+<span id="cb56-11"><a href="exploratory-data-analysis-checklist.html#cb56-11"></a><span class="dv">8</span>     Arizona    Coconino <span class="fl">0.04605669</span>    Arizona</span>
+<span id="cb56-12"><a href="exploratory-data-analysis-checklist.html#cb56-12"></a><span class="dv">9</span>  California   El Dorado <span class="fl">0.04595514</span> California</span>
+<span id="cb56-13"><a href="exploratory-data-analysis-checklist.html#cb56-13"></a><span class="dv">10</span>     Nevada  White Pine <span class="fl">0.04465562</span>     Nevada</span>
+<span id="cb56-14"><a href="exploratory-data-analysis-checklist.html#cb56-14"></a>   County.Name      ozone</span>
+<span id="cb56-15"><a href="exploratory-data-analysis-checklist.html#cb56-15"></a><span class="dv">1</span>     Mariposa <span class="fl">0.04983094</span></span>
+<span id="cb56-16"><a href="exploratory-data-analysis-checklist.html#cb56-16"></a><span class="dv">2</span>       Nevada <span class="fl">0.04869841</span></span>
+<span id="cb56-17"><a href="exploratory-data-analysis-checklist.html#cb56-17"></a><span class="dv">3</span>       Albany <span class="fl">0.04830520</span></span>
+<span id="cb56-18"><a href="exploratory-data-analysis-checklist.html#cb56-18"></a><span class="dv">4</span>      Yavapai <span class="fl">0.04748795</span></span>
+<span id="cb56-19"><a href="exploratory-data-analysis-checklist.html#cb56-19"></a><span class="dv">5</span>         Gila <span class="fl">0.04728284</span></span>
+<span id="cb56-20"><a href="exploratory-data-analysis-checklist.html#cb56-20"></a><span class="dv">6</span>     San Juan <span class="fl">0.04665711</span></span>
+<span id="cb56-21"><a href="exploratory-data-analysis-checklist.html#cb56-21"></a><span class="dv">7</span>         Inyo <span class="fl">0.04652602</span></span>
+<span id="cb56-22"><a href="exploratory-data-analysis-checklist.html#cb56-22"></a><span class="dv">8</span>     Coconino <span class="fl">0.04616988</span></span>
+<span id="cb56-23"><a href="exploratory-data-analysis-checklist.html#cb56-23"></a><span class="dv">9</span>    El Dorado <span class="fl">0.04611164</span></span>
+<span id="cb56-24"><a href="exploratory-data-analysis-checklist.html#cb56-24"></a><span class="dv">10</span>  White Pine <span class="fl">0.04466106</span></span></code></pre></div>
+<p>We can see that the rankings based on the resampled data (columns 4–6 on the right) are very close to the original, with the first 7 being identical. Numbers 8 and 9 get flipped in the resampled rankings but that’s about it. This might suggest that the original rankings are somewhat stable.</p>
+<p>We can also look at the bottom of the list to see if there were any major changes.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="exploratory-data-analysis-checklist.html#cb57-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">cbind</span>(<span class="kw">tail</span>(ranking, <span class="dv">10</span>),</span>
+<span id="cb57-2"><a href="exploratory-data-analysis-checklist.html#cb57-2"></a><span class="op">+</span><span class="st">       </span><span class="kw">tail</span>(ranking2, <span class="dv">10</span>))</span>
+<span id="cb57-3"><a href="exploratory-data-analysis-checklist.html#cb57-3"></a>     State.Name          County.Name       ozone</span>
+<span id="cb57-4"><a href="exploratory-data-analysis-checklist.html#cb57-4"></a><span class="dv">781</span>      Alaska    Matanuska Susitna <span class="fl">0.020911008</span></span>
+<span id="cb57-5"><a href="exploratory-data-analysis-checklist.html#cb57-5"></a><span class="dv">782</span>  Washington              Whatcom <span class="fl">0.020114267</span></span>
+<span id="cb57-6"><a href="exploratory-data-analysis-checklist.html#cb57-6"></a><span class="dv">783</span>      Hawaii             Honolulu <span class="fl">0.019813165</span></span>
+<span id="cb57-7"><a href="exploratory-data-analysis-checklist.html#cb57-7"></a><span class="dv">784</span>   Tennessee                 Knox <span class="fl">0.018579452</span></span>
+<span id="cb57-8"><a href="exploratory-data-analysis-checklist.html#cb57-8"></a><span class="dv">785</span>  California               Merced <span class="fl">0.017200647</span></span>
+<span id="cb57-9"><a href="exploratory-data-analysis-checklist.html#cb57-9"></a><span class="dv">786</span>      Alaska Fairbanks North Star <span class="fl">0.014993138</span></span>
+<span id="cb57-10"><a href="exploratory-data-analysis-checklist.html#cb57-10"></a><span class="dv">787</span>    Oklahoma                Caddo <span class="fl">0.014677374</span></span>
+<span id="cb57-11"><a href="exploratory-data-analysis-checklist.html#cb57-11"></a><span class="dv">788</span> Puerto Rico               Juncos <span class="fl">0.013738328</span></span>
+<span id="cb57-12"><a href="exploratory-data-analysis-checklist.html#cb57-12"></a><span class="dv">789</span> Puerto Rico              Bayamon <span class="fl">0.010693529</span></span>
+<span id="cb57-13"><a href="exploratory-data-analysis-checklist.html#cb57-13"></a><span class="dv">790</span> Puerto Rico               Catano <span class="fl">0.004685369</span></span>
+<span id="cb57-14"><a href="exploratory-data-analysis-checklist.html#cb57-14"></a>     State.Name          County.Name       ozone</span>
+<span id="cb57-15"><a href="exploratory-data-analysis-checklist.html#cb57-15"></a><span class="dv">781</span>      Alaska    Matanuska Susitna <span class="fl">0.020806642</span></span>
+<span id="cb57-16"><a href="exploratory-data-analysis-checklist.html#cb57-16"></a><span class="dv">782</span>  Washington              Whatcom <span class="fl">0.020043750</span></span>
+<span id="cb57-17"><a href="exploratory-data-analysis-checklist.html#cb57-17"></a><span class="dv">783</span>      Hawaii             Honolulu <span class="fl">0.019821603</span></span>
+<span id="cb57-18"><a href="exploratory-data-analysis-checklist.html#cb57-18"></a><span class="dv">784</span>   Tennessee                 Knox <span class="fl">0.018814913</span></span>
+<span id="cb57-19"><a href="exploratory-data-analysis-checklist.html#cb57-19"></a><span class="dv">785</span>  California               Merced <span class="fl">0.016917933</span></span>
+<span id="cb57-20"><a href="exploratory-data-analysis-checklist.html#cb57-20"></a><span class="dv">786</span>      Alaska Fairbanks North Star <span class="fl">0.014933125</span></span>
+<span id="cb57-21"><a href="exploratory-data-analysis-checklist.html#cb57-21"></a><span class="dv">787</span>    Oklahoma                Caddo <span class="fl">0.014662867</span></span>
+<span id="cb57-22"><a href="exploratory-data-analysis-checklist.html#cb57-22"></a><span class="dv">788</span> Puerto Rico               Juncos <span class="fl">0.013858010</span></span>
+<span id="cb57-23"><a href="exploratory-data-analysis-checklist.html#cb57-23"></a><span class="dv">789</span> Puerto Rico              Bayamon <span class="fl">0.010578880</span></span>
+<span id="cb57-24"><a href="exploratory-data-analysis-checklist.html#cb57-24"></a><span class="dv">790</span> Puerto Rico               Catano <span class="fl">0.004775807</span></span></code></pre></div>
+<p>Here we can see that the bottom 7 counties are identical in both rankings, but after that things shuffle a bit. We’re less concerned with the counties at the bottom of the list, but this suggests there is also reasonable stability.</p>
+</div>
+<div id="follow-up-questions" class="section level2" number="4.10">
+<h2><span class="header-section-number">4.10</span> Follow up questions</h2>
+<p>In this chapter I’ve presented some simple steps to take when starting off on an exploratory analysis. The example analysis conducted in this chapter was far from perfect, but it got us thinking about the data and the question of interest. It also gave us a number of things to follow up on in case we continue to be interested in this question.</p>
+<p>At this point it’s useful to consider a few followup questions.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Do you have the right data?</strong> Sometimes at the conclusion of an exploratory data analysis, the conclusion is that the dataset is not really appropriate for this question. In this case, the dataset seemed perfectly fine for answering the question of which counties had the highest levels of ozone.</p></li>
+<li><p><strong>Do you need other data?</strong> One sub-question we tried to address was whether the county rankings were stable across years. We addressed this by resampling the data once to see if the rankings changed, but the better way to do this would be to simply get the data for previous years and re-do the rankings.</p></li>
+<li><p><strong>Do you have the right question?</strong> In this case, it’s not clear that the question we tried to answer has immediate relevance, and the data didn’t really indicate anything to increase the question’s relevance. For example, it might have been more interesting to assess which counties were in violation of the national ambient air quality standard, because determining this could have regulatory implications. However, this is a much more complicated calculation to do, requiring data from at least 3 previous years.</p></li>
+</ol>
+<p>The goal of exploratory data analysis is to get you thinking about your data and reasoning about your question. At this point, we can refine our question or collect new data, all in an iterative process to get at the truth.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="managing-data-frames-with-the-dplyr-package.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="principles-of-analytic-graphics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rdpeng/exdata/edit/bookdown/eda_checklist.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
